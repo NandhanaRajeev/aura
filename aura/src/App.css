@@ -1,0 +1,133 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+/* Authentication Page */
+
+/* Updated app.css */
+body {
+  background-color: #f8f8f8;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.auth-box {
+  background-color: white;
+  padding: 20px;
+  width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+form {
+  text-align: left;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.btn-success {
+  background-color: #ff6b6b;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  width: 100%;
+  font-size: 18px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-success:hover {
+  background-color: #ff4d4d;
+}
+ 
+p {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.text-danger {
+  color: red;
+  font-size: 12px;
+}
+
+.btn-default {
+  background-color: #f1f1f1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  width: 100%;
+  font-size: 16px;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+
+
+
+
+
+
+
+
+

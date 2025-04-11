@@ -1,0 +1,95 @@
+.categories-container {
+    text-align: center;
+    padding: 50px;
+    background: #fff;
+}
+
+/* Title Styling */
+.categories-container h2 {
+    font-size: 30px;
+}
+
+/* Grid Layout */
+.categories-grid {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    flex-wrap: wrap;
+}
+
+/* Category Box */
+.category-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 250px; /* Ensure all boxes are the same width */
+}
+
+
+/* Image Styling */
+.category-box img {
+    aspect-ratio: 3 / 4; /* Adjusts height automatically based on width */
+    object-fit: cover;
+    width: 100%;
+    border-radius: 50%;
+}
+
+
+/* Category Text */
+.category-box p {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    padding-top: 5%;
+}
+
+/* Hover Effect */
+.category-box img:hover {
+    transform: scale(1.1);
+}
+.brands-container {
+    text-align: center;
+    padding: 40px;
+    max-width: 90%;
+    margin: auto;
+  }
+  
+  .brands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .brand-box {
+    text-align: center;
+    padding: 10px;
+    border: none; /* Removes the blue border */
+    border-radius: 10px;
+    background-color: #f8f8f8; /* Light background */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .brand-box img {
+    width: 100%;
+    height: 300px; /* Ensures uniform size */
+    min-height: 250px; /* Prevents excessive cropping */
+    object-fit: cover;
+    object-position: top; /* Adjusts cropping to focus on faces */
+    border-bottom: none; /* Removes the bottom border */
+  }
+  
+  .brand-name {
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 5px;
+    text-transform: uppercase;
+    font-family: 'Arial', sans-serif;
+    letter-spacing: 1px;
+  }
+  

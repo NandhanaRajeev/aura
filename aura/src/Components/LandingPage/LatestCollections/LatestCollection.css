@@ -1,0 +1,63 @@
+.latest-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Ensures even spacing */
+    gap: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.latest-card {
+    flex: 1 1 calc(25% - 20px); /* Ensures 5 cards per row */
+    max-width: 280px;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;  /* Makes text & button stay at the bottom */
+    justify-content: space-between; /* Forces consistent height */
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+.latest-card img {
+    width: 100%;
+    height: 250px; /* Force all images to the same height */
+    object-fit: cover; /* Prevents distortion */
+}
+.price-container {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between prices */
+}
+
+.latest-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000; /* Black color for discounted price */
+}
+
+.original-price {
+    font-size: 16px;
+    color: gray;
+    text-decoration: line-through;
+}
+
+
+@media (max-width: 1024px) {
+    .latest-card {
+        flex: 1 1 calc(33.33% - 20px); /* 3 cards per row */
+    }
+}
+
+@media (max-width: 768px) {
+    .latest-card {
+        flex: 1 1 calc(50% - 20px); /* 2 cards per row */
+    }
+}
+
+@media (max-width: 480px) {
+    .latest-card {
+        flex: 1 1 100%; /* 1 card per row */
+    }
+}

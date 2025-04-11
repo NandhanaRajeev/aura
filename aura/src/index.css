@@ -1,0 +1,89 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 'poppins';
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+/*filterpagecss*/
+* {
+
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 'poppins';
+
+}
+
+a {
+  text-decoration: none;
+  color: rgb(97, 97, 97);
+}
+
+li {
+  list-style: none;
+}
+
+.btn {
+  padding: 10px 20px;
+  margin-right: 6px;
+  /* background: transparent; */
+  border: none;
+  border: 0.6px solid #ccc;
+  border-radius: 5px;
+  color: #323232;
+  cursor: pointer;
+  background-color: white;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+.btn:hover {
+  background-color: lightgray;
+}
+
+.btn.active {
+  background-color: blue; /* Change to any color */
+  color: white;
+  border: 1px solid blue;
+  transform: scale(1.05); /* Slightly enlarge active button */
+}
+
+.icon-container {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Adjust the spacing */
+}
+
+.wishlist, .bag {
+  width: auto; /* Remove fixed width */
+  height: auto; /* Remove fixed height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.wishlist-icon, .bag-icon {
+  color: rgb(9, 9, 9) ; /* Normal color */
+  font-size: 20px;
+}
+
+.wishlist:hover .wishlist-icon,
+.bag:hover .bag-icon {
+  color: gray; /* Slight hover effect */
+}
+
+
+/*end of filterpagecss*/
+

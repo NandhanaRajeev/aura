@@ -1,0 +1,12 @@
+.recommended-flex {
+  display: flex;
+  margin-left: 20rem;
+  gap: 10px; /* Add spacing between buttons */
+}
+
+.recommended-title {
+  margin-left: 20rem;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  font-size: 20px;
+}

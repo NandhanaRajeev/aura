@@ -1,0 +1,96 @@
+/* .hero{
+    height: 100vh;
+    background: linear-gradient(90deg, #fff8ff, #C89F74 50%);
+    display: flex;
+}
+.hero-left{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    gap: 20px;
+    padding-left: 180px;
+    line-height: 1.1;
+}
+
+.hero-left h2{
+    color: #090909;
+    font-size: 26px;
+    font-weight: 600;
+}
+.hero-left p{
+    color: #171717;
+    font-size: 100px;
+    font-weight: 700;
+}
+.hero-hand-icon{
+    display:flex;
+    align-items:center;
+    gap: 20px;
+}
+.hero-hand-icon img{
+    width: 100px;
+
+}
+.hero-latest-btn{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    width: 310px;
+    height: 70px;
+    border-radius: 75px;
+    margin-top: 30px;
+    background : #ff4141;
+    color:white;
+    font-size: 22px;
+    font-weight: 500;
+} */
+
+/* .hero {
+    height: 100vh;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 0 50px;
+    background: linear-gradient(90deg, #fff8ff, #C89F74 50%);
+}
+
+.hero-section {
+    flex: 1;  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.hero-section img {
+    width: 80%; 
+    max-width: 400px;
+    height: auto;
+    border-radius: 15px;  
+}
+
+.hero-section h2 {
+    margin-top: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+} */
+
+.hero {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(90deg, #fff8ff, #C89F74 50%);
+    overflow: hidden; /* Prevents any unwanted scrolling */
+}
+
+.hero img {
+    width: 20%;  /* Each image takes equal space */
+    height: 100vh;  /* Full viewport height */
+    object-fit: cover;  /* Ensures images are perfectly scaled */
+}
