@@ -1,27 +1,23 @@
-import React, { useState } from "react";
+// Login.js
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Validation from "./LoginValidation";
 import "../../App.css";
+import { LoginContext } from "../../Components/LoginContext";
 
 function Login() {
-    const [values, setValues] = useState({
-        email: "",
-        password: "",
-    });
-
+    const [values, setValues] = useState({ email: "", password: "" });
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
+    const { login } = useContext(LoginContext); // ✅ Use context
 
-    const handleInput = (event) => {
-        setValues((prev) => ({
-            ...prev,
-            [event.target.name]: event.target.value,
-        }));
+    const handleInput = (e) => {
+        setValues({ ...values, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         const validationErrors = Validation(values);
         setErrors(validationErrors);
 
@@ -29,13 +25,14 @@ function Login() {
             try {
                 const res = await axios.post("http://localhost:3000/login", values);
                 if (res.data.success) {
-                    // console.log("Login successful:", res.data);
-                    navigate("/"); // Redirect to the dashboard on successful login
+                    localStorage.setItem("loggedIn", "true");
+                    localStorage.setItem("userEmail", values.email);
+                    login(); // ✅ Update global context
+                    navigate("/");
                 } else {
                     setErrors({ general: res.data.message });
                 }
             } catch (error) {
-                console.error("Login error:", error);
                 setErrors({ general: "Invalid credentials or server error" });
             }
         }
@@ -47,21 +44,20 @@ function Login() {
                 <h2>Sign-In</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
-                        <label htmlFor="email"><strong>Email</strong></label>
+                        <label>Email</label>
                         <input
                             type="email"
-                            placeholder="Enter Email"
                             name="email"
                             onChange={handleInput}
                             className="form-control"
+                            autoComplete="off"
                         />
                         {errors.email && <span className="text-danger">{errors.email}</span>}
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="password"><strong>Password</strong></label>
+                        <label>Password</label>
                         <input
                             type="password"
-                            placeholder="Enter Password"
                             name="password"
                             onChange={handleInput}
                             className="form-control"
@@ -70,10 +66,7 @@ function Login() {
                     </div>
                     {errors.general && <p className="text-danger">{errors.general}</p>}
                     <button type="submit" className="btn btn-success w-100">Log in</button>
-                    <p>You are agreeing to our terms and policies</p>
-                    <Link to="/signup" className="btn btn-default w-100 text-decoration-none">
-                        Create Account
-                    </Link>
+                    <Link to="/signup" className="btn btn-outline-secondary w-100 mt-2">Create Account</Link>
                 </form>
             </div>
         </div>

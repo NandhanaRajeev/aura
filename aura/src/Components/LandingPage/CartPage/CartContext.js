@@ -5,8 +5,22 @@ export const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
-  const addToCart = (item) => {
-    setCartItems((prevItems) => [...prevItems, item]);
+  const addToCart = (newItem) => {
+    setCartItems((prevItems) => {
+      const existingItemIndex = prevItems.findIndex(
+        (item) => item.title === newItem.title && item.size === newItem.size
+      );
+
+      if (existingItemIndex !== -1) {
+        // Increment quantity if item exists
+        const updatedItems = [...prevItems];
+        updatedItems[existingItemIndex].quantity += newItem.quantity || 1;
+        return updatedItems;
+      } else {
+        // Add new item
+        return [...prevItems, { ...newItem, quantity: newItem.quantity || 1 }];
+      }
+    });
   };
 
   return (
@@ -16,7 +30,4 @@ export const CartProvider = ({ children }) => {
   );
 };
 
-// ✅ Custom hook to access cart easily
-export const useCart = () => {
-  return useContext(CartContext);
-};
+export const useCart = () => useContext(CartContext);
