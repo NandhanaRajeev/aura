@@ -21,6 +21,7 @@ import { LoginProvider } from "./Components/LoginContext";
 
 // Import Private Route
 import PrivateRoute from "./Components/privateRoute";
+import ProfilePage from "./Pages/ProfilePages/ProfilePage.js";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/auth/*" element={<AuthPage />} />
+            <Route path="/profile/*" element={<ProfilePage />} />
 
             {/* Private Routes (Only accessible when logged in) */}
             <Route

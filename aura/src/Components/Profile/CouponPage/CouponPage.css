@@ -1,0 +1,136 @@
+/* Main Page Layout */
+.coupon-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ffffff, #f5f5f5);
+  padding: 20px;
+}
+
+/* Coupon Content Box */
+.coupon-content {
+  max-width: 900px;
+  width: 100%;
+  padding: 30px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Title */
+.coupon-content h2 {
+  font-size: 28px;
+  font-weight: bold;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+/* Subtitle */
+.sub-text {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Coupon List */
+.coupon-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Individual Coupon */
+.coupon {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+
+/* Hover Effect */
+.coupon:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Coupon Header */
+.coupon h3 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Description */
+.coupon p {
+  font-size: 14px;
+  color: #777;
+}
+
+/* Discount Text */
+.discount {
+  font-size: 18px;
+  font-weight: bold;
+  color: #e74c3c;
+  margin: 10px 0;
+}
+
+/* Coupon Footer */
+.coupon-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+}
+
+/* Coupon Code */
+.coupon-code {
+  font-weight: bold;
+  color: #444;
+  background: #f7f7f7;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+/* Redeem Button */
+.redeem-btn {
+  background: #ff4757;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+/* Hover Effect */
+.redeem-btn:hover {
+  background: #e84118;
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .coupon-content {
+      padding: 20px;
+  }
+  .coupon {
+      width: 90%;
+  }
+}
+
+
+/* Footer fix */
+.footer {
+  width: 100%;
+  margin-top: auto;
+  position: relative;
+  bottom: 0;
+}

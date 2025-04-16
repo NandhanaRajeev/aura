@@ -1,0 +1,87 @@
+/* Align sidebar & content */
+.delete-account-page {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Account deletion content */
+.delete-account-content {
+    flex: 1;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Delete button */
+.delete-btn {
+    background: #e74c3c;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.delete-btn:hover {
+    background: #c0392b;
+}
+
+/* Confirmation box */
+.confirmation-box {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Confirmation buttons */
+.confirmation-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+/* Confirm button */
+.confirm-btn {
+    background: #4caf50;
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.confirm-btn:hover {
+    background: #43a047;
+}
+
+/* Cancel button */
+.cancel-btn {
+    background: #888;
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.cancel-btn:hover {
+    background: #666;
+}
+
+/* Footer fix */
+.footer {
+    width: 100%;
+    margin-top: auto;
+    position: relative;
+    bottom: 0;
+}

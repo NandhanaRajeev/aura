@@ -9,6 +9,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import userRoutes from "./routes/userRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
+import userDetailsRoute from './routes/userDetailsRoute.js';
 
 
 
@@ -21,6 +22,7 @@ app.use(cors());
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/cart", cartRoutes);
+app.use('/', userDetailsRoute);
 
 // Fetch unique categories
 app.get("/api/categories", async (req, res) => {
@@ -149,8 +151,24 @@ app.post("/login", async (req, res) => {
     }
 });
 
+app.post("/ProfileForm", async (req, res) => {
+  const { fullName, mobile, email, gender, dob, address } = req.body;
 
-const PORT = process.env.PORT || 3000;
+  try {
+    const sql = `INSERT INTO users_details (full_name, mobile, email, gender, dob, address)
+                 VALUES (?, ?, ?, ?, ?, ?)`;
+
+    await pool.query(sql, [fullName, mobile, email, gender, dob, address]);
+
+    res.status(200).json({ message: "Profile submitted successfully" });
+  } catch (err) {
+    console.error("Error inserting profile:", err);
+    res.status(500).json({ error: "Profile submission failed" });
+  }
+});
+
+
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, async () => {
     console.log(`🚀 Server running on port ${PORT}`);
@@ -162,3 +180,4 @@ app.listen(PORT, async () => {
         console.log("❌ Failed to initialize the database:", error);
     }
 });
+

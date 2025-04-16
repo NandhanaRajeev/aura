@@ -1,0 +1,67 @@
+/* Centering the profile card */
+/* Centering the profile card */
+/* Centering the entire content */
+.profile-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+}
+
+/* Profile container */
+.profile-container {
+    max-width: 500px;
+    width: 100%;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left; /* Keep text left-aligned */
+}
+
+
+
+/* Heading styles */
+.profile-heading {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Styling user details */
+.profile-details {
+    text-align: left;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+}
+
+.profile-details p {
+    margin: 10px 0;
+}
+
+/* Edit Button */
+.edit-button {
+    margin-top: 20px;
+    padding: 10px 15px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.edit-button:hover {
+    background-color: #0056b3;
+}
+
+/* Loader */
+.loading-text {
+    text-align: center;
+    font-size: 18px;
+    color: #777;
+    margin-top: 20px;
+}

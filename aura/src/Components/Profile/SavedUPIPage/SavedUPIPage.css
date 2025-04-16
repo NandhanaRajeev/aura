@@ -1,0 +1,92 @@
+/* Flexbox layout to align sidebar & content */
+.saved-upi-page {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* UPI Content Layout */
+.saved-upi-content {
+  flex: 1;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* No UPI Message */
+.no-upi {
+  font-size: 18px;
+  color: #888;
+  margin-top: 20px;
+}
+
+/* UPI List */
+.upi-list {
+  list-style: none;
+  padding: 0;
+}
+
+/* UPI Item */
+.upi-item {
+  background: #f8f8f8;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+/* UPI Item Text */
+.upi-item p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+/* UPI Buttons Container */
+.upi-buttons {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+/* Edit Button */
+.edit-btn {
+  background: #4caf50;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.edit-btn:hover {
+  background: #43a047;
+}
+
+/* Delete Button */
+.delete-btn {
+  background: #e74c3c;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+}
+
+/* Footer fix */
+.footer {
+  width: 100%;
+  margin-top: auto;
+  position: relative;
+  bottom: 0;
+}

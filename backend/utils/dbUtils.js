@@ -1,6 +1,6 @@
 import { pool } from '../config/db.js';
 
-// Create products table
+// Create all necessary tables
 const createTable = async () => {
     try {
         await pool.query(`
@@ -17,9 +17,8 @@ const createTable = async () => {
                 category VARCHAR(255) NOT NULL
             );
         `);
-        console.log("Table 'products' created successfully!");
+        console.log("✅ 'products' table created successfully!");
 
-        // Create 'users' table
         await pool.query(`
             CREATE TABLE IF NOT EXISTS users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -31,32 +30,44 @@ const createTable = async () => {
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `);
-        console.log("users table created successfully!");
+        console.log("✅ 'users' table created successfully!");
 
-        await pool.query(`CREATE TABLE cart (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id INT NOT NULL,
-  product_id INT NOT NULL,
-  quantity INT DEFAULT 1,
-  size VARCHAR(10),
-  added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id),
-  FOREIGN KEY (product_id) REFERENCES products(id)
-);
-`)
-console.log("cart table created successfully!");
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS cart (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                product_id INT NOT NULL,
+                quantity INT DEFAULT 1,
+                size VARCHAR(10),
+                added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id),
+                FOREIGN KEY (product_id) REFERENCES products(id)
+            );
+        `);
+        console.log("✅ 'cart' table created successfully!");
+
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS user_details (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                full_name VARCHAR(255) NOT NULL,
+                mobile VARCHAR(20),
+                email VARCHAR(255) NOT NULL,
+                gender VARCHAR(10),
+                dob DATE,
+                address TEXT
+            );
+        `);
+        console.log("✅ 'user_details' table created successfully!");
 
     } catch (error) {
-        console.error("Error creating tables:", error);
+        console.error("❌ Error creating tables:", error);
     }
 };
 
-// Insert sample products only if they don't already exist
+// Insert sample products if not already present
 const insertProducts = async () => {
     try {
-        // Check if products already exist
         const [rows] = await pool.query("SELECT COUNT(*) AS count FROM products");
-
         if (rows[0].count > 0) {
             console.log("✅ Products already exist, skipping insertion.");
             return;
@@ -81,8 +92,11 @@ const insertProducts = async () => {
             ["/CoverImages_Aura/d173e91b-0200-4cf0-9422-f51fa01a6985.jpeg", "Chex Skirt", 1, "(123 reviews)", "$240.00", 150, "Roadster", "yellow", "Ethnic & Traditional Wear"]
         ];
 
-        const query = `INSERT INTO products (img, title, star, reviews, prev_price, new_price, company, color, category) VALUES ?`;
-
+        const query = `
+            INSERT INTO products 
+            (img, title, star, reviews, prev_price, new_price, company, color, category) 
+            VALUES ?
+        `;
         await pool.query(query, [products]);
         console.log("✅ Sample products inserted successfully!");
 

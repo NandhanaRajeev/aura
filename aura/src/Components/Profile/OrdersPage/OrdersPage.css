@@ -1,0 +1,25 @@
+/* Flexbox layout for sidebar and main content */
+.orders-page {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Ensure the orders content takes space beside the sidebar */
+.orders-content {
+    flex: 1;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Fix footer placement */
+.footer {
+    width: 100%;
+    margin-top: auto;
+    position: relative;
+    bottom: 0;
+}

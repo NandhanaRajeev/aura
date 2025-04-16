@@ -1,0 +1,95 @@
+/* Support Page Layout */
+.support-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fbfbfb, #ffffff);
+  padding: 20px;
+}
+
+/* Support Content */
+.support-content {
+  max-width: 700px; /* Increased width */
+  padding: 40px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-top: -60px; /* Moves content up */
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Subtle hover effect */
+.support-content:hover {
+  transform: translateY(-5px);
+}
+
+/* Header */
+.support-content h2 {
+  font-size: 28px;
+  color: #000000;
+  margin-bottom: 15px;
+}
+
+/* Contact Info */
+.support-info ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.support-info li {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.support-info li i {
+  color: #007bff;
+  font-size: 20px;
+}
+
+/* Links */
+.support-info a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.support-info a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Contact Button */
+.contact-btn {
+  margin-top: 25px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.contact-btn:hover {
+  background: linear-gradient(135deg, #0056b3, #003f7f);
+  transform: scale(1.05);
+}
+
+/* Footer fix */
+.footer {
+  width: 100%;
+  margin-top: auto;
+  position: relative;
+  bottom: 0;
+}
