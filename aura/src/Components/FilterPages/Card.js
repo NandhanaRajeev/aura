@@ -1,26 +1,37 @@
 import React from "react";
 import { BsFillHeartFill, BsFillBagFill } from "react-icons/bs";
-import { useCart } from "../LandingPage/CartPage/CartContext"; // use the custom hook
+import { useCart } from "../LandingPage/CartPage/CartContext";
+import { Link } from "react-router-dom";
 
-const Card = ({ img, title, star, reviews, prevPrice, newPrice }) => {
-  const { addToCart } = useCart(); // use the custom hook
+const Card = ({ id, img, title, star, reviews, prevPrice, newPrice }) => {
+  const { addToCart } = useCart();
 
   const handleAddToCart = () => {
     const item = {
+      id,
       image: img,
       title,
       star,
       reviews,
       prevPrice,
       price: newPrice,
-      size: "M", // You can change this based on logic or user selection
+      size: "M",
     };
     addToCart(item);
   };
 
   return (
     <section className="card">
-      <img src={img} alt={title} className="card-img" />
+      <Link
+  to={`/product/${id}`}
+  state={{ product: { id, img, title, star, reviews, prevPrice, newPrice } }}
+
+
+>
+  <img src={img} alt={title} className="card-img" />
+</Link>
+
+
       <div className="card-details">
         <h3 className="card-title">{title}</h3>
         <section className="card-reviews">
