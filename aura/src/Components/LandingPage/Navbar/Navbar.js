@@ -1,4 +1,3 @@
-// src/Components/LandingPage/Navbar/Navbar.js
 import React, { useContext, useState } from 'react';
 import './Navbar.css';
 import logo from '../../Assets/logo.png';
@@ -6,16 +5,22 @@ import shoppingcart from '../../Assets/shoppingcart.png';
 import profile from '../../Assets/profile.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../LoginContext';
+import { CartContext } from '../CartPage/CartContext'; // Use relative path to go from Navbar to CartPage
+
 
 const Navbar = () => {
     const [menu, setMenu] = useState("");
-    const { isLoggedIn, logout } = useContext(LoginContext); // 👈 Use context
+    const { isLoggedIn, logout } = useContext(LoginContext); // Use login context
+    const { cartItems } = useContext(CartContext); // Use cart context
     const navigate = useNavigate();
 
     const handleLogout = () => {
         logout();
         navigate("/login");
     };
+
+    // Calculate the total number of items in the cart
+    const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
     return (
         <div className='navbar'>
@@ -57,7 +62,7 @@ const Navbar = () => {
                 <Link to='/cart' style={{ marginLeft: '10px' }}>
                     <img src={shoppingcart} alt="Cart" style={{ width: "35px", height: "auto" }} />
                 </Link>
-                <div className="nav-cart-count">0</div>
+                <div className="nav-cart-count">{cartItemCount}</div> {/* Display dynamic cart count */}
             </div>
         </div>
     );

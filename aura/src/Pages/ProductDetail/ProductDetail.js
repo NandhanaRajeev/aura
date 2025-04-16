@@ -18,13 +18,20 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     const item = {
-      ...product,
+      id: product.id,
+      image: product.img,
+      title: product.title,
+      star: product.star,
+      reviews: product.reviews,
+      prevPrice: product.prevPrice,
+      price: product.newPrice,
       quantity,
       size,
     };
     addToCart(item);
-    alert("Item added to cart!");
+    // alert("Item added to cart!");
   };
+
 
   const handleBuyNow = () => {
     const item = {
@@ -33,7 +40,7 @@ const ProductDetail = () => {
       size,
     };
     addToCart(item);
-    navigate("/checkout"); // Or wherever your checkout page is
+    navigate("/payment"); // Or wherever your checkout page is
   };
 
   return (
@@ -95,7 +102,7 @@ const ProductDetail = () => {
   );
 };
 
-export default ProductDetail;[]
+export default ProductDetail;
 
 
 

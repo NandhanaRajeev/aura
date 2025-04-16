@@ -2,9 +2,31 @@ import React from "react";
 import { BsFillHeartFill, BsFillBagFill } from "react-icons/bs";
 import { useCart } from "../LandingPage/CartPage/CartContext";
 import { Link } from "react-router-dom";
+import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+
 
 const Card = ({ id, img, title, star, reviews, prevPrice, newPrice }) => {
   const { addToCart } = useCart();
+
+  const renderStars = (rating) => {
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<FaStar key={i} className="star-icon" />);
+    }
+
+    if (hasHalfStar) {
+      stars.push(<FaStarHalfAlt key="half" className="star-icon" />);
+    }
+
+    while (stars.length < 5) {
+      stars.push(<FaRegStar key={stars.length} className="star-icon" />);
+    }
+
+    return stars;
+  };
 
   const handleAddToCart = () => {
     const item = {
@@ -23,21 +45,19 @@ const Card = ({ id, img, title, star, reviews, prevPrice, newPrice }) => {
   return (
     <section className="card">
       <Link
-  to={`/product/${id}`}
-  state={{ product: { id, img, title, star, reviews, prevPrice, newPrice } }}
-
-
->
-  <img src={img} alt={title} className="card-img" />
-</Link>
+        to={`/product/${id}`}
+        state={{ product: { id, img, title, star, reviews, prevPrice, newPrice } }}
+      >
+        <img src={img} alt={title} className="card-img" />
+      </Link>
 
 
       <div className="card-details">
         <h3 className="card-title">{title}</h3>
         <section className="card-reviews">
-          {star} {star} {star} {star}
-          <span className="total-reviews">{reviews}</span>
-        </section>
+            <div className="stars">{renderStars(star)}</div>
+            <span className="total-reviews"> {reviews}</span>
+          </section>
         <section className="card-price">
           <div className="price">
             <del>{prevPrice}</del> {newPrice}

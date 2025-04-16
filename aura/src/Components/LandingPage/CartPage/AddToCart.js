@@ -1,23 +1,31 @@
-import React, { useContext } from "react";
-import { CartContext } from "./CartContext";
+import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import "./AddToCart.css";
+import CartContext from "./CartContext";
 
 const AddToCart = () => {
   const { cartItems, setCartItems } = useContext(CartContext);
 
-  // 🔁 Handle Quantity Change
-  const handleQuantityChange = async (productId, newQuantity) => {
+  const [localCartItems, setLocalCartItems] = useState(cartItems);
+
+  useEffect(() => {
+    setLocalCartItems(cartItems);  // Sync local state with cartItems from context
+  }, [cartItems]);
+
+  // Handle Quantity Change
+  const handleQuantityChange = async (productId, newQuantity, size) => {
     try {
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
 
-      await axios.put(
-        "http://localhost:5000/api/cart/update",
+      // Update quantity in backend
+      const response = await axios.put(
+        "http://localhost:3000/api/cart/update",
         {
           userId,
           productId,
           quantity: newQuantity,
+          size,
         },
         {
           headers: {
@@ -26,22 +34,31 @@ const AddToCart = () => {
         }
       );
 
-      const updatedItems = cartItems.map((item) =>
-        item.product_id === productId
-          ? { ...item, quantity: newQuantity }
-          : item
-      );
-      setCartItems(updatedItems);
+      // Debug response
+      console.log("API Response:", response.data);
+
+      if (response.data.message === "Cart updated successfully!") {
+        // If the backend update is successful, update the cart in state
+        const updatedItems = localCartItems.map((item) =>
+          item.product_id === productId && item.size === size
+            ? { ...item, quantity: newQuantity }
+            : item
+        );
+        setLocalCartItems(updatedItems);  // Update local cart state
+        setCartItems(updatedItems);  // Update global context state
+      } else {
+        console.error("Failed to update cart.");
+      }
     } catch (error) {
-      console.error("Error updating quantity", error);
+      console.error("Error updating quantity:", error);
     }
   };
 
   return (
     <div className="cart-container">
       <h2>🛍️ Your Cart</h2>
-      {cartItems && cartItems.length > 0 ? (
-        cartItems.map((item, index) => (
+      {localCartItems && localCartItems.length > 0 ? (
+        localCartItems.map((item, index) => (
           <div className="cart-item" key={index}>
             <img src={item.image} alt={item.title} />
             <div className="item-details">
@@ -53,7 +70,7 @@ const AddToCart = () => {
                 <select
                   value={item.quantity}
                   onChange={(e) =>
-                    handleQuantityChange(item.product_id, parseInt(e.target.value))
+                    handleQuantityChange(item.product_id, parseInt(e.target.value), item.size)
                   }
                 >
                   {[1, 2, 3, 4, 5].map((qty) => (
