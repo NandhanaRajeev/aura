@@ -1,87 +1,27 @@
-/* Sidebar */
+/* Sidebar Styles */
 .sidebar {
-  width: 250px; /* Sidebar fixed width */
-  position: absolute;
-  border-right: 2px solid #e5e5e5;
-  z-index: 1000; /* Ensures it stays above content */
-  height: 90vh; /* Full height */
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  overflow-y: auto;
-  overflow-x: hidden;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  
-} 
-
-/* Shift Everything Else to the Right */
-.main-container {
-  margin-left: 250px; /* Same as sidebar width */
-  width: calc(100% - 250px); /* Adjust width */
-  transition: margin-left 0.3s ease-in-out;
+  width: 250px; /* Set the sidebar width */
+  background-color: #f4f4f4; /* Light background color for the sidebar */
+  padding: 20px;
+  height: 100vh; /* Full height of the viewport */
+  position: sticky;
+  top: 0;
+  flex-shrink: 0; /* Prevent the sidebar from shrinking */
+  min-height: 120vh; /* Make sidebar 120% of viewport height to stretch longer */
+  overflow-y: auto; /* Enables vertical scrollability */
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+  box-sizing: border-box; /* Ensures padding is included in the width and height */
 }
 
-
-/* Ensures sidebar sections align properly */
-.sidebar > div {
-  width: 100%;
-}
-
-/* Filters heading block */
 .sidebar-header {
-  background: #e0e0e0;
-  padding: 10px;
-  border-radius: 5px;
-  text-align: center;
-  width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
-/* Filters heading text */
 .sidebar-heading {
-  font-size: 18px;
+  font-size: 1.5em;
   font-weight: bold;
-  color: #333;
-  margin: 0;
-  text-transform: uppercase;
-  text-align: center;
 }
 
-/* Ensures checkboxes and labels are aligned */
-.sidebar-label-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
+.sidebar .category, .brands, .price, .colors {
+  margin-bottom: 15px; /* Add spacing between filter sections */
 }
-
-/* Fix checkbox alignment */
-.sidebar-label-container input {
-  margin: 0;
-}
-
-/* Sidebar scrollbar styling */
-.sidebar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-  background: #aaa;
-  border-radius: 4px;
-}
-
-.sidebar::-webkit-scrollbar-thumb:hover {
-  background: #888;
-}
-
-/* Logo positioning */
-.logo-container {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.logo-container h1 {
-  margin-top: 1.3rem;
-}
-

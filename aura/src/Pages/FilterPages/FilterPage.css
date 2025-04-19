@@ -1,0 +1,38 @@
+/* Container for Sidebar and FilterPage */
+.filter-page-container {
+    display: flex; /* Flexbox layout to place items side by side */
+    justify-content: flex-start; /* Align to the start */
+    gap: 0; /* No gap between sidebar and filter content */
+    padding: 0; /* Remove any extra padding around the container */
+  }
+  
+  /* Sidebar Styles */
+  .sidebar {
+    width: 250px; /* Set the sidebar width */
+    background-color: #f4f4f4; /* Light background color for the sidebar */
+    padding: 20px;
+    height: 100vh; /* Full height of the viewport */
+    position: sticky;
+    top: 0;
+    flex-shrink: 0; /* Prevent the sidebar from shrinking */
+    min-height: 120vh; /* Make sidebar 120% of viewport height to stretch longer */
+    overflow-y: auto; /* Allows the sidebar content to scroll if it exceeds the height */
+    overflow-x: hidden; /* Prevents horizontal scrolling */
+    box-sizing: border-box; /* Ensures padding is included in the width and height */
+  }
+  
+  /* FilterPage content area styles */
+  .filter-page-content {
+    flex-grow: 1; /* Let this section take the remaining space */
+    padding: 20px;
+    background-color: #fff; /* White background for the filter content */
+    box-sizing: border-box; /* Includes padding in the total width and height */
+    border-radius: 8px; /* Optional: Adds rounded corners for aesthetic */
+    margin-left: -180px; /* Pull the filter page closer to the sidebar */
+  }
+  
+  /* Optional - style the Navigation, Recommended, Products, and other sections */
+  .navigation, .recommended, .products {
+    margin-bottom: 20px;
+  }
+  

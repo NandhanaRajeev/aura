@@ -7,7 +7,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../LoginContext';
 import { CartContext } from '../CartPage/CartContext'; // Use relative path to go from Navbar to CartPage
 
-
 const Navbar = () => {
     const [menu, setMenu] = useState("");
     const { isLoggedIn, logout } = useContext(LoginContext); // Use login context
@@ -21,6 +20,9 @@ const Navbar = () => {
 
     // Calculate the total number of items in the cart
     const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+
+    // Check if user is logged in based on the presence of token
+    const token = localStorage.getItem("token");
 
     return (
         <div className='navbar'>
@@ -44,7 +46,7 @@ const Navbar = () => {
             </ul>
 
             <div className='nav-login-cart'>
-                {isLoggedIn ? (
+                {isLoggedIn || token ? (  // Check if logged in or if token exists
                     <>
                         <button onClick={handleLogout} className="btn btn-danger">Logout</button>
                         <Link to='/profile' style={{ marginLeft: '10px' }}>

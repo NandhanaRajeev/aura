@@ -1,67 +1,48 @@
-/* Centering the profile card */
-/* Centering the profile card */
-/* Centering the entire content */
 .profile-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Full viewport height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  background-color: #f9f9f9;
 }
 
-/* Profile container */
 .profile-container {
-    max-width: 500px;
-    width: 100%;
-    padding: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: left; /* Keep text left-aligned */
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
 }
 
-
-
-/* Heading styles */
 .profile-heading {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 15px;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 28px;
 }
 
-/* Styling user details */
 .profile-details {
-    text-align: left;
-    font-size: 16px;
-    line-height: 1.6;
-    color: #555;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.profile-details p {
-    margin: 10px 0;
+.detail-item {
+  display: flex;
+  justify-content: space-between;
 }
 
-/* Edit Button */
 .edit-button {
-    margin-top: 20px;
-    padding: 10px 15px;
-    font-size: 16px;
-    color: white;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
+  margin-top: 2rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
 }
 
 .edit-button:hover {
-    background-color: #0056b3;
-}
-
-/* Loader */
-.loading-text {
-    text-align: center;
-    font-size: 18px;
-    color: #777;
-    margin-top: 20px;
+  background-color: #0056b3;
 }

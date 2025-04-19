@@ -3,9 +3,8 @@ import Sidebar from "./Sidebar/Sidebar";
 import Navigation from "./Navigation/Nav";
 import Recommended from "./Recommended/Recommended";
 import Products from "./Products/Products";
-// import products from "./db/data";
 import Card from "../../Components/FilterPages/Card";
-
+import "./FilterPage.css"; // Import the new CSS
 
 const FilterPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -81,13 +80,15 @@ const FilterPage = () => {
   }
 
   return (
-    <>
+    <div className="filter-page-container">
       <Sidebar handleChange={handleChange} />
-      <Navigation query={query} handleInputChange={handleInputChange} />
-      <Recommended fetchProducts={fetchProducts} />
-      <Products result={renderProducts(products)} />
-    </>
+      <div className="filter-page-content">
+        <Navigation query={query} handleInputChange={handleInputChange} />
+        <Recommended fetchProducts={fetchProducts} />
+        <Products result={renderProducts(products)} />
+      </div>
+    </div>
   );
-}
+};
 
 export default FilterPage;

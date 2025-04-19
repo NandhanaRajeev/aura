@@ -9,7 +9,6 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import userRoutes from "./routes/userRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
-import userDetailsRoutes from "./routes/userDetailsRoutes.js";
 
 
 
@@ -22,7 +21,6 @@ app.use(cors());
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/cart", cartRoutes);
-app.use('/api/user_details', userDetailsRoutes);
 
 // Fetch unique categories
 app.get("/api/categories", async (req, res) => {

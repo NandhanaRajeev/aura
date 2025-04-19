@@ -21,14 +21,16 @@ const createTable = async () => {
 
         await pool.query(`
             CREATE TABLE IF NOT EXISTS users (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                name VARCHAR(255) NOT NULL,
-                email VARCHAR(255) NOT NULL UNIQUE,
-                password VARCHAR(255) NOT NULL,
-                phone VARCHAR(20),
-                address TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            );
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255),
+            email VARCHAR(255) NOT NULL UNIQUE,
+            password VARCHAR(255) NOT NULL,
+            phone VARCHAR(20),
+            gender VARCHAR(10),
+            dob DATE,
+            address TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
         `);
         console.log("✅ 'users' table created successfully!");
 
@@ -46,18 +48,6 @@ const createTable = async () => {
         `);
         console.log("✅ 'cart' table created successfully!");
 
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS user_details (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                full_name VARCHAR(255) NOT NULL,
-                mobile VARCHAR(20),
-                email VARCHAR(255) NOT NULL,
-                gender VARCHAR(10),
-                dob DATE,
-                address TEXT
-            );
-        `);
-        console.log("✅ 'user_details' table created successfully!");
 
     } catch (error) {
         console.error("❌ Error creating tables:", error);

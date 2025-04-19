@@ -40,7 +40,7 @@ const ProductDetail = () => {
       size,
     };
     addToCart(item);
-    navigate("/payment"); // Or wherever your checkout page is
+    navigate("/payment"); 
   };
 
   return (

@@ -1,4 +1,3 @@
-// Login.js
 import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -10,7 +9,7 @@ function Login() {
     const [values, setValues] = useState({ email: "", password: "" });
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
-    const { login } = useContext(LoginContext); // ✅ Use context
+    const { login } = useContext(LoginContext); // Use context to manage global login state
 
     const handleInput = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
@@ -24,11 +23,13 @@ function Login() {
         if (Object.keys(validationErrors).length === 0) {
             try {
                 const res = await axios.post("http://localhost:3000/login", values);
+
+                // Check if login was successful
                 if (res.data.success) {
-                    localStorage.setItem("loggedIn", "true");
-                    localStorage.setItem("userEmail", values.email);
-                    login(); // ✅ Update global context
-                    navigate("/");
+                    const token = res.data.token;  // Assuming the token is returned from backend
+                    localStorage.setItem("token", token); // Store the token in localStorage
+                    login(); // Update global login state using context
+                    navigate("/"); // Navigate to the homepage or profile
                 } else {
                     setErrors({ general: res.data.message });
                 }

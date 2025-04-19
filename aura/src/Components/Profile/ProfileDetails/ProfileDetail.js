@@ -1,55 +1,87 @@
-import React, { useState, useEffect } from "react";
+// ProfileDetail.js
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./ProfileDetail.css"; // Import CSS file
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import "./ProfileDetail.css";
 
-
-const ProfilePage = () => {
-  const navigate = useNavigate();
+const ProfileDetail = () => {
   const [user, setUser] = useState(null);
-  const userId = 6; // Replace with dynamic ID if needed
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   fetch(`http://localhost:3000/api/users/${userId}`)
-  //     .then((response) => response.json())
-  //     .then((data) => setUser(data))
-  //     .catch((error) => console.error("Error fetching user data:", error));
-  // }, []);
+  // Function to format the date as DD-MM-YYYY
+  const formatDate = (date) => {
+    const d = new Date(date);
+    if (isNaN(d.getTime())) {
+      return "Not provided";
+    }
+
+    const day = String(d.getDate()).padStart(2, "0");
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   useEffect(() => {
-    fetch(`http://localhost:3000/api/user_details/${userId}`)  // <-- update port if backend is on 5000
-      .then((response) => {
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-          throw new Error("Expected JSON but got something else (possibly HTML)");
-        }
-        return response.json();
-      })
-      .then((data) => setUser(data))
-      .catch((error) => console.error("Error fetching user data:", error));
-  }, []);
-  
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
-  if (!user) return <p className="text-center mt-10">Loading...</p>;
+    const { id } = jwtDecode(token);
+    axios
+      .get(`http://localhost:3000/api/users/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setUser(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user:", error);
+      });
+  }, []);
+
+  if (!user) {
+    return (
+      <div className="profile-wrapper">
+        <p>Loading profile...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="profile-wrapper">
       <div className="profile-container">
-        <h2 className="profile-heading">User Profile</h2>
-        
+        <h2 className="profile-heading">Welcome, {user.name}!</h2>
+
         <div className="profile-details">
-          <p><strong>Full Name:</strong> {user.full_name}</p>
-          <p><strong>Mobile Number:</strong> {user.mobile_number}</p>
-          <p><strong>Gender:</strong> {user.gender}</p>
-          <p><strong>Date of Birth:</strong> {user.date_of_birth}</p>
-          <p><strong>Address:</strong> {user.address}</p>
+          <div className="detail-item">
+            <strong>Full Name:</strong> <span>{user.name}</span>
+          </div>
+          <div className="detail-item">
+            <strong>Email:</strong> <span>{user.email}</span>
+          </div>
+          <div className="detail-item">
+            <strong>Mobile Number:</strong> <span>{user.phone || "Not provided"}</span>
+          </div>
+          <div className="detail-item">
+            <strong>Gender:</strong> <span>{user.gender || "Not provided"}</span>
+          </div>
+          <div className="detail-item">
+            <strong>Date of Birth:</strong> <span>{formatDate(user.dob)}</span>
+          </div>
+          <div className="detail-item">
+            <strong>Address:</strong> <span>{user.address || "Not provided"}</span>
+          </div>
         </div>
-  
-        <button className="edit-button" onClick={() => navigate("ProfileForm")}>
+
+        <button
+          className="edit-button"
+          onClick={() => navigate("profile-form", { state: { user } })}
+        >
           Edit Profile
         </button>
       </div>
     </div>
   );
-  
 };
 
-export default ProfilePage;
+export default ProfileDetail;
