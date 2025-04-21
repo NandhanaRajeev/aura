@@ -1,24 +1,23 @@
 import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./AddToCart.css";
 import CartContext from "./CartContext";
 
 const AddToCart = () => {
   const { cartItems, setCartItems } = useContext(CartContext);
-
   const [localCartItems, setLocalCartItems] = useState(cartItems);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setLocalCartItems(cartItems);  // Sync local state with cartItems from context
+    setLocalCartItems(cartItems);
   }, [cartItems]);
 
-  // Handle Quantity Change
   const handleQuantityChange = async (productId, newQuantity, size) => {
     try {
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
 
-      // Update quantity in backend
       const response = await axios.put(
         "http://localhost:3000/api/cart/update",
         {
@@ -34,18 +33,14 @@ const AddToCart = () => {
         }
       );
 
-      // Debug response
-      console.log("API Response:", response.data);
-
       if (response.data.message === "Cart updated successfully!") {
-        // If the backend update is successful, update the cart in state
         const updatedItems = localCartItems.map((item) =>
           item.product_id === productId && item.size === size
             ? { ...item, quantity: newQuantity }
             : item
         );
-        setLocalCartItems(updatedItems);  // Update local cart state
-        setCartItems(updatedItems);  // Update global context state
+        setLocalCartItems(updatedItems);
+        setCartItems(updatedItems);
       } else {
         console.error("Failed to update cart.");
       }
@@ -54,35 +49,62 @@ const AddToCart = () => {
     }
   };
 
+  const handleProceedToPay = () => {
+    navigate("/payment");
+  };
+
+  const getTotalAmount = () => {
+    return localCartItems.reduce((total, item) => {
+      return total + item.price * item.quantity;
+    }, 0);
+  };
+
   return (
     <div className="cart-container">
       <h2>🛍️ Your Cart</h2>
       {localCartItems && localCartItems.length > 0 ? (
-        localCartItems.map((item, index) => (
-          <div className="cart-item" key={index}>
-            <img src={item.image} alt={item.title} />
-            <div className="item-details">
-              <h4>{item.title}</h4>
-              <p>Price: ₹{item.price}</p>
-              <p>Size: {item.size}</p>
-              <label>
-                Quantity:{" "}
-                <select
-                  value={item.quantity}
-                  onChange={(e) =>
-                    handleQuantityChange(item.product_id, parseInt(e.target.value), item.size)
-                  }
-                >
-                  {[1, 2, 3, 4, 5].map((qty) => (
-                    <option key={qty} value={qty}>
-                      {qty}
-                    </option>
-                  ))}
-                </select>
-              </label>
+        <>
+          {localCartItems.map((item, index) => (
+            <div className="cart-item" key={index}>
+              <img src={item.image} alt={item.title} />
+              <div className="item-details">
+                <h4>{item.title}</h4>
+                <p>Price (each): ₹{item.price}</p>
+                <p>Total: ₹{item.price * item.quantity}</p>
+                <p>Size: {item.size}</p>
+                <label>
+                  Quantity:{" "}
+                  <select
+                    value={item.quantity}
+                    onChange={(e) =>
+                      handleQuantityChange(
+                        item.product_id,
+                        parseInt(e.target.value),
+                        item.size
+                      )
+                    }
+                  >
+                    {[1, 2, 3, 4, 5].map((qty) => (
+                      <option key={qty} value={qty}>
+                        {qty}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
             </div>
+          ))}
+
+          <div className="cart-total">
+            <h3>Grand Total: ₹{getTotalAmount()}</h3>
           </div>
-        ))
+
+          <div className="proceed-to-pay-container">
+            <button className="proceed-to-pay-btn" onClick={handleProceedToPay}>
+              Checkout 💳
+            </button>
+          </div>
+        </>
       ) : (
         <div className="empty-cart-message">
           <h3>😔 Your bag is empty!</h3>

@@ -1,150 +1,150 @@
 .product-detail {
-    display: flex;
-    justify-content: center;
-    align-items: center; /* changed from flex-start to center */
-    padding: 2rem;
-    gap: 3rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f9f9f9;
-  }
-  
-  
-  .product-detail img {
-    width: 400px;         /* Keep the width as is */
-    height: 400px;        /* Reduced from 500px */
-    object-fit: cover;    /* Ensures it crops and fits nicely */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
-  
-  
-  .product-info {
-    max-width: 500px;
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-  }
-  
-  .product-title {
-    font-size: 1.8rem;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: #333;
-  }
-  
-  .product-rating,
-  .product-reviews,
-  .product-price {
-    margin: 0.5rem 0;
-    font-size: 1rem;
-    color: #666;
-  }
-  
-  .product-price del {
-    color: #999;
-    margin-right: 0.5rem;
-  }
-  
-  .product-price strong {
-    color: #e53935;
-    font-size: 1.3rem;
-  }
-  
-  .product-options {
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-  }
-  
-  .product-options label {
-    font-weight: 500;
-    margin-bottom: 0.3rem;
-  }
-  
-  .product-options select,
-  .product-options input {
-    padding: 0.5rem;
-    width: 150px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
-  
-  .action-buttons {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-  
-  .add-btn,
-  .buy-btn {
-    padding: 0.8rem 2rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  
-  .add-btn {
-    background-color: #ff6f00;
-    color: white;
-  }
-  
-  .add-btn:hover {
-    background-color: #e65100;
-  }
-  
-  .buy-btn {
-    background-color: #43a047;
-    color: white;
-  }
-  
-  .buy-btn:hover {
-    background-color: #2e7d32;
-  }
-  
-  
-  /* Trust badges */
-  .trust-badges {
-    margin-top: 25px;
-    padding-top: 20px;
-    border-top: 1px solid #ccc;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
-  
-  .badge {
-    display: flex;
-    align-items: center; /* Align icon and text vertically */
-    gap: 14px;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center; /* changed from flex-start to center */
+  padding: 2rem;
+  gap: 3rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+}
+
+
+.product-detail img {
+  width: 400px;         /* Keep the width as is */
+  height: 400px;        /* Reduced from 500px */
+  object-fit: cover;    /* Ensures it crops and fits nicely */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+
+.product-info {
+  max-width: 500px;
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.product-title {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.product-rating,
+.product-reviews,
+.product-price {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: #666;
+}
+
+.product-price del {
+  color: #999;
+  margin-right: 0.5rem;
+}
+
+.product-price strong {
+  color: #e53935;
+  font-size: 1.3rem;
+}
+
+.product-options {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.product-options label {
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+.product-options select,
+.product-options input {
+  padding: 0.5rem;
+  width: 150px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.add-btn,
+.buy-btn {
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.add-btn {
+  background-color: #ff6f00;
+  color: white;
+}
+
+.add-btn:hover {
+  background-color: #e65100;
+}
+
+.buy-btn {
+  background-color: #43a047;
+  color: white;
+}
+
+.buy-btn:hover {
+  background-color: #2e7d32;
+}
+
+
+/* Trust badges */
+.trust-badges {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.badge {
+  display: flex;
+  align-items: center; /* Align icon and text vertically */
+  gap: 14px;
+}
+
+.badge-icon {
+  font-size: 24px;
+  color: #0a7c59;
+  flex-shrink: 0;
+  margin-top: 2px; /* optional fine-tune */
+}
+
+.badge p {
+  font-size: 16px;
+  color: #000 !important;
+  margin: 0;
+  line-height: 1.5;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
   .badge-icon {
-    font-size: 24px;
-    color: #0a7c59;
-    flex-shrink: 0;
-    margin-top: 2px; /* optional fine-tune */
+    font-size: 26px;
   }
-  
+
   .badge p {
-    font-size: 16px;
-    color: #000 !important;
-    margin: 0;
-    line-height: 1.5;
-    font-weight: 500;
-    display: inline-block;
+    font-size: 15px;
   }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .badge-icon {
-      font-size: 26px;
-    }
-  
-    .badge p {
-      font-size: 15px;
-    }
-  }
+}
