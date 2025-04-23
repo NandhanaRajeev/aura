@@ -48,7 +48,7 @@ const FeedbackForm = () => {
     if (!validateFields()) return;
 
     try {
-      const response = await axios.post('http://localhost:3001/api/feedback', feedbackData);
+      const response = await axios.post('http://localhost:3000/api/feedback', feedbackData);
       console.log('Feedback submitted:', response.data);
       alert('Feedback submitted successfully!');
       navigate('/');
