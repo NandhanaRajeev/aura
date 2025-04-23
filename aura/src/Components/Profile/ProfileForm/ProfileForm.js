@@ -92,7 +92,7 @@ const ProfileForm = () => {
       const { id } = token ? JSON.parse(atob(token.split(".")[1])) : {};
 
       await axios.put(
-        `http://localhost:3001/api/users/${id}`,
+        `http://localhost:3000/api/users/${id}`,
         {
           name: formData.fullName,
           phone: formData.mobile,
