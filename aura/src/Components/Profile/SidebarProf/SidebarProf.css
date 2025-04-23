@@ -1,12 +1,10 @@
 /* Sidebar Styling */
-.sidebarprof {
+.sidebar {
   width: 250px;
   background-color: #f8f8f8;
-  padding: 20px 25px;
+  padding: 20px 25px; /* Moves the content slightly away from the margin */
   border-right: 1px solid #ddd;
-  margin-left: 10px;
-  position: relative; /* Ensure it stays in flow */
-  z-index: 2; /* Keep above footer if needed */
+  margin-left: 10px; /* Moves the sidebar slightly away from the left edge */
 }
 
 .sidebar ul {
@@ -16,45 +14,50 @@
 }
 
 .sidebar li {
-  margin: 5px 0;
+  margin: 5px 0; /* Reduce space between items */
 }
 
 .sidebar a {
   text-decoration: none;
   color: #333;
   display: block;
-  padding: 6px 10px;
+  padding: 6px 10px; /* Adjust padding for compact design */
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 14px; /* Adjust font size if needed */
 }
 
 .sidebar .section-title {
-  margin-top: 15px;
-  margin-bottom: 5px;
+  margin-top: 15px; /* Reduce space above sections */
+  margin-bottom: 5px; /* Reduce space below section titles */
   font-weight: bold;
-  font-size: 14px;
+  font-size: 14px; /* Adjust size */
 }
 
 .sidebar hr {
-  margin: 10px 0;
+  margin: 10px 0; /* Reduce spacing for horizontal lines */
 }
 
 /* Active item styling */
 .sidebar a.active {
-  color: #333;
+  color: green;
   font-weight: bold;
   background-color: #ffffff;
   padding: 6px;
   border-radius: 5px;
 }
 
-/* Content Area Styling */
-.content-area {
-  flex: 1;
-  margin-left: 270px; /* Sidebar width (250px) + margin-left (10px) + padding adjustment */
-  padding: 20px;
-  min-height: calc(100vh - 100px); /* Adjust based on footer height */
-  position: relative;
-  z-index: 1;
-}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    margin-left: 0; /* Reset margin on smaller screens */
+    padding: 15px 20px; /* Adjust for smaller screens */
+  }
 
+  .content-area {
+    margin-left: 0;
+    width: 100%;
+  }
+}

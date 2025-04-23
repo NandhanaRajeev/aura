@@ -9,18 +9,21 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import userRoutes from "./routes/userRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
-
-
+import feedbackRoute from './routes/feedbackRoute.js';
 
 dotenv.config();
 
 const app = express();
-app.use(express.json());
-app.use(cors());
+app.use(cors()); // Allow frontend to talk to backend
+app.use(express.json()); // Allow JSON body
 
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/cart", cartRoutes);
+app.use('/api/feedback', feedbackRoute);
+
+
+  
 
 // Fetch unique categories
 app.get("/api/categories", async (req, res) => {
@@ -165,9 +168,29 @@ app.post("/ProfileForm", async (req, res) => {
   }
 });
 
+// API ROUTE - listen to POST /api/feedback
+app.post('/api/feedback', async (req, res) => {
+    const { name, email, rating, comments } = req.body;
+  
+    if (!name || !email || !rating || !comments) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+  
+    try {
+      const [result] = await pool.promise().query(
+        'INSERT INTO feedback (name, email, rating, comments) VALUES (?, ?, ?, ?)',
+        [name, email, rating, comments]
+      );
+  
+      res.json({ message: 'Feedback saved successfully!' });
+    } catch (error) {
+      console.error('Error saving feedback:', error);
+      res.status(500).json({ error: 'Database error' });
+    }
+  });
 
-const PORT = process.env.PORT || 3001;
-
+// const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 app.listen(PORT, async () => {
     console.log(`🚀 Server running on port ${PORT}`);
     try {
