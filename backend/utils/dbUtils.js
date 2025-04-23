@@ -35,6 +35,20 @@ const createTable = async () => {
         console.log("✅ 'users' table created successfully!");
 
         await pool.query(`
+            CREATE TABLE IF NOT EXISTS feedback (
+            fed_id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT,
+            name VARCHAR(100),
+            email VARCHAR(100),
+            rating INT,
+            comments TEXT,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );
+        `);
+        console.log("✅ 'feedback' table created successfully!");
+        
+
+        await pool.query(`
             CREATE TABLE IF NOT EXISTS cart (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 user_id INT NOT NULL,

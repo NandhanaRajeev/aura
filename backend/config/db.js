@@ -22,3 +22,4 @@ const checkConnection = async () => {
 };
 
 export { pool, checkConnection };
+

@@ -32,6 +32,7 @@ const SidebarProf = () => {
         <hr />
         <div className="section-title">MORE</div>
         <ul>
+          <li><NavLink to="/profile/feedback" className={({ isActive }) => isActive ? 'active' : ''}>Feedback</NavLink></li>
           <li><NavLink to="/profile/support" className={({ isActive }) => isActive ? 'active' : ''}>Support</NavLink></li>
           <li><NavLink to="/profile/help-center" className={({ isActive }) => isActive ? 'active' : ''}>Help Center</NavLink></li>
         </ul>

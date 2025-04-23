@@ -11,6 +11,7 @@ import SavedaddressPage from '../../Components/Profile/SavedaddressPage/Savedadd
 import OrdersPage from '../../Components/Profile/OrdersPage/OrdersPage';
 import DeleteAccountPage from '../../Components/Profile/DeleteAccountPage/DeleteAccountPage';
 import HelpCenterPage from '../../Components/Profile/HelpCenterPage/HelpCenterPage';
+import FeedbackForm from '../../Components/Profile/FeedbackForm/FeedbackForm';
 import './ProfilePage.css'; // Import the CSS
 
 const ProfilePage = () => {
@@ -28,6 +29,7 @@ const ProfilePage = () => {
           <Route path="orders" element={<OrdersPage />} />
           <Route path="delete-account" element={<DeleteAccountPage />} />
           <Route path="help-center" element={<HelpCenterPage />} />
+          <Route path="feedback" element={<FeedbackForm />} />
         </Routes>
       </div>
     </div>
