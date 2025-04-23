@@ -33,15 +33,32 @@ const ProductDetail = () => {
   };
 
 
+  // const handleBuyNow = () => {
+  //   const item = {
+  //     ...product,
+  //     quantity,
+  //     size,
+  //   };
+  //   addToCart(item);
+  //   navigate("/payment"); // Or wherever your checkout page is
+  // };
+
   const handleBuyNow = () => {
     const item = {
-      ...product,
+      id: product.id,
+      image: product.img,
+      title: product.title,
+      star: product.star,
+      reviews: product.reviews,
+      prevPrice: product.prevPrice,
+      price: product.newPrice,
       quantity,
       size,
     };
     addToCart(item);
-    navigate("/payment"); 
+    navigate("/cart"); // ⬅️ Redirecting to cart page
   };
+  
 
   return (
     <div className="product-detail">
@@ -78,9 +95,10 @@ const ProductDetail = () => {
             Add to Cart
           </button>
           <button className="buy-btn" onClick={handleBuyNow}>
-            Buy Now
+            View Cart
           </button>
         </div>
+        
         {/* Trust Badges Section */}
         <div className="trust-badges">
           <div className="badge">
