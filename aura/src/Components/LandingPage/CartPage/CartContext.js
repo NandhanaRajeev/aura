@@ -1,4 +1,3 @@
-// src/LandingPage/CartPage/CartContext.js
 import React, { createContext, useState, useEffect, useContext, useCallback } from "react";
 import axios from "axios";
 import { LoginContext } from "../../LoginContext";
@@ -10,7 +9,7 @@ export const CartContext = createContext();
 // CartProvider component to provide context to children
 export const CartProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState([]);
-    const { isLoggedIn } = useContext(LoginContext); // Use LoginContext to check login state
+    const { isLoggedIn } = useContext(LoginContext);
 
     // Function to validate JWT token
     const validateToken = (token) => {
@@ -29,50 +28,51 @@ export const CartProvider = ({ children }) => {
         }
     };
 
-    // Fetch cart items from backend on component mount (if user is logged in)
-    useEffect(() => {
-        const fetchCartFromBackend = async () => {
-            const token = localStorage.getItem("token");
-            if (!isLoggedIn || !token) {
-                setCartItems([]); // Clear cart if not logged in
-                localStorage.removeItem("cartItems");
-                return;
-            }
+    // Function to fetch cart items from backend, memoized with useCallback
+    const fetchCart = useCallback(async () => {
+        const token = localStorage.getItem("token");
+        if (!isLoggedIn || !token) {
+            setCartItems([]);
+            localStorage.removeItem("cartItems");
+            return;
+        }
 
-            if (!validateToken(token)) {
+        if (!validateToken(token)) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("userId");
+            setCartItems([]);
+            localStorage.removeItem("cartItems");
+            alert("Your session has expired. Please log in again.");
+            return;
+        }
+
+        try {
+            const response = await axios.get("http://localhost:3000/api/cart/", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log("Fetched cart items with product details:", response.data);
+            setCartItems(response.data);
+            localStorage.setItem("cartItems", JSON.stringify(response.data));
+        } catch (error) {
+            console.error("Error fetching cart from backend:", error.response?.data || error.message);
+            if (error.response?.status === 403) {
                 localStorage.removeItem("token");
                 localStorage.removeItem("userId");
-                setCartItems([]); // Clear cart
+                setCartItems([]);
                 localStorage.removeItem("cartItems");
                 alert("Your session has expired. Please log in again.");
-                return;
             }
+        }
+    }, [isLoggedIn, setCartItems]);
 
-            try {
-                const response = await axios.get("http://localhost:3000/api/cart/", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                console.log("Fetched cart items with product details:", response.data);
-                setCartItems(response.data); // Set state with fetched data
-                localStorage.setItem("cartItems", JSON.stringify(response.data)); // Update localStorage
-            } catch (error) {
-                console.error("Error fetching cart from backend:", error.response?.data || error.message);
-                if (error.response?.status === 403) {
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("userId");
-                    setCartItems([]);
-                    localStorage.removeItem("cartItems");
-                    alert("Your session has expired. Please log in again.");
-                }
-            }
-        };
+    // Fetch cart items on component mount
+    useEffect(() => {
+        fetchCart();
+    }, [isLoggedIn, fetchCart]);
 
-        fetchCartFromBackend();
-    }, [isLoggedIn]);
-
-    // Save cart items to localStorage whenever the cartItems state changes
+    // Save cart items to localStorage whenever cartItems changes
     useEffect(() => {
         localStorage.setItem("cartItems", JSON.stringify(cartItems));
     }, [cartItems]);
@@ -93,7 +93,7 @@ export const CartProvider = ({ children }) => {
 
         const localCart = JSON.parse(localStorage.getItem("cartItems")) || [];
         if (localCart.length > 0) {
-            setCartItems([]); // Clear state before syncing to avoid duplication
+            setCartItems([]);
             for (const item of localCart) {
                 if (!item.product_id && !item.id) {
                     console.error("Skipping cart item sync due to missing product_id:", item);
@@ -128,27 +128,9 @@ export const CartProvider = ({ children }) => {
                     }
                 }
             }
-            try {
-                const response = await axios.get("http://localhost:3000/api/cart/", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                console.log("Synced cart items from backend:", response.data);
-                setCartItems(response.data); // Update with synced data
-                localStorage.setItem("cartItems", JSON.stringify(response.data));
-            } catch (error) {
-                console.error("Error fetching updated cart after sync:", error.response?.data || error.message);
-                if (error.response?.status === 403) {
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("userId");
-                    setCartItems([]);
-                    localStorage.removeItem("cartItems");
-                    alert("Your session has expired. Please log in again.");
-                }
-            }
+            await fetchCart(); // Fetch updated cart after syncing
         }
-    }, [isLoggedIn]);
+    }, [isLoggedIn, fetchCart]);
 
     // Call syncCartWithBackend when the user logs in
     useEffect(() => {
@@ -188,7 +170,7 @@ export const CartProvider = ({ children }) => {
 
         let tempCartItems = [...cartItems];
         const existingItemIndex = tempCartItems.findIndex(
-            (item) => item.title === newItem.title && item.size === newItem.size
+            (item) => item.product_id === newItem.id && item.size === (newItem.size || "M")
         );
 
         if (existingItemIndex !== -1) {
@@ -214,6 +196,7 @@ export const CartProvider = ({ children }) => {
                         }
                     );
                     console.log("Update quantity response:", response.data);
+                    await fetchCart(); // Fetch updated cart
                 } catch (error) {
                     console.error("Error updating quantity in backend:", error.response?.data || error.message);
                     tempCartItems[existingItemIndex].quantity -= newItem.quantity || 1;
@@ -225,7 +208,7 @@ export const CartProvider = ({ children }) => {
                         localStorage.removeItem("cartItems");
                         alert("Your session has expired. Please log in again.");
                     }
-                    throw new Error(error.response?.data?.error || "Failed to update quantity in cart. Please try again.");
+                    throw new Error(error.response?.data?.error || "Failed to update quantity in cart.");
                 }
             }
         } else {
@@ -261,14 +244,7 @@ export const CartProvider = ({ children }) => {
                         }
                     );
                     console.log("Add to cart response:", response.data);
-                    // Fetch updated cart to ensure state matches backend
-                    const updatedResponse = await axios.get("http://localhost:3000/api/cart/", {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    });
-                    setCartItems(updatedResponse.data);
-                    localStorage.setItem("cartItems", JSON.stringify(updatedResponse.data));
+                    await fetchCart(); // Fetch updated cart
                 } catch (error) {
                     console.error("Error adding item to backend:", error.response?.data || error.message);
                     setCartItems(cartItems.filter((item) => item !== newCartItem));
@@ -279,14 +255,14 @@ export const CartProvider = ({ children }) => {
                         localStorage.removeItem("cartItems");
                         alert("Your session has expired. Please log in again.");
                     }
-                    throw new Error(error.response?.data?.error || "Failed to add item to cart. Please try again.");
+                    throw new Error(error.response?.data?.error || "Failed to add item to cart.");
                 }
             }
         }
     };
 
-    // Remove item from the cart by title and size and sync with backend
-    const removeFromCart = async (title, size, productId) => {
+    // Remove item from the cart by product_id and size
+    const removeFromCart = async (productId, size) => {
         const token = localStorage.getItem("token");
         let userId;
 
@@ -301,29 +277,23 @@ export const CartProvider = ({ children }) => {
         }
 
         const originalCartItems = [...cartItems];
-        const updatedItems = cartItems.filter((item) => item.title !== title || item.size !== size);
+        const updatedItems = cartItems.filter((item) => item.product_id !== productId || item.size !== size);
 
         setCartItems(updatedItems);
 
-        if (isLoggedIn && token && userId && productId) {
+        if (isLoggedIn && token && userId) {
             try {
                 const response = await axios.delete(`http://localhost:3000/api/cart/remove/${userId}/${productId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
+                    params: { size },
                 });
                 console.log("Remove from cart response:", response.data);
-                // Fetch updated cart to ensure state matches backend
-                const updatedResponse = await axios.get("http://localhost:3000/api/cart/", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                setCartItems(updatedResponse.data);
-                localStorage.setItem("cartItems", JSON.stringify(updatedResponse.data));
+                await fetchCart(); // Fetch updated cart
             } catch (error) {
                 console.error("Error removing item from backend:", error.response?.data || error.message);
-                setCartItems(originalCartItems);
+                setCartItems(originalCartItems); // Revert on error
                 if (error.response?.status === 403) {
                     localStorage.removeItem("token");
                     localStorage.removeItem("userId");
@@ -331,13 +301,13 @@ export const CartProvider = ({ children }) => {
                     localStorage.removeItem("cartItems");
                     alert("Your session has expired. Please log in again.");
                 }
-                throw new Error(error.response?.data?.error || "Failed to remove item from cart. Please try again.");
+                throw new Error(error.response?.data?.error || "Failed to remove item from cart.");
             }
         }
     };
 
-    // Update the quantity of a specific item and sync with backend
-    const updateQuantity = async (title, size, quantity, productId) => {
+    // Update the quantity of a specific item
+    const updateQuantity = async (productId, size, quantity) => {
         const token = localStorage.getItem("token");
         let userId;
 
@@ -353,13 +323,13 @@ export const CartProvider = ({ children }) => {
 
         const originalCartItems = [...cartItems];
         const updatedItems = [...cartItems];
-        const itemIndex = updatedItems.findIndex((item) => item.title === title && item.size === size);
+        const itemIndex = updatedItems.findIndex((item) => item.product_id === productId && item.size === size);
 
         if (itemIndex !== -1) {
             updatedItems[itemIndex].quantity = quantity;
             setCartItems(updatedItems);
 
-            if (isLoggedIn && token && userId && productId) {
+            if (isLoggedIn && token && userId) {
                 try {
                     const payload = {
                         userId,
@@ -378,14 +348,7 @@ export const CartProvider = ({ children }) => {
                         }
                     );
                     console.log("Update quantity response:", response.data);
-                    // Fetch updated cart to ensure state matches backend
-                    const updatedResponse = await axios.get("http://localhost:3000/api/cart/", {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    });
-                    setCartItems(updatedResponse.data);
-                    localStorage.setItem("cartItems", JSON.stringify(updatedResponse.data));
+                    await fetchCart(); // Fetch updated cart
                 } catch (error) {
                     console.error("Error updating quantity in backend:", error.response?.data || error.message);
                     setCartItems(originalCartItems);
@@ -396,22 +359,26 @@ export const CartProvider = ({ children }) => {
                         localStorage.removeItem("cartItems");
                         alert("Your session has expired. Please log in again.");
                     }
-                    throw new Error(error.response?.data?.error || "Failed to update quantity in cart. Please try again.");
+                    throw new Error(error.response?.data?.error || "Failed to update quantity in cart.");
                 }
             }
         }
     };
 
-    // Clear the cart and sync with backend
-    const clearCart = () => {
-        setCartItems([]);
+    // Clear the cart
+    const clearCart = async () => {
         const token = localStorage.getItem("token");
+        setCartItems([]);
+
         if (isLoggedIn && token) {
-            axios.delete("http://localhost:3000/api/cart/clear", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }).catch((error) => {
+            try {
+                await axios.delete("http://localhost:3000/api/cart/clear", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                console.log("Cart cleared in backend");
+            } catch (error) {
                 console.error("Error clearing cart from backend:", error.response?.data || error.message);
                 if (error.response?.status === 403) {
                     localStorage.removeItem("token");
@@ -420,7 +387,7 @@ export const CartProvider = ({ children }) => {
                     localStorage.removeItem("cartItems");
                     alert("Your session has expired. Please log in again.");
                 }
-            });
+            }
         }
         localStorage.removeItem("cartItems");
     };
@@ -433,6 +400,7 @@ export const CartProvider = ({ children }) => {
                 removeFromCart,
                 updateQuantity,
                 clearCart,
+                fetchCart,
             }}
         >
             {children}

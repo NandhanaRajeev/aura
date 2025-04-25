@@ -1,6 +1,11 @@
 import express from "express";
 import { pool } from "../config/db.js";
 import jwt from "jsonwebtoken";
+import {
+    getUserCart,
+    removeFromCart,
+    updateQuantity,
+} from "../models/cartModel.js";
 
 const router = express.Router();
 
@@ -31,7 +36,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-// Other cart routes (add, update, remove) remain unchanged
+// Add item to cart
 router.post("/add", async (req, res) => {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
@@ -67,6 +72,7 @@ router.post("/add", async (req, res) => {
     }
 });
 
+// Update cart item quantity
 router.put("/update", async (req, res) => {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
@@ -78,10 +84,10 @@ router.put("/update", async (req, res) => {
         const userId = decoded.id;
         const { productId, quantity, size } = req.body;
 
-        await pool.query(
-            "UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ? AND size = ?",
-            [quantity, userId, productId, size]
-        );
+        const affectedRows = await updateQuantity(userId, productId, quantity, size);
+        if (affectedRows === 0) {
+            return res.status(404).json({ error: "Item not found in cart" });
+        }
 
         res.status(200).json({ message: "Cart updated successfully!" });
     } catch (error) {
@@ -90,6 +96,7 @@ router.put("/update", async (req, res) => {
     }
 });
 
+// Remove item from cart
 router.delete("/remove/:userId/:productId", async (req, res) => {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
@@ -100,12 +107,22 @@ router.delete("/remove/:userId/:productId", async (req, res) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET || "your_jwt_secret");
         const userId = decoded.id;
         const { productId } = req.params;
+        const { size } = req.query; // Get size from query parameter
 
-        await pool.query(
-            "DELETE FROM cart WHERE user_id = ? AND product_id = ?",
-            [userId, productId]
-        );
+        if (!size) {
+            return res.status(400).json({ error: "Size is required to remove item from cart" });
+        }
 
+        if (parseInt(userId) !== decoded.id) {
+            return res.status(403).json({ error: "Unauthorized" });
+        }
+
+        const affectedRows = await removeFromCart(userId, productId, size);
+        if (affectedRows === 0) {
+            return res.status(404).json({ error: "Item not found in cart" });
+        }
+
+        console.log(`Removed item from cart: userId=${userId}, productId=${productId}, size=${size}`);
         res.status(200).json({ message: "Item removed from cart successfully!" });
     } catch (error) {
         console.error("Error removing item from cart:", error);

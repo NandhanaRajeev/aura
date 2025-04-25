@@ -4,7 +4,7 @@ import Navigation from "./Navigation/Nav";
 import Recommended from "./Recommended/Recommended";
 import Products from "./Products/Products";
 import Card from "../../Components/FilterPages/Card";
-import "./FilterPage.css"; // Import the new CSS
+import "./FilterPage.css";
 
 const FilterPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -30,6 +30,9 @@ const FilterPage = () => {
       console.log("Fetching Products from URL:", url);
 
       const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error ${response.status}`);
+      }
       const data = await response.json();
       console.log("Fetched Products:", data);
 
@@ -65,9 +68,10 @@ const FilterPage = () => {
   };
 
   function renderProducts(products) {
-    return products.map(({ img, title, star, reviews, prev_price, new_price, company }) => (
+    return products.map(({ id, img, title, star, reviews, prev_price, new_price, company }) => (
       <Card
-        key={title}
+        key={id} // Use id for unique key
+        id={id} // Pass id prop
         img={img}
         title={title}
         star={star}
