@@ -1,79 +1,123 @@
-import React from "react";
+import React, { useContext } from "react";
 import { BsFillHeartFill, BsFillBagFill } from "react-icons/bs";
-import { useCart } from "../LandingPage/CartPage/CartContext";
 import { Link } from "react-router-dom";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import { LoginContext } from "../LoginContext";
+import { useCart } from "../LandingPage/CartPage/CartContext";
 
+const Card = ({ id, img, title, star, reviews, prevPrice, newPrice, company }) => {
+    const { isLoggedIn } = useContext(LoginContext);
+    const { addToCart } = useCart(); // Use cart context
 
-const Card = ({ id, img, title, star, reviews, prevPrice, newPrice }) => {
-  const { addToCart } = useCart();
+    const fallbackId = title ? title.replace(/\s+/g, "-").toLowerCase() : "product";
+    const validProductId = id || fallbackId;
 
-  const renderStars = (rating) => {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
+    // Debug: Log all props
+    console.log("Card props:", { id, img, title, star, reviews, prevPrice, newPrice, company, validProductId });
 
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(<FaStar key={i} className="star-icon" />);
-    }
+    const renderStars = (rating) => {
+        const stars = [];
+        const fullStars = Math.floor(rating);
+        const hasHalfStar = rating % 1 !== 0;
 
-    if (hasHalfStar) {
-      stars.push(<FaStarHalfAlt key="half" className="star-icon" />);
-    }
+        for (let i = 0; i < fullStars; i++) {
+            stars.push(<FaStar key={`full-${i}`} className="star-icon" />);
+        }
 
-    while (stars.length < 5) {
-      stars.push(<FaRegStar key={stars.length} className="star-icon" />);
-    }
+        if (hasHalfStar) {
+            stars.push(<FaStarHalfAlt key="half" className="star-icon" />);
+        }
 
-    return stars;
-  };
+        while (stars.length < 5) {
+            stars.push(<FaRegStar key={`empty-${stars.length}`} className="star-icon" />);
+        }
 
-  const handleAddToCart = () => {
-    const item = {
-      id,
-      image: img,
-      title,
-      star,
-      reviews,
-      prevPrice,
-      price: newPrice,
-      size: "M",
+        return stars;
     };
-    addToCart(item);
-  };
 
-  return (
-    <section className="card">
-      <Link
-        to={`/product/${id}`}
-        state={{ product: { id, img, title, star, reviews, prevPrice, newPrice } }}
-      >
-        <img src={img} alt={title} className="card-img" />
-      </Link>
+    const handleAddToCart = async () => {
+        if (!isLoggedIn) {
+            alert("Please log in to add items to your cart.");
+            return;
+        }
 
+        if (!id || isNaN(id)) {
+            console.error("Invalid product ID:", id);
+            alert("Cannot add to cart: Invalid product ID. Please try another product.");
+            return;
+        }
 
-      <div className="card-details">
-        <h3 className="card-title">{title}</h3>
-        <section className="card-reviews">
-            <div className="stars">{renderStars(star)}</div>
-            <span className="total-reviews"> {reviews}</span>
-          </section>
-        <section className="card-price">
-          <div className="price">
-            <del>{prevPrice}</del> {newPrice}
-          </div>
-          <div className="icon-container">
-            <div className="wishlist">
-              <BsFillHeartFill className="wishlist-icon" />
+        const cartItem = {
+            id: parseInt(id), // Ensure numeric ID
+            title,
+            image: img,
+            price: newPrice,
+            prevPrice,
+            star,
+            reviews,
+            quantity: 1,
+            size: "M", // Default size, consider making dynamic
+            company,
+        };
+
+        try {
+            await addToCart(cartItem);
+            alert("Item added to cart successfully!");
+        } catch (error) {
+            console.error("Error adding item to cart:", error.message);
+            alert(error.message || "Failed to add item to cart. Please try again.");
+        }
+    };
+
+    // Disable the add-to-cart button if id is invalid
+    const isAddToCartDisabled = !id || isNaN(id);
+
+    return (
+        <section className="card">
+            <Link
+                to={`/product/${validProductId}`}
+                state={{
+                    product: {
+                        id: validProductId,
+                        img,
+                        title,
+                        star,
+                        reviews,
+                        prevPrice,
+                        newPrice,
+                        company,
+                    },
+                }}
+            >
+                <img src={img} alt={title} className="card-img" />
+            </Link>
+
+            <div className="card-details">
+                <h3 className="card-title">{title}</h3>
+                <section className="card-reviews">
+                    <div className="stars">{renderStars(star)}</div>
+                    <span className="total-reviews"> {reviews}</span>
+                </section>
+                <section className="card-price">
+                    <div className="price">
+                        <del>{prevPrice}</del> {newPrice}
+                    </div>
+                    <div className="icon-container">
+                        <div className="wishlist">
+                            <BsFillHeartFill className="wishlist-icon" />
+                        </div>
+                        <div
+                            className={`bag ${isAddToCartDisabled ? "disabled" : ""}`}
+                            onClick={isAddToCartDisabled ? null : handleAddToCart}
+                            title={isAddToCartDisabled ? "Cannot add to cart: Invalid product" : "Add to cart"}
+                        >
+                            <BsFillBagFill className="bag-icon" />
+                        </div>
+                    </div>
+                </section>
             </div>
-            <div className="bag" onClick={handleAddToCart}>
-              <BsFillBagFill className="bag-icon" />
-            </div>
-          </div>
         </section>
-      </div>
-    </section>
-  );
+    );
 };
 
 export default Card;
