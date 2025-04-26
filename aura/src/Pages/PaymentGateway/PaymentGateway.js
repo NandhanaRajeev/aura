@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // <-- Add this import
 import './PaymentGateway.css';
 
 const PaymentGateway = () => {
+  const navigate = useNavigate(); // <-- Initialize navigate
   const [selectedOption, setSelectedOption] = useState('card');
 
   const [cardNumber, setCardNumber] = useState('');
@@ -56,6 +58,9 @@ const PaymentGateway = () => {
 
     if (Object.keys(errors).length === 0) {
       alert(`Payment method: ${selectedOption} submitted successfully!`);
+
+      // Redirect to orders page after successful payment
+      navigate('/profile/orders');
     }
   };
 

@@ -35,6 +35,21 @@ const createTable = async () => {
         console.log("✅ 'users' table created successfully!");
 
         await pool.query(`
+            CREATE TABLE IF NOT EXISTS address (
+            add_id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT,
+            fullName VARCHAR(255),
+            mobile INT,
+            address TEXT,
+            pincode INT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id)
+            
+        );
+        `);
+        console.log("✅ 'address' table created successfully!");
+
+        await pool.query(`
             CREATE TABLE IF NOT EXISTS feedback (
                 fed_id INT AUTO_INCREMENT PRIMARY KEY,
                 user_id INT,
@@ -43,7 +58,7 @@ const createTable = async () => {
                 rating INT,
                 comments TEXT,
                 FOREIGN KEY (user_id) REFERENCES users(id)
-);
+        );
         `);
         console.log("✅ 'feedback' table created successfully!");
         
@@ -61,6 +76,24 @@ const createTable = async () => {
             );
         `);
         console.log("✅ 'cart' table created successfully!");
+
+
+        await pool.query(
+            `CREATE TABLE IF NOT EXISTS orders (
+                order_id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                product_id INT NOT NULL,
+                quantity INT DEFAULT 1,
+                size VARCHAR(10),
+                total_price DECIMAL(10, 2) NOT NULL,
+                status VARCHAR(50) DEFAULT 'Pending',
+                ordered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id),
+                FOREIGN KEY (product_id) REFERENCES products(id)
+            );`
+        );
+        console.log("✅ 'orders' table created successfully!");
+        
 
 
     } catch (error) {

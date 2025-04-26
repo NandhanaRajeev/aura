@@ -1,25 +1,77 @@
-/* Flexbox layout for sidebar and main content */
 .orders-page {
-    display: flex;
-    min-height: 100vh;
-}
-
-/* Ensure the orders content takes space beside the sidebar */
-.orders-content {
-    flex: 1;
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+  }
+  
+  .orders-content {
     max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-/* Fix footer placement */
-.footer {
-    width: 100%;
-    margin-top: auto;
-    position: relative;
-    bottom: 0;
-}
+    margin: auto;
+  }
+  
+  .orders-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .order-item {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .order-buttons {
+    margin-top: 10px;
+  }
+  
+  .view-btn,
+  .cancel-btn {
+    padding: 6px 12px;
+    margin-right: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .view-btn {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .cancel-btn {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .no-orders {
+    font-style: italic;
+    color: #888;
+  }
+  
+  .status {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+  
+  .status.pending {
+    background-color: #ffeeba;
+    color: #856404;
+  }
+  
+  .status.completed {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .status.cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .error {
+    color: red;
+    font-weight: bold;
+  }
+  

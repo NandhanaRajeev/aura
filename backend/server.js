@@ -10,6 +10,8 @@ import jwt from "jsonwebtoken";
 import userRoutes from "./routes/userRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import feedbackRoute from './routes/feedbackRoute.js';
+import ordersRoute from './routes/ordersRoute.js';
+import addressRoute from './routes/addressRoute.js';
 
 dotenv.config();
 
@@ -20,10 +22,10 @@ app.use(express.json()); // Allow JSON body
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/cart", cartRoutes);
-app.use('/api/feedback', feedbackRoute);
+app.use("/api/feedback", feedbackRoute);
+app.use("/api/orders", ordersRoute);
+app.use("/api/address", addressRoute);
 
-
-  
 
 // Fetch unique categories
 app.get("/api/categories", async (req, res) => {
@@ -152,6 +154,8 @@ app.post("/login", async (req, res) => {
     }
 });
 
+
+//PROFILE FORM
 app.post("/ProfileForm", async (req, res) => {
   const { fullName, mobile, email, gender, dob, address } = req.body;
 
@@ -167,6 +171,24 @@ app.post("/ProfileForm", async (req, res) => {
     res.status(500).json({ error: "Profile submission failed" });
   }
 });
+
+
+//ADDRESS FORM
+app.post("/AddressForm", async (req, res) => {
+    const { fullName, mobile, address, pincode } = req.body;
+  
+    try {
+      const sql = `INSERT INTO address (fullName, mobile, address, pincode)
+                   VALUES (?, ?, ?, ?)`;
+  
+      await pool.query(sql, [fullName, mobile, address, pincode]);
+  
+      res.status(200).json({ message: "Address submitted successfully" });
+    } catch (err) {
+      console.error("Error inserting address:", err);
+      res.status(500).json({ error: "Address submission failed" });
+    }
+  });
 
 // API ROUTE - listen to POST /api/feedback
 app.post('/api/feedback', async (req, res) => {
