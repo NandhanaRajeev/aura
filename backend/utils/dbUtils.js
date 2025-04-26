@@ -46,7 +46,7 @@ const createTable = async () => {
 );
         `);
         console.log("✅ 'feedback' table created successfully!");
-        
+
 
         await pool.query(`
             CREATE TABLE IF NOT EXISTS cart (
@@ -61,6 +61,18 @@ const createTable = async () => {
             );
         `);
         console.log("✅ 'cart' table created successfully!");
+
+        await pool.query(`
+          CREATE TABLE IF NOT EXISTS upi (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT NOT NULL,
+            upi_id VARCHAR(255) NOT NULL,
+            remember_upi BOOLEAN DEFAULT FALSE,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );
+
+        `);
+        console.log("✅ 'upi' table created successfully!");
 
 
     } catch (error) {

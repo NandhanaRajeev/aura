@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 import './PaymentGateway.css';
 
 const PaymentGateway = () => {
-  const [selectedOption, setSelectedOption] = useState('card');
-
+  const [selectedOption, setSelectedOption] = useState('upi'); // Default to UPI for immediate fetch
   const [cardNumber, setCardNumber] = useState('');
   const [cardName, setCardName] = useState('');
   const [expiryMonth, setExpiryMonth] = useState('');
@@ -11,17 +12,71 @@ const PaymentGateway = () => {
   const [cvv, setCvv] = useState('');
   const [upiId, setUpiId] = useState('');
   const [bank, setBank] = useState('');
-
+  const [rememberUpi, setRememberUpi] = useState(false);
   const [errorMessages, setErrorMessages] = useState({});
   const [inputWarnings, setInputWarnings] = useState({});
+  const [message, setMessage] = useState('');
+
+  // Fetch saved UPI ID on mount or when UPI option is selected
+  useEffect(() => {
+    const fetchUserUpi = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          setMessage('Please log in to retrieve saved UPI ID.');
+          return;
+        }
+
+        const { id } = jwtDecode(token);
+        const response = await axios.get(`http://localhost:3000/api/upi/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        // Only set UPI ID and rememberUpi if they exist and rememberUpi is true
+        if (response.data.upiId && response.data.rememberUpi) {
+          setUpiId(response.data.upiId);
+          setRememberUpi(response.data.rememberUpi);
+        } else {
+          // Clear fields if no saved UPI ID or rememberUpi is false
+          setUpiId('');
+          setRememberUpi(false);
+        }
+      } catch (error) {
+        // Only show error message for actual errors, not when no UPI ID is found
+        if (error.response?.status !== 404) {
+          console.error('Error fetching UPI ID:', error);
+          setMessage('Failed to fetch saved UPI ID.');
+        }
+        // Clear fields on 404 (no saved UPI ID)
+        setUpiId('');
+        setRememberUpi(false);
+      }
+    };
+
+    if (selectedOption === 'upi') {
+      fetchUserUpi();
+    }
+  }, [selectedOption]);
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
     setErrorMessages({});
     setInputWarnings({});
+    setMessage('');
+    // Clear fields only if not switching to UPI
+    if (event.target.value !== 'upi') {
+      setUpiId('');
+      setRememberUpi(false);
+    }
+    setCardNumber('');
+    setCardName('');
+    setExpiryMonth('');
+    setExpiryYear('');
+    setCvv('');
+    setBank('');
   };
 
-  const handlePaymentSubmit = (e) => {
+  const handlePaymentSubmit = async (e) => {
     e.preventDefault();
     const errors = {};
 
@@ -44,8 +99,12 @@ const PaymentGateway = () => {
       }
     }
 
-    if (selectedOption === 'upi' && !upiId.trim()) {
-      errors.upiId = 'Enter a valid UPI ID';
+    if (selectedOption === 'upi') {
+      if (!upiId.trim()) {
+        errors.upiId = 'Enter a valid UPI ID';
+      } else if (!/^[\w.-]+@[\w]+$/.test(upiId)) {
+        errors.upiId = 'Invalid UPI format';
+      }
     }
 
     if (selectedOption === 'netbanking' && !bank) {
@@ -55,6 +114,29 @@ const PaymentGateway = () => {
     setErrorMessages(errors);
 
     if (Object.keys(errors).length === 0) {
+      // Handle UPI saving if "Remember UPI" is checked
+      if (selectedOption === 'upi' && rememberUpi) {
+        try {
+          const token = localStorage.getItem('token');
+          if (!token) {
+            setMessage('Please log in to save UPI ID.');
+            return;
+          }
+
+          await axios.post(
+            'http://localhost:3000/api/upi/save',
+            { upiId, rememberUpi },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          setMessage('UPI ID saved successfully!');
+        } catch (error) {
+          console.error('Error saving UPI ID:', error);
+          setMessage('Failed to save UPI ID.');
+          return;
+        }
+      }
+
+      // Proceed with payment (mock for now)
       alert(`Payment method: ${selectedOption} submitted successfully!`);
     }
   };
@@ -62,6 +144,7 @@ const PaymentGateway = () => {
   return (
     <div className="payment-container">
       <h2>Choose Payment Method</h2>
+      {message && <p className={message.includes('Failed') ? 'error' : 'success'}>{message}</p>}
       <form onSubmit={handlePaymentSubmit}>
         <div className="payment-options">
           <label className="payment-option">
@@ -102,15 +185,15 @@ const PaymentGateway = () => {
               maxLength={16}
               value={cardNumber}
               onChange={(e) => {
-                const val = e.target.value;
-                if (/^\d*$/.test(val)) {
-                  setCardNumber(val);
-                  setInputWarnings((prev) => ({ ...prev, cardNumber: '' }));
-                } else {
+                const val = e.target.value.replace(/\D/g, '');
+                setCardNumber(val);
+                if (val && !/^\d*$/.test(val)) {
                   setInputWarnings((prev) => ({
                     ...prev,
                     cardNumber: 'Only numbers allowed',
                   }));
+                } else {
+                  setInputWarnings((prev) => ({ ...prev, cardNumber: '' }));
                 }
               }}
               required
@@ -154,21 +237,16 @@ const PaymentGateway = () => {
                 maxLength={2}
                 value={expiryMonth}
                 onChange={(e) => {
-                  const val = e.target.value;
-                  if (/^\d*$/.test(val)) {
-                    setExpiryMonth(val);
-                    const mm = parseInt(val, 10);
-                    if (val.length === 2 && (mm < 1 || mm > 12)) {
-                      setInputWarnings((prev) => ({
-                        ...prev,
-                        expiryMonth: 'Only 01 to 12 allowed',
-                      }));
-                    } else {
-                      setInputWarnings((prev) => ({
-                        ...prev,
-                        expiryMonth: '',
-                      }));
-                    }
+                  const val = e.target.value.replace(/\D/g, '');
+                  setExpiryMonth(val);
+                  const mm = parseInt(val, 10);
+                  if (val.length === 2 && (mm < 1 || mm > 12)) {
+                    setInputWarnings((prev) => ({
+                      ...prev,
+                      expiryMonth: 'Only 01 to 12 allowed',
+                    }));
+                  } else {
+                    setInputWarnings((prev) => ({ ...prev, expiryMonth: '' }));
                   }
                 }}
                 required
@@ -226,19 +304,25 @@ const PaymentGateway = () => {
                     upiId: 'Invalid format. Try something like name@bank',
                   }));
                 } else {
-                  setInputWarnings((prev) => ({
-                    ...prev,
-                    upiId: '',
-                  }));
+                  setInputWarnings((prev) => ({ ...prev, upiId: '' }));
                 }
               }}
               required
             />
             {inputWarnings.upiId && <p className="warning">{inputWarnings.upiId}</p>}
             {errorMessages.upiId && <p className="error">{errorMessages.upiId}</p>}
+
+            <div className="remember-upi">
+              <input
+                type="checkbox"
+                id="rememberUpi"
+                checked={rememberUpi}
+                onChange={(e) => setRememberUpi(e.target.checked)}
+              />
+              <label htmlFor="rememberUpi">Remember this UPI ID for next time</label>
+            </div>
           </div>
         )}
-
 
         {/* Net Banking Fields */}
         {selectedOption === 'netbanking' && (
