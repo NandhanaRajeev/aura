@@ -1,87 +1,92 @@
-/* Align sidebar & content */
+/* DeleteAccountPage.css */
+
 .delete-account-page {
-    display: flex;
+    background-color: #f3f5f7;
     min-height: 100vh;
-}
-
-/* Account deletion content */
-.delete-account-content {
-    flex: 1;
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-/* Delete button */
-.delete-btn {
-    background: #e74c3c;
-    color: white;
-    padding: 10px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.delete-btn:hover {
-    background: #c0392b;
-}
-
-/* Confirmation box */
-.confirmation-box {
-    margin-top: 20px;
-    padding: 15px;
-    background: #f8f8f8;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Confirmation buttons */
-.confirmation-buttons {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin-top: 10px;
-}
-
-/* Confirm button */
-.confirm-btn {
-    background: #4caf50;
-    color: white;
-    padding: 8px 14px;
+    align-items: flex-start; /* Align towards top */
+    padding-top: 50px; /* Adjust the distance from top */
+  }
+  
+  
+  .delete-account-card {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+  }
+  
+  .divider {
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.confirm-btn:hover {
-    background: #43a047;
-}
-
-/* Cancel button */
-.cancel-btn {
-    background: #888;
+    height: 2px;
+    background: #f8d7da;
+    margin: 1rem 0;
+    width: 50px;
+  }
+  
+  .delete-btn {
+    background-color: #f44336; /* Red delete button */
     color: white;
-    padding: 8px 14px;
     border: none;
-    border-radius: 5px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 8px;
     cursor: pointer;
-    transition: 0.3s;
-}
-
-.cancel-btn:hover {
-    background: #666;
-}
-
-/* Footer fix */
-.footer {
-    width: 100%;
-    margin-top: auto;
-    position: relative;
-    bottom: 0;
-}
+    margin-top: 1.5rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .delete-btn:hover {
+    background-color: #d32f2f;
+  }
+  
+  .confirmation-box {
+    margin-top: 1.5rem;
+  }
+  
+  .confirmation-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  /* Specific buttons inside confirmation */
+  .confirm-btn {
+    background-color: #f44336; /* Red background for "Yes, Delete" */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .confirm-btn:hover {
+    background-color: #d32f2f;
+  }
+  
+  .cancel-btn {
+    background-color: #4caf50; /* Green background for "Cancel" */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #388e3c;
+  }
+  
+  .warning-icon {
+    margin-right: 8px;
+  }
+  
