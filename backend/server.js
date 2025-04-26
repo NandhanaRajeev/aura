@@ -10,6 +10,7 @@ import jwt from "jsonwebtoken";
 import userRoutes from "./routes/userRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import feedbackRoute from './routes/feedbackRoute.js';
+import { authenticateUser } from "./middlewares/authMiddleware.js";
 import ordersRoute from './routes/ordersRoute.js';
 import addressRoute from './routes/addressRoute.js';
 
@@ -22,6 +23,8 @@ app.use(express.json()); // Allow JSON body
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/cart", cartRoutes);
+app.use('/api/feedback', feedbackRoute);
+
 app.use("/api/feedback", feedbackRoute);
 app.use("/api/orders", ordersRoute);
 app.use("/api/address", addressRoute);
@@ -208,6 +211,23 @@ app.post('/api/feedback', async (req, res) => {
     } catch (error) {
       console.error('Error saving feedback:', error);
       res.status(500).json({ error: 'Database error' });
+    }
+  });
+  // Delete user account
+app.delete("/api/users/delete", authenticateUser, async (req, res) => {
+    const userId = req.user.id; // Get user ID from JWT token (set by authenticateUser middleware)
+  
+    try {
+      const [result] = await pool.query("DELETE FROM users WHERE id = ?", [userId]);
+  
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "User not found" });
+      }
+  
+      res.status(200).json({ message: "User deleted successfully" });
+    } catch (err) {
+      console.error("Error deleting user:", err);
+      res.status(500).json({ error: "Internal Server Error" });
     }
   });
 

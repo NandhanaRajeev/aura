@@ -1,5 +1,8 @@
 // src/controllers/userController.js
 import bcrypt from "bcryptjs";
+import { pool } from '../config/db.js';
+ // or wherever you export the pool from
+
 import jwt from "jsonwebtoken";
 import { createUser, findUserByEmail, findUserById, updateUser } from "../models/userModel.js";
 
@@ -72,3 +75,25 @@ export const updateUserById = async (req, res) => {
     res.status(500).json({ error: "Failed to update user" });
   }
 };
+
+export const getCurrentUser = async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    const [rows] = await pool.query(
+      "SELECT id, name, email, phone, gender, dob, address FROM users WHERE id = ?",
+      [userId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(rows[0]); // Return the user data
+  } catch (err) {
+    console.error("Get Current User Error:", err);
+    res.status(500).json({ message: "Failed to fetch user", error: err });
+  }
+};
+
+

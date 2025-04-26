@@ -1,5 +1,10 @@
 import "./App.css";
 import React from "react";
+import cors from 'cors';
+
+// Enable CORS
+App.use(cors());
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Import Components
 import Navbar from "./Components/LandingPage/Navbar/Navbar";
@@ -14,6 +19,7 @@ import CartPage from "./Components/LandingPage/CartPage/CartPage";
 import PaymentGateway from "./Pages/PaymentGateway/PaymentGateway";
 import Card from "./Components/FilterPages/Card"
 import ProductDetail from "./Pages/ProductDetail/ProductDetail.js";
+import DeleteAccountPage from './Components/Profile/DeleteAccountPage/DeleteAccountPage';
 
 // Import Contexts
 import { CartProvider } from "./Components/LandingPage/CartPage/CartContext";
@@ -57,6 +63,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <PaymentGateway />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile/delete"
+              element={
+                <PrivateRoute>
+                  <DeleteAccountPage />
                 </PrivateRoute>
               }
             />
