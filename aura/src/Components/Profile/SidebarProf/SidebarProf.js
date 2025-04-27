@@ -15,17 +15,17 @@ const SidebarProf = () => {
         </ul>
 
         <hr />
-        <div className="section-title">CREDITS</div>
+        {/* <div className="section-title">CREDITS</div>
         <ul>
           <li><NavLink to="/profile/coupons" className={({ isActive }) => isActive ? 'active' : ''}>Coupons</NavLink></li>  
-        </ul>
+        </ul> */}
 
         <hr />
         <div className="section-title">ACCOUNT</div>
         <ul>
           <li><NavLink to="/profile" end className={({ isActive }) => isActive ? 'active' : ''}>Profile</NavLink></li>  
           <li><NavLink to="/profile/saved-address" className={({ isActive }) => isActive ? 'active' : ''}>Saved Address</NavLink></li>
-          <li><NavLink to="/profile/saved-upi" className={({ isActive }) => isActive ? 'active' : ''}>Saved UPI</NavLink></li>
+          {/* <li><NavLink to="/profile/saved-upi" className={({ isActive }) => isActive ? 'active' : ''}>Saved UPI</NavLink></li> */}
           <li><NavLink to="/profile/delete-account" className={({ isActive }) => isActive ? 'active' : ''}>Delete Account</NavLink></li>
         </ul>
 

@@ -1,93 +1,139 @@
 /* Styling for Payment Gateway */
 .payment-container {
-    max-width: 500px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    font-family: 'Poppins', sans-serif;
-  }
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
+}
+
+h2 {
+  margin-bottom: 25px;
+  color: #333;
+  text-align: left;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* Styling for Payment Method Radio Buttons */
+.payment-options {
+  margin-bottom: 25px;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Increased gap for better spacing */
+}
+
+.payment-option {
+  display: flex;
+  flex-direction: row-reverse; /* Label first, then radio button */
+  align-items: center; /* Vertically center radio button and label */
+  justify-content: space-between; /* Align label to left, radio button to right */
+  gap: 20px; /* Minimum gap, but space-between will override this for larger spacing */
+}
+
+.payment-option input[type="radio"] {
+  margin: 0; /* Remove default margin */
+  cursor: pointer;
+  width: 20px; /* Fixed size for alignment */
+  height: 20px;
+  flex-shrink: 0; /* Prevent radio button from shrinking */
+}
+
+.payment-option label {
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #333;
+  line-height: 1; /* Prevent extra line height affecting alignment */
   
-  h2 {
-    margin-bottom: 20px;
-    color: #333;
-    text-align: center;
-  }
+}
+
+/* Styling for Payment Details Fields */
+.payment-details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   
-  /* Styling for Payment Method Radio Buttons */
-  .payment-options {
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
+}
+
+.payment-details input,
+.payment-details select {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #f9f9f9; /* Light background as per screenshot */
+  transition: border-color 0.3s ease;
   
-  .payment-option input {
-    margin-right: 10px;
-    cursor: pointer;
-  }
   
-  .payment-option label {
-    font-size: 16px;
-    cursor: pointer;
-    font-weight: 500;
-  }
-  
-  /* Styling for Payment Details Fields */
-  .payment-details {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .payment-details input,
-  .payment-details select {
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    width: 100%;
-  }
-  
-  /* Button Styling */
-  button.btn-success {
-    width: 100%;
-    background-color:red;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  button.btn-success:hover {
-    background-color: #ff4800;
-  }
-  .expiry-wrapper {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .error {
-    color: red;
-    font-size: 0.9em;
-    margin: 4px 0;
-  }
-  
-  .warning {
-    color: orange;
-    font-size: 0.85em;
-    margin: 4px 0;
-  }
-  /* Remember UPI Checkbox Styling */
+}
+
+.payment-details input:focus,
+.payment-details select:focus {
+  border-color: #ff5722;
+  outline: none;
+}
+
+/* Button Styling */
+button.btn-success {
+  width: 100%;
+  background-color: #ff5722;
+  color: white;
+  padding: 14px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px; /* Space above the button */
+}
+
+button.btn-success:hover {
+  background-color: #ff4800;
+}
+
+/* Expiry Wrapper Styling */
+.expiry-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.expiry-wrapper input {
+  flex: 1;
+}
+
+/* Error and Warning Messages */
+.error {
+  color: red;
+  font-size: 0.9em;
+  margin: 4px 0;
+}
+
+.warning {
+  color: orange;
+  font-size: 0.85em;
+  margin: 4px 0;
+}
+
+/* Success Message */
+.success {
+  color: green;
+  font-size: 0.9em;
+  margin: 4px 0;
+}
+
+/* Remember UPI Checkbox Styling */
 .remember-upi {
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 14px;
-  margin-top: -8px;
+  margin-top: 15px;
   color: #555;
 }
 
@@ -96,4 +142,58 @@
   height: 18px;
   cursor: pointer;
   accent-color: #ff5722;
+  flex-shrink: 0; /* Prevent checkbox from shrinking */
+}
+
+.remember-upi label {
+  line-height: 1; /* Prevent extra line height affecting alignment */
+}
+
+/* Saved UPI List Styling */
+.saved-upi-list {
+  margin-top: 10px;
+}
+
+.saved-upi-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.saved-upi-list li {
+  padding: 8px 12px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 5px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.saved-upi-list li:hover {
+  background-color: #e0e0e0;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .payment-container {
+      margin: 20px;
+      padding: 20px;
+  }
+
+  h2 {
+      font-size: 20px;
+  }
+
+  .payment-details input,
+  .payment-details select {
+      font-size: 13px;
+  }
+
+  button.btn-success {
+      font-size: 15px;
+  }
+
+  .payment-option label {
+      font-size: 14px;
+  }
 }

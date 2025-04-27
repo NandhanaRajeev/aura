@@ -7,7 +7,7 @@ export const saveUpi = async (req, res) => {
     try {
         const userId = req.user.id; // Assuming the user is authenticated
         await insertUpi(userId, upiId, rememberUpi);
-        res.status(200).json({ message: "UPI ID saved successfully" });
+        res.status(200).json({ message: "UPI ID saved successfully!" });
     } catch (error) {
         res.status(500).json({ error: "Failed to save UPI ID" });
     }
@@ -19,8 +19,8 @@ export const getUserUpi = async (req, res) => {
 
     try {
         const upi = await getUpiByUserId(userId);
-        if (upi) {
-            res.status(200).json(upi); // Send UPI ID details back
+        if (upi.length > 0) {
+            res.status(200).json(upi); // Send all UPI ID details back
         } else {
             res.status(404).json({ message: "No UPI ID found for this user" });
         }
