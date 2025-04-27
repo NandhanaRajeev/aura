@@ -19,24 +19,21 @@ const DeleteAccountPage = () => {
         navigate("/login");
         return;
       }
-    
+
       try {
         const { data } = await axios.get(`${API}/users`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setUser(data); // Set user data
+        setUser(data);
       } catch (error) {
         console.error("Error fetching user data:", error);
-    
-        // Log the error response for more information
         if (error.response) {
           console.error("Response error data:", error.response.data);
           console.error("Response error status:", error.response.status);
           console.error("Response error headers:", error.response.headers);
           setMessage("Error fetching user data. Please try again.");
-          
           if (error.response.status === 500) {
             setMessage("Internal Server Error. Please try again later.");
           }
@@ -44,7 +41,6 @@ const DeleteAccountPage = () => {
         navigate("/login");
       }
     };
-    
 
     fetchUserData();
   }, [API, navigate]);
@@ -52,7 +48,7 @@ const DeleteAccountPage = () => {
   // Handle account deletion
   const handleDelete = async () => {
     const token = localStorage.getItem("token");
-    
+
     if (!user || !token) {
       setMessage("No user found or not logged in.");
       navigate("/login");
@@ -66,13 +62,10 @@ const DeleteAccountPage = () => {
 
       if (response.status === 200) {
         setMessage("Account deleted successfully.");
-        // Clear token and log out
         localStorage.removeItem("token");
-        
-        // Redirect to login page after successful deletion
         setTimeout(() => {
           navigate("/login");
-        }, 1000); // Brief delay to show success message
+        }, 1000);
       } else {
         setMessage("Failed to delete account.");
       }
@@ -86,17 +79,13 @@ const DeleteAccountPage = () => {
 
   return (
     <div className="delete-account-page">
-      <div className="delete-account-content">
-        <h2>Delete Your Account</h2>
-        <p>Once you delete your account, all your data will be permanently removed.</p>
+      <div className="delete-account-card">
+        <h2>Account Settings</h2>
+        <hr className="divider" />
+        <h3>Delete Your Account</h3>
+        <p>Once you delete your account, all your data will be permanently removed. This action cannot be undone.</p>
 
-        {message && <p className="message">{message}</p>}
-
-        {!confirmation ? (
-          <button className="delete-btn" onClick={() => setConfirmation(true)}>
-            Delete Account
-          </button>
-        ) : (
+        {confirmation ? (
           <div className="confirmation-box">
             <p>Are you sure? This action cannot be undone.</p>
             <div className="confirmation-buttons">
@@ -108,6 +97,10 @@ const DeleteAccountPage = () => {
               </button>
             </div>
           </div>
+        ) : (
+          <button className="delete-btn" onClick={() => setConfirmation(true)}>
+            <span className="warning-icon">⚠️</span> Delete Account
+          </button>
         )}
       </div>
     </div>

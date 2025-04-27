@@ -122,6 +122,29 @@ p {
   margin-top: 10px;
 }
 
+/* mobile view */
+@media (max-width: 768px) {
+  .auth-container {
+    padding: 20px;
+    height: auto; /* So mobile users can scroll */
+  }
+
+  .auth-box {
+    width: 100%; /* Full width on mobile */
+    max-width: 350px; /* But not too large */
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  input, .btn-success, .btn-default {
+    font-size: 16px;
+    padding: 8px;
+  }
+}
+
 
 
 

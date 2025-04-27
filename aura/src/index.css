@@ -87,3 +87,20 @@ li {
 
 /*end of filterpagecss*/
 
+/* mobileview */
+@media (max-width: 768px) {
+  .btn {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .icon-container {
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .wishlist, .bag {
+    font-size: 18px;
+  }
+}

@@ -10,6 +10,7 @@ import jwt from "jsonwebtoken";
 import userRoutes from "./routes/userRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import feedbackRoute from './routes/feedbackRoute.js';
+import upiRoutes from "./routes/upiRoutes.js"; // Import UPI routes
 import { authenticateUser } from "./middlewares/authMiddleware.js";
 import ordersRoute from './routes/ordersRoute.js';
 import addressRoute from './routes/addressRoute.js';
@@ -24,6 +25,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/cart", cartRoutes);
 app.use('/api/feedback', feedbackRoute);
+app.use("/api/upi", upiRoutes); // Add the UPI routes here
 
 app.use("/api/feedback", feedbackRoute);
 app.use("/api/orders", ordersRoute);

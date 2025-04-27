@@ -13,6 +13,7 @@ import AuthPage from "./Pages/AuthPages/AuthPage";
 import CartPage from "./Components/LandingPage/CartPage/CartPage";
 import PaymentGateway from "./Pages/PaymentGateway/PaymentGateway";
 import Card from "./Components/FilterPages/Card";
+import Card from "./Components/FilterPages/Card";
 import ProductDetail from "./Pages/ProductDetail/ProductDetail.js";
 import DeleteAccountPage from './Components/Profile/DeleteAccountPage/DeleteAccountPage';
 
@@ -23,6 +24,9 @@ import { LoginProvider } from "./Components/LoginContext";
 // Import Private Route
 import PrivateRoute from "./Components/privateRoute";
 import ProfilePage from "./Pages/ProfilePages/ProfilePage.js";
+
+// Import CORS - Remove usage of CORS in the frontend
+// import cors from 'cors'; // Comment this out because it's used server-side, not on the client.
 
 // Import CORS - Remove usage of CORS in the frontend
 // import cors from 'cors'; // Comment this out because it's used server-side, not on the client.
@@ -38,6 +42,7 @@ function App() {
             <Route path="/" element={<Women />} />
             <Route path="/latest" element={<CategoriesMain category="latest" />} />
             <Route path="/about" element={<CategoriesMain category="about" />} />
+            <Route path="/product" element={<CategoriesMain category="product" />}></Route>
             <Route path="/product" element={<CategoriesMain category="product" />}></Route>
             <Route path="/filters" element={<FilterPage />} />
             <Route path="/login" element={<Login />} />
@@ -83,5 +88,7 @@ function App() {
 }
 
 export default App;
+
+// app.js
 
 // app.js
