@@ -1,10 +1,5 @@
 import "./App.css";
 import React from "react";
-import cors from 'cors';
-
-// Enable CORS
-App.use(cors());
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Import Components
 import Navbar from "./Components/LandingPage/Navbar/Navbar";
@@ -17,7 +12,7 @@ import Signup from "./Pages/AuthPages/Signup";
 import AuthPage from "./Pages/AuthPages/AuthPage";
 import CartPage from "./Components/LandingPage/CartPage/CartPage";
 import PaymentGateway from "./Pages/PaymentGateway/PaymentGateway";
-import Card from "./Components/FilterPages/Card"
+import Card from "./Components/FilterPages/Card";
 import ProductDetail from "./Pages/ProductDetail/ProductDetail.js";
 import DeleteAccountPage from './Components/Profile/DeleteAccountPage/DeleteAccountPage';
 
@@ -28,6 +23,9 @@ import { LoginProvider } from "./Components/LoginContext";
 // Import Private Route
 import PrivateRoute from "./Components/privateRoute";
 import ProfilePage from "./Pages/ProfilePages/ProfilePage.js";
+
+// Import CORS - Remove usage of CORS in the frontend
+// import cors from 'cors'; // Comment this out because it's used server-side, not on the client.
 
 function App() {
   return (
@@ -40,9 +38,7 @@ function App() {
             <Route path="/" element={<Women />} />
             <Route path="/latest" element={<CategoriesMain category="latest" />} />
             <Route path="/about" element={<CategoriesMain category="about" />} />
-            <Route path="/product" element={<CategoriesMain category="product" />}>
-
-            </Route>
+            <Route path="/product" element={<CategoriesMain category="product" />}></Route>
             <Route path="/filters" element={<FilterPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
@@ -87,3 +83,5 @@ function App() {
 }
 
 export default App;
+
+// app.js

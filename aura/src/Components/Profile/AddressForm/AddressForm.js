@@ -20,8 +20,8 @@ const AddressForm = () => {
   useEffect(() => {
     if (state?.user) {
       setFormData({
-        fullName: state.address.name || "",
-        mobile: state.address.phone || "",
+        fullName: state.address.fullName || "",
+        mobile: state.address.mobile || "",
         address: state.address.address || "",
         pincode: state.address.pincode || "",
       });
