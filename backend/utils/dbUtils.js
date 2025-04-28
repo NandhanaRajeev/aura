@@ -63,6 +63,19 @@ const createTable = async () => {
         console.log("✅ 'cart' table created successfully!");
 
         await pool.query(`
+            CREATE TABLE IF NOT EXISTS wishlist (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                product_id INT NOT NULL,
+                added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id),
+                FOREIGN KEY (product_id) REFERENCES products(id)
+            );
+        `);
+        console.log("✅ 'Wishlist' table created successfully!");
+
+
+        await pool.query(`
           CREATE TABLE IF NOT EXISTS upi (
             id INT AUTO_INCREMENT PRIMARY KEY,
             user_id INT NOT NULL,

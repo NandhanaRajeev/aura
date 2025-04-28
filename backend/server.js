@@ -12,6 +12,7 @@ import cartRoutes from "./routes/cartRoutes.js";
 import feedbackRoute from './routes/feedbackRoute.js';
 import upiRoutes from "./routes/upiRoutes.js"; // Import UPI routes
 import { authenticateUser } from "./middlewares/authMiddleware.js";
+import wishlistRoutes from "./routes/wishlistRoute.js";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/cart", cartRoutes);
 app.use('/api/feedback', feedbackRoute);
 app.use("/api/upi", upiRoutes); // Add the UPI routes here
+app.use("/api/wishlist", wishlistRoutes); // This links to the wishlist routes
 
 // Fetch unique categories
 app.get("/api/categories", async (req, res) => {
