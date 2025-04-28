@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "../../Components/LandingPage/CartPage/CartContext";
-import "./ProductDetail.css"
-import { MdVerifiedUser, MdOutlineLocalShipping, MdReplay } from "react-icons/md";
-
+import { useWishlist } from "../../Components/LandingPage/Wishlist/WishlistContext";
+import "./ProductDetail.css";
+import {
+  MdVerifiedUser,
+  MdOutlineLocalShipping,
+  MdReplay,
+} from "react-icons/md";
 
 const ProductDetail = () => {
   const { state } = useLocation();
   const product = state?.product;
   const { addToCart } = useCart();
+  const { addToWishlist } = useWishlist();
   const navigate = useNavigate();
 
   const [quantity, setQuantity] = useState(1);
@@ -16,7 +21,10 @@ const ProductDetail = () => {
 
   if (!product) return <p>Product not found</p>;
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e) => {
+    e.preventDefault(); // Prevent event propagation
+
+    // Ensure no wishlist logic is triggered
     const item = {
       id: product.id,
       image: product.img,
@@ -29,19 +37,8 @@ const ProductDetail = () => {
       size,
     };
     addToCart(item);
-    // alert("Item added to cart!");
+    alert("Item added to cart!");
   };
-
-
-  // const handleBuyNow = () => {
-  //   const item = {
-  //     ...product,
-  //     quantity,
-  //     size,
-  //   };
-  //   addToCart(item);
-  //   navigate("/payment"); // Or wherever your checkout page is
-  // };
 
   const handleBuyNow = () => {
     const item = {
@@ -56,9 +53,33 @@ const ProductDetail = () => {
       size,
     };
     addToCart(item);
-    navigate("/cart"); // ⬅️ Redirecting to cart page
+    navigate("/cart"); // Redirect to cart
   };
-  
+
+  const handleAddToWishlist = async (e) => {
+    e.preventDefault(); // Prevent event bubbling and triggering cart logic
+    e.stopPropagation(); // Ensure no other events fire
+
+    // Only trigger wishlist logic
+    const item = {
+      id: product.id,
+      image: product.img,
+      title: product.title,
+      star: product.star,
+      reviews: product.reviews,
+      prevPrice: product.prevPrice,
+      price: product.newPrice,
+      size: size,
+    };
+
+    try {
+      await addToWishlist(item); // Only add to wishlist
+      alert("Item added to wishlist!");
+    } catch (error) {
+      console.error("Failed to add to wishlist:", error);
+      alert(error.message || "Failed to add item to wishlist.");
+    }
+  };
 
   return (
     <div className="product-detail">
@@ -91,19 +112,30 @@ const ProductDetail = () => {
         </div>
 
         <div className="action-buttons">
-          <button className="add-btn" onClick={handleAddToCart}>
+          {/* Add to Cart Button */}
+          <button type="button" className="add-btn" onClick={handleAddToCart}>
             Add to Cart
           </button>
-          <button className="buy-btn" onClick={handleBuyNow}>
+
+          {/* View Cart Button */}
+          <button type="button" className="buy-btn" onClick={handleBuyNow}>
             View Cart
           </button>
+
+          {/* Add to Wishlist Button */}
+          <button
+            type="button"
+            className="addwishlist-btn"
+            onClick={handleAddToWishlist}
+          >
+            Wishlist
+          </button>
         </div>
-        
+
         {/* Trust Badges Section */}
         <div className="trust-badges">
           <div className="badge">
-          <MdVerifiedUser className="badge-icon" />
-
+            <MdVerifiedUser className="badge-icon" />
             <p>Authenticity Guaranteed – 100% original and verified products.</p>
           </div>
           <div className="badge">
@@ -121,6 +153,3 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
-
-
-

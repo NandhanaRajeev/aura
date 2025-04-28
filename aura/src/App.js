@@ -24,6 +24,11 @@ import { LoginProvider } from "./Components/LoginContext";
 import PrivateRoute from "./Components/privateRoute";
 import ProfilePage from "./Pages/ProfilePages/ProfilePage.js";
 
+
+// Import Wishlist
+import { WishlistProvider } from "./Components/LandingPage/Wishlist/WishlistContext";
+import AddToWishlist from "./Components/LandingPage/Wishlist/AddToWishlist";
+
 // Import CORS - Remove usage of CORS in the frontend
 // import cors from 'cors'; // Comment this out because it's used server-side, not on the client.
 
@@ -31,6 +36,7 @@ function App() {
   return (
     <LoginProvider>
       <CartProvider>
+      <WishlistProvider> 
         <BrowserRouter>
           <Navbar />
           <Routes>
@@ -70,6 +76,7 @@ function App() {
                 </PrivateRoute>
               }
             />
+             <Route path="/wishlist" element={<AddToWishlist />} />
 
             <Route path="/women" element={<Women />} />
             <Route path="/product/:id" element={<ProductDetail />} />
@@ -77,6 +84,7 @@ function App() {
           </Routes>
           <Footer />
         </BrowserRouter>
+        </WishlistProvider> 
       </CartProvider>
     </LoginProvider>
   );
