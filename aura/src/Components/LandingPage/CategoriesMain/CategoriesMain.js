@@ -46,7 +46,7 @@ const CategoriesMain = () => {
   return (
     <>
     <div className="brands-container">
-        <h2>BIGGEST DEALS ON TOP BRANDS</h2>
+        <h2><center><bold>BIGGEST DEALS ON TOP BRANDS</bold></center></h2>
         <div className="brands-grid">
           {brands.map((brand, index) => (
             <div key={index} className="brand-box">
@@ -57,7 +57,7 @@ const CategoriesMain = () => {
         </div>
       </div>
       <div className="categories-container">
-        <h2>CATEGORIES</h2>
+        <h2><center><bold>CATEGORIES</bold></center></h2>
         <div className="categories-grid">
           {categories.map((category, index) => (
             <div key={index} className="category-box"

@@ -93,6 +93,8 @@ const createTable = async () => {
     }
 };
 
+
+
 // Insert sample products if not already present
 const insertProducts = async () => {
     try {
