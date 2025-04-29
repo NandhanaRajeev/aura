@@ -16,7 +16,8 @@ const Footer = () => {
           <ul>
             <li><Link to="/support">Contact Us</Link></li>
             <li><a href="#">About Us</a></li>
-            <li><a href="#">Aura Stories</a></li>
+            <li><Link to="/aurastories">Aura Stories</Link></li>
+
           </ul>
         </div>
 

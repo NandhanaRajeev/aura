@@ -13,11 +13,12 @@ import Signup from "./Pages/AuthPages/Signup";
 import AuthPage from "./Pages/AuthPages/AuthPage";
 import CartPage from "./Components/LandingPage/CartPage/CartPage";
 import PaymentGateway from "./Pages/PaymentGateway/PaymentGateway";
-import Card from "./Components/FilterPages/Card";
+// import Card from "./Components/FilterPages/Card";
 import ProductDetail from "./Pages/ProductDetail/ProductDetail";
 import DeleteAccountPage from "./Components/Profile/DeleteAccountPage/DeleteAccountPage";
 import SupportPage from "./Components/Profile/SupportPage/SupportPage";
 import HelpCenterPage from "./Components/Profile/HelpCenterPage/HelpCenterPage"; // ✅ NEW IMPORT
+import AuraStories from "./Components/LandingPage/Footer/AuraStories";
 
 // Import Contexts
 import { CartProvider } from "./Components/LandingPage/CartPage/CartContext";
@@ -47,6 +48,7 @@ function App() {
             <Route path="/profile/*" element={<ProfilePage />} />
             <Route path="/support" element={<SupportPage />} />
             <Route path="/helpcenter" element={<HelpCenterPage />} /> {/* ✅ ADDED ROUTE */}
+            <Route path="/aurastories" element={<AuraStories />} /> {/* New Route */}
 
             {/* Private Routes */}
             <Route
