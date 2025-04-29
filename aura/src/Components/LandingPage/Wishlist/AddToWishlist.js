@@ -15,6 +15,7 @@ const AddToWishlist = () => {
 
     // Sync local state with wishlist items from context
     useEffect(() => {
+        console.log("Wishlist items from context:", wishlistItems);
         setLocalWishlistItems(wishlistItems);
     }, [wishlistItems]);
 
@@ -69,9 +70,10 @@ const AddToWishlist = () => {
             <h2 className="wishlist-title">✨ Your Wishlist</h2>
             {localWishlistItems.length > 0 ? (
                 localWishlistItems.map((item) => {
-                    console.log(item.product_id); // Log outside the JSX return
+                    console.log("PRODUCT ID ------- ", localWishlistItems); // Log outside the JSX return
                     return (
                         <div className="wishlist-item" key={item.product_id}>
+                            
                             <div className="wishlist-item-image">
                                 <img src={item.image} alt={item.title} />
                             </div>

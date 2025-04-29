@@ -27,6 +27,23 @@ app.use('/api/feedback', feedbackRoute);
 app.use("/api/upi", upiRoutes); // Add the UPI routes here
 app.use("/api/wishlist", wishlistRoutes); // This links to the wishlist routes
 
+// Get latest 5 products for "Latest Collection"
+app.get("/api/products/latest", async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT id, img, title, new_price, prev_price
+      FROM products
+      ORDER BY id DESC
+      LIMIT 8
+    `);
+    res.json(rows);
+  } catch (err) {
+    console.error("Error fetching latest products:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 // Fetch unique categories
 app.get("/api/categories", async (req, res) => {
     try {

@@ -58,6 +58,7 @@ router.get("/", authenticateToken, async (req, res) => {
       `SELECT p.* FROM wishlist w JOIN products p ON w.product_id = p.id WHERE w.user_id = ?`,
       [req.user.id]
     );
+    console.log("Items : ------------", [rows])
     res.json(rows);
   } catch (error) {
     console.error("Error fetching wishlist:", error);
