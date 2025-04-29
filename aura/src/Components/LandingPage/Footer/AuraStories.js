@@ -36,9 +36,9 @@ const AuraStories = () => {
       ) : feedbackList.length === 0 ? (
         <p className="status">No feedback submitted yet.</p>
       ) : (
-        <div className="card-container">
+        <div className="aura-card-container">
           {feedbackList.map((fb, index) => (
-            <div key={index} className="card">
+            <div key={index} className="aura-card">
               <h4>{fb.name}</h4>
               <p className="rating">⭐ {fb.rating}/5</p>
               <p className="comment">"{fb.comments}"</p>

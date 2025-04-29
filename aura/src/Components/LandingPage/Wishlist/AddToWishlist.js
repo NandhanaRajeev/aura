@@ -7,17 +7,10 @@ import { LoginContext } from "../../LoginContext";
 import "./AddToWishlist.css";
 
 const AddToWishlist = () => {
-    const { wishlistItems, removeFromWishlist, setWishlistItems } = useContext(WishlistContext);
+    const { wishlistItems, removeFromWishlist, addToWishlist } = useContext(WishlistContext);
     const { addToCart } = useContext(CartContext);
     const { isLoggedIn } = useContext(LoginContext);
-    const [localWishlistItems, setLocalWishlistItems] = useState(wishlistItems);
     const [isLoading, setIsLoading] = useState(null);
-
-    // Sync local state with wishlist items from context
-    useEffect(() => {
-        console.log("Wishlist items from context:", wishlistItems);
-        setLocalWishlistItems(wishlistItems);
-    }, [wishlistItems]);
 
     const handleRemove = async (productId) => {
         if (!window.confirm("Remove this item from your wishlist?")) return;
@@ -25,8 +18,6 @@ const AddToWishlist = () => {
         setIsLoading(productId);
         try {
             await removeFromWishlist(productId);  // Calls remove from context, which updates the wishlist
-            // Update local state directly after removal
-            setLocalWishlistItems(prev => prev.filter(item => item.product_id !== productId));  
         } catch (error) {
             console.error("Error removing from wishlist:", error);
             alert("Failed to remove.");
@@ -68,12 +59,10 @@ const AddToWishlist = () => {
     return (
         <div className="wishlist-container">
             <h2 className="wishlist-title">✨ Your Wishlist</h2>
-            {localWishlistItems.length > 0 ? (
-                localWishlistItems.map((item) => {
-                    console.log("PRODUCT ID ------- ", localWishlistItems); // Log outside the JSX return
+            {wishlistItems.length > 0 ? (
+                wishlistItems.map((item) => {
                     return (
                         <div className="wishlist-item" key={item.product_id}>
-                            
                             <div className="wishlist-item-image">
                                 <img src={item.image} alt={item.title} />
                             </div>
