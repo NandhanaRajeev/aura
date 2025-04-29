@@ -2,7 +2,7 @@ import React from "react";
 import "./Footer.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter, faYoutube } from "@fortawesome/free-brands-svg-icons";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 import dicovercard_icon from "../../Assets/dicovercard_icon.png";
 
 const Footer = () => {
@@ -15,9 +15,14 @@ const Footer = () => {
           <h3>ABOUT</h3>
           <ul>
             <li><Link to="/support">Contact Us</Link></li>
+<<<<<<< Updated upstream
             <li><a href="#">About Us</a></li>
             <li><Link to="/aurastories">Aura Stories</Link></li>
 
+=======
+            <li><Link to="/about">About Us</Link></li> {/* ✅ UPDATED */}
+            <li><a href="#">Aura Stories</a></li>
+>>>>>>> Stashed changes
           </ul>
         </div>
 
@@ -59,7 +64,7 @@ const Footer = () => {
       {/* LOWER SECTION */}
       <div className="footer-bottom">
         <div className="bottom-links">
-          <Link to="/helpcenter">Help Center</Link> {/* IMPORTANT */}
+          <Link to="/helpcenter">Help Center</Link>
         </div>
         <p>© 2007 - 2025 Aura.com</p>
         <div className="payment-icons">
