@@ -1,6 +1,7 @@
 import "./App.css";
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 // Import Components
 import Navbar from "./Components/LandingPage/Navbar/Navbar";
 import Footer from "./Components/LandingPage/Footer/Footer";
@@ -13,8 +14,10 @@ import AuthPage from "./Pages/AuthPages/AuthPage";
 import CartPage from "./Components/LandingPage/CartPage/CartPage";
 import PaymentGateway from "./Pages/PaymentGateway/PaymentGateway";
 import Card from "./Components/FilterPages/Card";
-import ProductDetail from "./Pages/ProductDetail/ProductDetail.js";
-import DeleteAccountPage from './Components/Profile/DeleteAccountPage/DeleteAccountPage';
+import ProductDetail from "./Pages/ProductDetail/ProductDetail";
+import DeleteAccountPage from "./Components/Profile/DeleteAccountPage/DeleteAccountPage";
+import SupportPage from "./Components/Profile/SupportPage/SupportPage";
+import HelpCenterPage from "./Components/Profile/HelpCenterPage/HelpCenterPage"; // ✅ NEW IMPORT
 
 // Import Contexts
 import { CartProvider } from "./Components/LandingPage/CartPage/CartContext";
@@ -22,36 +25,30 @@ import { LoginProvider } from "./Components/LoginContext";
 
 // Import Private Route
 import PrivateRoute from "./Components/privateRoute";
-import ProfilePage from "./Pages/ProfilePages/ProfilePage.js";
-
-
-// Import Wishlist
-import { WishlistProvider } from "./Components/LandingPage/Wishlist/WishlistContext";
-import AddToWishlist from "./Components/LandingPage/Wishlist/AddToWishlist";
-
-// Import CORS - Remove usage of CORS in the frontend
-// import cors from 'cors'; // Comment this out because it's used server-side, not on the client.
+import ProfilePage from "./Pages/ProfilePages/ProfilePage";
 
 function App() {
   return (
     <LoginProvider>
       <CartProvider>
-      <WishlistProvider> 
         <BrowserRouter>
           <Navbar />
           <Routes>
+
             {/* Public Routes */}
             <Route path="/" element={<Women />} />
             <Route path="/latest" element={<CategoriesMain category="latest" />} />
             <Route path="/about" element={<CategoriesMain category="about" />} />
-            <Route path="/product" element={<CategoriesMain category="product" />}></Route>
+            <Route path="/product" element={<CategoriesMain category="product" />} />
             <Route path="/filters" element={<FilterPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/auth/*" element={<AuthPage />} />
             <Route path="/profile/*" element={<ProfilePage />} />
+            <Route path="/support" element={<SupportPage />} />
+            <Route path="/helpcenter" element={<HelpCenterPage />} /> {/* ✅ ADDED ROUTE */}
 
-            {/* Private Routes (Only accessible when logged in) */}
+            {/* Private Routes */}
             <Route
               path="/cart"
               element={
@@ -76,20 +73,17 @@ function App() {
                 </PrivateRoute>
               }
             />
-             <Route path="/wishlist" element={<AddToWishlist />} />
 
             <Route path="/women" element={<Women />} />
             <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/" component={Card} />
+            {/* Remove this if unnecessary */}
+            {/* <Route path="/" component={Card} /> */}
           </Routes>
           <Footer />
         </BrowserRouter>
-        </WishlistProvider> 
       </CartProvider>
     </LoginProvider>
   );
 }
 
 export default App;
-
-// app.js
