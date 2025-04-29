@@ -14,7 +14,8 @@ const createTable = async () => {
                 new_price DECIMAL(10, 2) NOT NULL,
                 company VARCHAR(255) NOT NULL,
                 color VARCHAR(50),
-                category VARCHAR(255) NOT NULL
+                category VARCHAR(255) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `);
         console.log("✅ 'products' table created successfully!");
