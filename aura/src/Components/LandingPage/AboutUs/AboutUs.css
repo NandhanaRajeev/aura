@@ -1,0 +1,52 @@
+.about-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 2rem;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+  }
+  
+  .about-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+  
+  .about-icon {
+    font-size: 2.5rem;
+    color: #2e7d32; /* Rich green tone */
+    margin-bottom: 0.5rem;
+  }
+  
+  .about-header h1 {
+    font-size: 2.8rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .about-header p {
+    font-size: 1.1rem;
+    color: #555;
+  }
+  
+  .about-section {
+    margin-bottom: 2rem;
+  }
+  
+  .about-section h2 {
+    font-size: 1.8rem;
+    color: #388e3c; /* Lighter green for headings */
+    margin-bottom: 0.8rem;
+  }
+  
+  .about-section p,
+  .about-section ul {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  
+  .about-section ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+  }
+  

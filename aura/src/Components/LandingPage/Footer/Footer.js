@@ -15,14 +15,8 @@ const Footer = () => {
           <h3>ABOUT</h3>
           <ul>
             <li><Link to="/support">Contact Us</Link></li>
-<<<<<<< Updated upstream
-            <li><a href="#">About Us</a></li>
+            <li><Link to="/about">About Us</Link></li>
             <li><Link to="/aurastories">Aura Stories</Link></li>
-
-=======
-            <li><Link to="/about">About Us</Link></li> {/* ✅ UPDATED */}
-            <li><a href="#">Aura Stories</a></li>
->>>>>>> Stashed changes
           </ul>
         </div>
 
@@ -30,8 +24,8 @@ const Footer = () => {
         <div className="footer-section">
           <h3>HELP</h3>
           <ul>
-            <li><a href="#">Cancellation & Return</a></li>
-            <li><a href="#">FAQ</a></li>
+            <li><Link to="/helpcenter">Cancellation & Return</Link></li>
+            <li><Link to="/helpcenter">FAQ</Link></li>
           </ul>
         </div>
 
@@ -39,8 +33,8 @@ const Footer = () => {
         <div className="footer-section">
           <h3>CONSUMER POLICY</h3>
           <ul>
-            <li><a href="#">Terms of Use</a></li>
-            <li><a href="#">Privacy</a></li>
+            <li><Link to="/terms">Terms of Use</Link></li>
+            <li><Link to="/privacy">Privacy</Link></li>
           </ul>
         </div>
 
@@ -50,8 +44,12 @@ const Footer = () => {
           <p><a href="mailto:Aura@gmail.com">Aura@gmail.com</a></p>
           <h3>KEEP IN TOUCH</h3>
           <div className="social-icons">
-            <a href="#"><FontAwesomeIcon icon={faTwitter} /></a>
-            <a href="#"><FontAwesomeIcon icon={faYoutube} /></a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+              <FontAwesomeIcon icon={faTwitter} />
+            </a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+              <FontAwesomeIcon icon={faYoutube} />
+            </a>
           </div>
         </div>
 
