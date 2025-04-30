@@ -21,6 +21,8 @@ import AuraStories from "./Components/LandingPage/Footer/AuraStories";
 import AddToWishlist from "./Components/LandingPage/Wishlist/AddToWishlist";
 import AboutUs from "./Components/LandingPage/AboutUs/AboutUs";
 import TermsOfUse from "./Components/LandingPage/Footer/TermsOfUse";
+import Privacy from "./Components/LandingPage/AboutUs/Privacy/Privacy";
+
 
 // Import Contexts
 import { CartProvider } from "./Components/LandingPage/CartPage/CartContext";
@@ -52,6 +54,7 @@ function App() {
               <Route path="/helpcenter" element={<HelpCenterPage />} />
               <Route path="/aurastories" element={<AuraStories />} />
               <Route path="/terms" element={<TermsOfUse />} />
+              <Route path="/privacy" element={<Privacy />} />
 
               <Route path="/wishlist" element={<AddToWishlist />} />
               <Route path="/about" element={<AboutUs />} />
