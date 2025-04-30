@@ -75,6 +75,18 @@ const createTable = async () => {
         `);
         console.log("✅ 'Wishlist' table created successfully!");
 
+        
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS newsletter_subscribers (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          email VARCHAR(255) NOT NULL,
+          user_id INT NOT NULL,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );
+  
+          `);
+          console.log("✅ 'Newsletter' table created successfully!");
 
         await pool.query(`
           CREATE TABLE IF NOT EXISTS upi (

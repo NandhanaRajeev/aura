@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CategoriesMain.css";
 
@@ -6,26 +6,6 @@ import img1 from "../../Assets/categories1.png";
 import img2 from "../../Assets/categories2.png";
 import img3 from "../../Assets/categories3.png";
 import img4 from "../../Assets/categories4.png";
-
-import brand1 from "../../Assets/brand1.png";
-import brand2 from "../../Assets/brand2.png";
-import brand3 from "../../Assets/brand3.png";
-import brand4 from "../../Assets/brand4.png";
-import brand5 from "../../Assets/brand5.png";
-import brand6 from "../../Assets/brand6.png";
-import brand7 from "../../Assets/brand7.png";
-import brand8 from "../../Assets/brand8.png";
-
-const brands = [
-  { name: "MANGO", img: brand1 },
-  { name: "ONLY", img: brand2 },
-  { name: "Van Heusen", img: brand3 },
-  { name: "H&M", img: brand4 },
-  { name: "Zara", img: brand5 },
-  { name: "Forever 21", img: brand6 },
-  { name: "Levis", img: brand7 },
-  { name: "Dealuxe", img: brand8 },
-];
 
 const categories = [
   { name: "Tops & T-Shirts", img: img1 },
@@ -35,44 +15,75 @@ const categories = [
 ];
 
 const CategoriesMain = () => {
-  /*for filterpage*/
-  const navigate = useNavigate(); // Initialize navigation
+  const navigate = useNavigate();
+  const [discountedBrands, setDiscountedBrands] = useState([]);
 
-  // Function to handle click and navigate to Filter Page
+  useEffect(() => {
+    const fetchDiscountedBrands = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/products/discounted");
+        const data = await response.json();
+        console.log("Fetched discounted brands:", data);
+        setDiscountedBrands(data);
+      } catch (error) {
+        console.error("Error fetching discounted brands:", error);
+      }
+    };
+
+    fetchDiscountedBrands();
+  }, []);
+
   const handleCategoryClick = (categoryName) => {
     navigate(`/filters?category=${encodeURIComponent(categoryName)}`);
   };
-  /*for filterpage*/
+
+  // Navigate to the product page and pass the full product data via state
+  const handleProductClick = (product) => {
+    navigate(`/product/${product.id}`, { state: { product } });
+  };
+
   return (
     <>
-    <div className="brands-container">
-        <h2><center><bold>BIGGEST DEALS ON TOP BRANDS</bold></center></h2>
+      <div className="brands-container">
+        <h2><center><strong>BIGGEST DEALS ON TOP BRANDS</strong></center></h2>
         <div className="brands-grid">
-          {brands.map((brand, index) => (
-            <div key={index} className="brand-box">
-              <img src={brand.img} alt={brand.name} className="brand-image" />
-              <p className="brand-name">{brand.name}</p>
-            </div>
-          ))}
+          {discountedBrands.map((brand, index) => {
+            const validProductId = brand.id || brand.title?.replace(/\s+/g, "-").toLowerCase();
+
+            return (
+              <div
+                key={validProductId}
+                className="brand-box"
+                onClick={() => handleProductClick(brand)} // Pass full product data here
+                style={{ cursor: "pointer" }}
+              >
+                <img src={brand.img} alt={brand.title} className="brand-image" />
+                <p className="brand-name">{brand.company}</p>
+                <p style={{ color: "green" }}>
+                  ₹{brand.new_price} <s style={{ color: "gray" }}>₹{brand.prev_price}</s>
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
+
       <div className="categories-container">
-        <h2><center><bold>CATEGORIES</bold></center></h2>
+        <h2><center><strong>CATEGORIES</strong></center></h2>
         <div className="categories-grid">
           {categories.map((category, index) => (
-            <div key={index} className="category-box"
-            onClick={() => handleCategoryClick(category.name)}
-              style={{ cursor: "pointer" }} // Add pointer cursor
-              >
-              
+            <div
+              key={index}
+              className="category-box"
+              onClick={() => handleCategoryClick(category.name)}
+              style={{ cursor: "pointer" }}
+            >
               <img src={category.img} alt={category.name} />
               <p>{category.name}</p>
             </div>
           ))}
         </div>
       </div>
-
-      
     </>
   );
 };
