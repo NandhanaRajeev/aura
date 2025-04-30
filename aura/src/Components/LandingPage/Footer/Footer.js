@@ -1,9 +1,6 @@
 import React from "react";
 import "./Footer.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTwitter, faYoutube } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
-import dicovercard_icon from "../../Assets/dicovercard_icon.png";
 
 const Footer = () => {
   return (
@@ -38,24 +35,13 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* CONTACT & SOCIAL MEDIA */}
-        <div className="footer-section contact-section">
-          <h3>MAIL US</h3>
-          <p><a href="mailto:Aura@gmail.com">Aura@gmail.com</a></p>
-          <h3>KEEP IN TOUCH</h3>
-          <div className="social-icons">
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-              <FontAwesomeIcon icon={faTwitter} />
-            </a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
-              <FontAwesomeIcon icon={faYoutube} />
-            </a>
-          </div>
-        </div>
-
-        <div className="footer-section contact-section">
+        {/* CONTACT US SECTION */}
+        <div className="footer-section">
           <h3>CONTACT US</h3>
-          <p>+91 - 8032142621</p>
+          <ul>
+            <li>+91 - 8032142621</li>
+            <li><a href="mailto:Aura@gmail.com">Aura@gmail.com</a></li>
+          </ul>
         </div>
       </div>
 
@@ -65,10 +51,8 @@ const Footer = () => {
           <Link to="/helpcenter">Help Center</Link>
         </div>
         <p>© 2007 - 2025 Aura.com</p>
-        <div className="payment-icons">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa" />
-          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg" alt="Mastercard" />
-          <img src={dicovercard_icon} alt="Discover Logo" />
+        <div className="keep-in-touch">
+          <h4>KEEP IN TOUCH</h4>
         </div>
       </div>
     </footer>
