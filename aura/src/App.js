@@ -20,6 +20,7 @@ import HelpCenterPage from "./Components/Profile/HelpCenterPage/HelpCenterPage";
 import AuraStories from "./Components/LandingPage/Footer/AuraStories";
 import AddToWishlist from "./Components/LandingPage/Wishlist/AddToWishlist";
 import AboutUs from "./Components/LandingPage/AboutUs/AboutUs";
+import TermsOfUse from "./Components/LandingPage/Footer/TermsOfUse";
 
 // Import Contexts
 import { CartProvider } from "./Components/LandingPage/CartPage/CartContext";
@@ -50,6 +51,8 @@ function App() {
               <Route path="/support" element={<SupportPage />} />
               <Route path="/helpcenter" element={<HelpCenterPage />} />
               <Route path="/aurastories" element={<AuraStories />} />
+              <Route path="/terms" element={<TermsOfUse />} />
+
               <Route path="/wishlist" element={<AddToWishlist />} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/product/:id" element={<ProductDetail />} />
