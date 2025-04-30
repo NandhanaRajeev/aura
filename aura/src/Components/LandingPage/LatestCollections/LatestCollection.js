@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import "./LatestCollection.css"; // Styling file
+import "./LatestCollection.css";
+import { Link } from "react-router-dom";
 
 const LatestCollection = () => {
   const [products, setProducts] = useState([]);
@@ -7,7 +8,7 @@ const LatestCollection = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/products/latest"); // correct port 3000
+        const response = await fetch("http://localhost:3000/api/products/latest");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -26,22 +27,30 @@ const LatestCollection = () => {
       <h1 style={{ textAlign: "center" }}>LATEST COLLECTION</h1>
       <div className="latest-container">
         {products.length > 0 ? (
-          products.map((product) => (
-            <div key={product.id} className="latest-card">
-              <div className="image-container">
-                <img
-                  src={product.img} // Correct field
-                  alt={product.title}
-                  className="latest-image"
-                />
+          products.map((product) => {
+            const validProductId = product.id || product.title?.replace(/\s+/g, "-").toLowerCase();
+
+            return (
+              <div key={validProductId} className="latest-card">
+                <Link
+                  to={`/product/${validProductId}`}
+                  state={{ product }}
+                  className="image-container"
+                >
+                  <img
+                    src={product.img}
+                    alt={product.title}
+                    className="latest-image"
+                  />
+                </Link>
+                <h3 className="latest-title">{product.title}</h3>
+                <div className="price-container">
+                  <span className="latest-price">${product.new_price}</span>
+                  <span className="original-price">${product.prev_price}</span>
+                </div>
               </div>
-              <h3 className="latest-title">{product.title}</h3>
-              <div className="price-container">
-                <span className="latest-price">${product.new_price}</span>
-                <span className="original-price">${product.prev_price}</span>
-              </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p>Loading...</p>
         )}
