@@ -22,6 +22,8 @@ import AddToWishlist from "./Components/LandingPage/Wishlist/AddToWishlist";
 import AboutUs from "./Components/LandingPage/AboutUs/AboutUs";
 import TermsOfUse from "./Components/LandingPage/Footer/TermsOfUse";
 import Privacy from "./Components/LandingPage/AboutUs/Privacy/Privacy";
+import ChatbotPage from './Components/LandingPage/Chatbot/Chatbot'; // Import the ChatbotPage component
+
 
 
 // Import Contexts
@@ -60,6 +62,8 @@ function App() {
               <Route path="/about" element={<AboutUs />} />
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/women" element={<Women />} />
+              <Route path="/chatbot" element={<ChatbotPage />} /> {/* Define the new route */}
+
 
               {/* Private Routes */}
               <Route

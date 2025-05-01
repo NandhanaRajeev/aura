@@ -45,6 +45,11 @@ const Navbar = () => {
                     <Link to="/about" style={{ textDecoration: 'none' }}>ABOUT</Link>
                     {menu === "about" && <hr />}
                 </li>
+                <li onClick={() => setMenu("chatbot")}>
+                <Link to="/chatbot" style={{ textDecoration: 'none' }}>CHATBOT</Link>
+                {menu === "chatbot" && <hr />}
+                </li>
+
             </ul>
 
             <div className='nav-login-cart'>
