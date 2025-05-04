@@ -14,7 +14,8 @@ const createTable = async () => {
                 new_price DECIMAL(10, 2) NOT NULL,
                 company VARCHAR(255) NOT NULL,
                 color VARCHAR(50),
-                category VARCHAR(255) NOT NULL
+                category VARCHAR(255) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `);
         console.log("✅ 'products' table created successfully!");
@@ -78,6 +79,31 @@ const createTable = async () => {
         console.log("✅ 'cart' table created successfully!");
 
         await pool.query(`
+            CREATE TABLE IF NOT EXISTS wishlist (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                product_id INT NOT NULL,
+                added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id),
+                FOREIGN KEY (product_id) REFERENCES products(id)
+            );
+        `);
+        console.log("✅ 'Wishlist' table created successfully!");
+
+        
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS newsletter_subscribers (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          email VARCHAR(255) NOT NULL,
+          user_id INT NOT NULL,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );
+  
+          `);
+          console.log("✅ 'Newsletter' table created successfully!");
+
+        await pool.query(`
           CREATE TABLE IF NOT EXISTS upi (
             id INT AUTO_INCREMENT PRIMARY KEY,
             user_id INT NOT NULL,
@@ -112,6 +138,8 @@ const createTable = async () => {
         console.error("❌ Error creating tables:", error);
     }
 };
+
+
 
 // Insert sample products if not already present
 const insertProducts = async () => {

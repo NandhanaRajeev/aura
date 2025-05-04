@@ -6,6 +6,8 @@ import profile from '../../Assets/profile.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../LoginContext';
 import { CartContext } from '../CartPage/CartContext'; // Use relative path to go from Navbar to CartPage
+import wishlistIcon from '../../Assets/wishlistIcon.png';
+
 
 const Navbar = () => {
     const [menu, setMenu] = useState("");
@@ -43,6 +45,11 @@ const Navbar = () => {
                     <Link to="/about" style={{ textDecoration: 'none' }}>ABOUT</Link>
                     {menu === "about" && <hr />}
                 </li>
+                <li onClick={() => setMenu("chatbot")}>
+                <Link to="/chatbot" style={{ textDecoration: 'none' }}>CHATBOT</Link>
+                {menu === "chatbot" && <hr />}
+                </li>
+
             </ul>
 
             <div className='nav-login-cart'>
@@ -61,6 +68,9 @@ const Navbar = () => {
                         {menu === "login" && <hr />}
                     </li>
                 )}
+                <Link to='/wishlist' style={{ marginLeft: '10px' }}>
+                <img src={wishlistIcon} alt="Wishlist" style={{ width: "35px", height: "auto" }} />
+                </Link>
                 <Link to='/cart' style={{ marginLeft: '10px' }}>
                     <img src={shoppingcart} alt="Cart" style={{ width: "35px", height: "auto" }} />
                 </Link>

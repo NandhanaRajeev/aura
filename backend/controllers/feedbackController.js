@@ -27,3 +27,14 @@ export const submitFeedback = async (req, res) => {
     res.status(500).json({ error: "Feedback submission failed" });
   }
 };
+
+// controllers/feedbackController.js
+export const getAllFeedback = async (req, res) => {
+  try {
+    const [feedback] = await pool.query('SELECT name, rating, comments FROM feedback ORDER BY fed_id DESC');
+    res.status(200).json(feedback);
+  } catch (error) {
+    console.error("❌ Error fetching feedback:", error);
+    res.status(500).json({ error: "Failed to fetch feedback" });
+  }
+};

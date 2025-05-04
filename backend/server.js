@@ -12,6 +12,9 @@ import cartRoutes from "./routes/cartRoutes.js";
 import feedbackRoute from './routes/feedbackRoute.js';
 import upiRoutes from "./routes/upiRoutes.js"; // Import UPI routes
 import { authenticateUser } from "./middlewares/authMiddleware.js";
+import wishlistRoutes from "./routes/wishlistRoute.js";
+import newsletterRoute from './routes/newsletterRoute.js';
+
 import ordersRoute from './routes/ordersRoute.js';
 import addressRoute from './routes/addressRoute.js';
 
@@ -23,10 +26,81 @@ app.use(cors()); // Allow frontend to talk to backend
 app.use(express.json()); // Allow JSON body
 
 app.use("/api/products", productRoutes);
+app.use('/api/newsletter', newsletterRoute);
 app.use("/api/users", userRoutes);
 app.use("/api/cart", cartRoutes);
 app.use('/api/feedback', feedbackRoute);
 app.use("/api/upi", upiRoutes); // Add the UPI routes here
+app.use("/api/wishlist", wishlistRoutes); // This links to the wishlist routes
+
+
+
+// Newsletter subscription route
+app.post("/api/subscribe", async (req, res) => {
+  const { email, userId } = req.body;
+
+  // Validate the email format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRegex.test(email)) {
+    return res.status(400).json({ error: "Please provide a valid email." });
+  }
+
+  if (!userId) {
+    return res.status(400).json({ error: "User ID is required for the subscription." });
+  }
+
+  try {
+    // Insert the email and user_id into the database
+    const sql = "INSERT INTO newsletter_subscribers (email, user_id) VALUES (?, ?)";
+    await pool.query(sql, [email, userId]);
+
+    res.status(200).json({ message: "Thank you for subscribing to our newsletter!" });
+  } catch (error) {
+    console.error("Error subscribing to newsletter:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Landing Page Biggest Deals Section
+app.get("/api/products/discounted", async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT 
+      id,
+      title,
+      company,
+      img,
+      CAST(REPLACE(prev_price, '$', '') AS DECIMAL(10, 2)) AS prev_price,
+      new_price
+      FROM products
+      WHERE 
+      CAST(REPLACE(prev_price, '$', '') AS DECIMAL(10, 2)) > 0
+      AND new_price <= CAST(REPLACE(prev_price, '$', '') AS DECIMAL(10, 2)) * 0.75
+      LIMIT 6;
+      `);
+    res.json(rows);
+  } catch (error) {
+    console.error("Error fetching discounted products:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
+// Get latest 5 products for "Latest Collection"
+app.get("/api/products/latest", async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT id, img, title, new_price, prev_price
+      FROM products
+      ORDER BY id DESC
+      LIMIT 8
+    `);
+    res.json(rows);
+  } catch (err) {
+    console.error("Error fetching latest products:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 
 app.use("/api/feedback", feedbackRoute);
 app.use("/api/orders", authenticateUser, ordersRoute);
