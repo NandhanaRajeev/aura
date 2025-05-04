@@ -35,13 +35,6 @@ import { WishlistProvider } from "./Components/LandingPage/Wishlist/WishlistCont
 import PrivateRoute from "./Components/privateRoute";
 import ProfilePage from "./Pages/ProfilePages/ProfilePage";
 
-
-// Import CORS - Remove usage of CORS in the frontend
-// import cors from 'cors'; // Comment this out because it's used server-side, not on the client.
-
-// Import CORS - Remove usage of CORS in the frontend
-// import cors from 'cors'; // Comment this out because it's used server-side, not on the client.
-
 function App() {
   return (
     <LoginProvider>
@@ -101,58 +94,9 @@ function App() {
             <Footer />
           </BrowserRouter>
         </WishlistProvider>
-        <BrowserRouter>
-          <Navbar />
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Women />} />
-            <Route path="/latest" element={<CategoriesMain category="latest" />} />
-            <Route path="/about" element={<CategoriesMain category="about" />} />
-            <Route path="/product" element={<CategoriesMain category="product" />}></Route>
-            <Route path="/product" element={<CategoriesMain category="product" />}></Route>
-            <Route path="/filters" element={<FilterPage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/auth/*" element={<AuthPage />} />
-            <Route path="/profile/*" element={<ProfilePage />} />
-
-            {/* Private Routes (Only accessible when logged in) */}
-            <Route
-              path="/cart"
-              element={
-                <PrivateRoute>
-                  <CartPage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/payment"
-              element={
-                <PrivateRoute>
-                  <PaymentGateway />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/profile/delete"
-              element={
-                <PrivateRoute>
-                  <DeleteAccountPage />
-                </PrivateRoute>
-              }
-            />
-
-            <Route path="/women" element={<Women />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/" component={Card} />
-          </Routes>
-          <Footer />
-        </BrowserRouter>
       </CartProvider>
     </LoginProvider>
   );
 }
 
 export default App;
-
-// app.js
