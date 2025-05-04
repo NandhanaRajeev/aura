@@ -34,7 +34,7 @@ import { WishlistProvider } from "./Components/LandingPage/Wishlist/WishlistCont
 // Import Private Route
 import PrivateRoute from "./Components/privateRoute";
 import ProfilePage from "./Pages/ProfilePages/ProfilePage";
-import ProfilePage from "./Pages/ProfilePages/ProfilePage.js";
+
 
 // Import CORS - Remove usage of CORS in the frontend
 // import cors from 'cors'; // Comment this out because it's used server-side, not on the client.
