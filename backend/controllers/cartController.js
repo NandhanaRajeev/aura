@@ -33,3 +33,14 @@ export const updateQuantityController = async (req, res) => {
         res.status(500).json({ message: "Error updating quantity", error });
     }
 };
+
+// NEW: Clear cart after successful payment
+export const clearCartAfterPaymentController = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        await clearUserCart(userId);
+        res.json({ message: "Cart cleared after successful payment" });
+    } catch (error) {
+        res.status(500).json({ message: "Error clearing cart", error });
+    }
+};

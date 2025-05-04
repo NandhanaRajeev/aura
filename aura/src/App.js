@@ -13,7 +13,6 @@ import AuthPage from "./Pages/AuthPages/AuthPage";
 import CartPage from "./Components/LandingPage/CartPage/CartPage";
 import PaymentGateway from "./Pages/PaymentGateway/PaymentGateway";
 import Card from "./Components/FilterPages/Card";
-import Card from "./Components/FilterPages/Card";
 import ProductDetail from "./Pages/ProductDetail/ProductDetail.js";
 import DeleteAccountPage from './Components/Profile/DeleteAccountPage/DeleteAccountPage';
 

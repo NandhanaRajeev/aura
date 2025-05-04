@@ -5,39 +5,68 @@ import { useNavigate } from "react-router-dom";
 import "./SavedaddressPage.css";
 
 const SavedaddressPage = () => {
-  const [addresses, setAddresses] = useState([]);
+  const [address, setAddress] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const token = localStorage.getItem("token");
+  const decoded = token ? jwtDecode(token) : {};
+  const userId = decoded.user_id || decoded.id;
+
+  const fetchAddress = async () => {
+    if (!token) return;
+
+    try {
+      const response = await axios.get(`http://localhost:3000/api/address/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const addressData = response.data;
+      setAddress(Array.isArray(addressData) ? addressData : []);
+    } catch (err) {
+      console.error("❌ Failed to fetch address:", err);
+      setAddress([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchAddress = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      const { id } = jwtDecode(token);
-
-      try {
-        const response = await axios.get(`http://localhost:3000/api/users/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const user = response.data;
-        if (user.address) {
-          setAddresses([user.address]);
-        } else {
-          setAddresses([]);
-        }
-      } catch (err) {
-        console.error("Failed to fetch address:", err);
-        setAddresses([]);
-      }
-    };
-
     fetchAddress();
   }, []);
 
   const handleAddAddress = () => {
-    navigate("/profile/address-form"); // ✅ Redirect to Address Form
+    navigate("/profile/address-form");
   };
+
+  //edit button
+  const handleEdit = (item) => {
+    navigate("/profile/address-form", { state: { address: item } });
+  };
+
+  //delete button
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this address?");
+    if (!confirmDelete) return;
+  
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+  
+      await axios.delete(`http://localhost:3000/api/address/${id}`, config);
+      alert("Address deleted successfully!");
+  
+      // Update the state to remove the deleted address
+      setAddress((prevAddress) => prevAddress.filter((item) => item.add_id !== id));
+    } catch (error) {
+      console.error("Delete error:", error);
+      alert("Failed to delete address");
+    }
+  };
+  
+  
 
   return (
     <div className="saved-address-page">
@@ -49,16 +78,21 @@ const SavedaddressPage = () => {
           </button>
         </div>
 
-        {addresses.length === 0 ? (
+        {loading ? (
+          <p>Loading...</p>
+        ) : address.length === 0 ? (
           <p className="no-address">No saved addresses found.</p>
         ) : (
           <ul className="address-list">
-            {addresses.map((address, index) => (
-              <li key={index} className="address-item">
-                <p>{address}</p>
+            {address.map((item) => (
+              <li key={item.add_id} className="address-item">
+                <p><strong>{item.fullName}</strong></p>
+                <p>Mobile: {item.mobile}</p>
+                <p>Address: {item.address}</p>
+                <p>Pincode: {item.pincode}</p>
                 <div className="address-buttons">
-                  <button className="edit-btn">Edit</button>
-                  <button className="delete-btn">Delete</button>
+                  <button className="edit-bton" onClick={() => handleEdit(item)}>Edit</button>
+                  <button className="delete-btn" onClick={() => handleDelete(item.add_id)}>Delete</button>
                 </div>
               </li>
             ))}

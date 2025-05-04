@@ -1,10 +1,10 @@
-/* Flexbox layout to align sidebar & address content */
+/* Main Container: Flexbox Layout for Sidebar & Address Content */
 .saved-address-page {
     display: flex;
     min-height: 100vh;
 }
 
-/* Address content layout */
+/* Address Content Layout */
 .saved-address-content {
     flex: 1;
     max-width: 800px;
@@ -27,6 +27,7 @@
 .address-list {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 /* Address Item */
@@ -49,13 +50,13 @@
 /* Address Buttons Container */
 .address-buttons {
     margin-top: 10px;
-    display: flex;
+    display: left;
     gap: 10px;
 }
 
 /* Edit Button */
-.edit-btn {
-    background: #4caf50;
+.edit-bton {
+    background: #007bff;
     color: white;
     padding: 8px 14px;
     border: none;
@@ -64,9 +65,10 @@
     transition: 0.3s;
 }
 
-.edit-btn:hover {
+.edit-bton:hover {
     background: #43a047;
 }
+
 
 /* Delete Button */
 .delete-btn {
@@ -83,22 +85,16 @@
     background: #c0392b;
 }
 
-/* Footer fix */
-.footer {
-    width: 100%;
-    margin-top: auto;
-    position: relative;
-    bottom: 0;
-}
-
+/* Header Section: Address Page Header */
 .address-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
-  }
-  
-  .add-address-btn {
+}
+
+/* Add Address Button */
+.add-address-btn {
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -107,9 +103,16 @@
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
-  }
-  
-  .add-address-btn:hover {
+}
+
+.add-address-btn:hover {
     background-color: #45a049;
-  }
-  
+}
+
+/* Footer: Ensures Footer Stays at Bottom */
+.footer {
+    width: 100%;
+    margin-top: auto;
+    position: relative;
+    bottom: 0;
+}

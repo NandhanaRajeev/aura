@@ -15,16 +15,20 @@ const AddressForm = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [addressId, setAddressId] = useState(null);
 
   // Pre-fill if editing
   useEffect(() => {
-    if (state?.user) {
+    if (state?.address) {
       setFormData({
         fullName: state.address.fullName || "",
         mobile: state.address.mobile || "",
         address: state.address.address || "",
         pincode: state.address.pincode || "",
       });
+      setIsEditMode(true);
+      setAddressId(state.address.add_id); // Assuming your address object has an add_id field
     }
   }, [state]);
 
@@ -76,26 +80,47 @@ const AddressForm = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const { id } = token ? JSON.parse(atob(token.split(".")[1])) : {};
+      if (!token) {
+        alert("User not logged in!");
+        return;
+      }
 
-      await axios.put(
-        `http://localhost:3000/api/address/${id}`,
-        {
-          fullName: formData.fullName,
-          mobile: formData.mobile,
-          address: formData.address,
-          pincode: formData.pincode,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
 
-      alert("Address updated successfully!");
-      navigate("/address");
+      if (isEditMode) {
+        // Edit Mode: Update address
+        await axios.put(
+          `http://localhost:3000/api/address/${addressId}`,
+          {
+            fullName: formData.fullName,
+            mobile: formData.mobile,
+            address: formData.address,
+            pincode: formData.pincode,
+          },
+          config
+        );
+        alert("Address updated successfully!");
+      } else {
+        // Add Mode: Add new address
+        await axios.post(
+          `http://localhost:3000/api/address`,
+          {
+            fullName: formData.fullName,
+            mobile: formData.mobile,
+            address: formData.address,
+            pincode: formData.pincode,
+          },
+          config
+        );
+        alert("Address added successfully!");
+      }
+
+      navigate("/profile/saved-address");
     } catch (error) {
-      console.error("Update error:", error);
-      alert("Update failed!");
+      console.error("Submit error:", error);
+      alert("Submission failed!");
     }
   };
 
@@ -103,7 +128,7 @@ const AddressForm = () => {
     <div className="address-page">
       <div className="address-content">
         <div className="address-card">
-          <h2>{state?.user ? "Edit Address" : "Add New Address"}</h2>
+          <h2>{isEditMode ? "Edit Address" : "Add New Address"}</h2>
           <form onSubmit={handleSubmit}>
             <label>Full Name</label>
             <input
@@ -142,7 +167,7 @@ const AddressForm = () => {
             {errors.pincode && <span className="error">{errors.pincode}</span>}
 
             <button type="submit" className="edit-btn">
-              Submit
+              {isEditMode ? "Update" : "Submit"}
             </button>
           </form>
         </div>

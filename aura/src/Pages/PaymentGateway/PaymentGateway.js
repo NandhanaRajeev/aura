@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // <-- Add this import
 import './PaymentGateway.css';
 
 const PaymentGateway = () => {
+  const navigate = useNavigate(); // Define navigate here
   const [selectedOption, setSelectedOption] = useState('upi');
-  const navigate = useNavigate(); // <-- Initialize navigate
-  const [selectedOption, setSelectedOption] = useState('card');
-
   const [cardNumber, setCardNumber] = useState('');
   const [cardName, setCardName] = useState('');
   const [expiryMonth, setExpiryMonth] = useState('');
@@ -23,7 +21,11 @@ const PaymentGateway = () => {
   const [errorMessages, setErrorMessages] = useState({});
   const [inputWarnings, setInputWarnings] = useState({});
   const [message, setMessage] = useState('');
+  const [cartItems, setCartItems] = useState([]);
+  const token = localStorage.getItem('token');
 
+  // const isLoggedIn = token && validateToken(token);
+  const user_id=localStorage.getItem('userId');
   // Fetch and store all saved UPI IDs on mount or when UPI option is selected
   useEffect(() => {
     const fetchUserUpi = async () => {
@@ -102,6 +104,83 @@ const PaymentGateway = () => {
       fetchUserUpi();
     }
   }, [selectedOption]);
+  const validateToken = (token) => {
+    if (!token) return false;
+    try {
+      const decoded = jwtDecode(token);
+      const currentTime = Date.now() / 1000; // Current time in seconds
+      if (decoded.exp < currentTime) {
+        console.log("Token expired:", decoded);
+        return false;
+      }
+      return true;
+    } catch (error) {
+      console.error("Invalid token:", error);
+      return false;
+    }
+  };
+  // Clear the cart
+    const clearCart = async () => {
+        const token = localStorage.getItem("token");
+        const isLoggedIn = token && validateToken(token);
+
+        setCartItems([]);
+
+        if (isLoggedIn && token) {
+            try {
+                await axios.delete("http://localhost:3000/api/cart/clear", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                console.log("Cart cleared in backend");
+            } catch (error) {
+                console.error("Error clearing cart from backend:", error.response?.data || error.message);
+                if (error.response?.status === 403) {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("userId");
+                    setCartItems([]);
+                    localStorage.removeItem("cartItems");
+                    alert("Your session has expired. Please log in again.");
+                }
+            }
+        }
+        localStorage.removeItem("cartItems");
+    };
+  // Transfer cart to orders after payment
+  const transferCartToOrders = async () => {
+    const token = localStorage.getItem("token");
+    const user_id = localStorage.getItem("userId");
+    const isLoggedIn = token && validateToken(token);
+
+
+    if (!isLoggedIn || !token || !validateToken(token)) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("userId");
+      setCartItems([]);
+      localStorage.removeItem("cartItems");
+      alert("Your session has expired. Please log in again.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/checkout",
+        { user_id: user_id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Transferred cart items to orders:", response.data);
+      await clearCart(); // Clear cart after successful transfer
+    } catch (error) {
+      console.error("Error transferring cart to orders:", error.response?.data || error.message);
+      alert("Failed to complete order. Please try again.");
+    }
+  };
+
 
   const handleUpiSelect = (selectedUpiId) => {
     setUpiId(selectedUpiId);
@@ -114,11 +193,11 @@ const PaymentGateway = () => {
   const toggleSavedUpiIds = async () => {
     const willShow = !showSavedUpiIds;
     setShowSavedUpiIds(willShow);
+    const token = localStorage.getItem('token');
 
     // Fetch UPI IDs only when showing the list
     if (willShow) {
       try {
-        const token = localStorage.getItem('token');
         if (!token) {
           setMessage('Please log in to retrieve saved UPI IDs.');
           console.log('No token found in localStorage.');
@@ -273,9 +352,13 @@ const PaymentGateway = () => {
 
       // Proceed with payment (mock for now)
       alert(`Payment method: ${selectedOption} submitted successfully!`);
+      alert(`Order placed successfully!`);
 
-      // Redirect to orders page after successful payment
-      navigate('/profile/orders');
+      // Delay navigation slightly to ensure alerts show first
+      setTimeout(() => {
+        transferCartToOrders()
+        navigate(`/profile/orders/${user_id}`);
+      }, 100); // Adjust delay if needed
     }
   };
 

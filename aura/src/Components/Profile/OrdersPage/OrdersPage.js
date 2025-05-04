@@ -1,80 +1,89 @@
-import React, { useState, useEffect } from "react";
-import "./OrdersPage.css";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import './OrdersPage.css';
 
-const OrdersPage = () => {
+
+const OrdersPage = ({user_id}) => {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  // Replace this with actual user ID from auth context or localStorage
-  const userId = 1;
-
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch(`/api/orders/user/${userId}`);
-        if (!response.ok) throw new Error("Failed to fetch orders");
-        const data = await response.json();
-        setOrders(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchOrders();
-  }, [userId]);
-
-  const handleCancel = async (orderId) => {
+  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
+  const fetchOrders = async () => {
     try {
-      const response = await fetch(`/api/orders/${orderId}`, { method: "DELETE" });
-      if (!response.ok) throw new Error("Failed to cancel order");
-
-      setOrders((prevOrders) => prevOrders.filter((order) => order.order_id !== orderId));
-    } catch (err) {
-      alert("Could not cancel order. Try again.");
-      console.error(err);
+      const res = await axios.get(`http://localhost:3000/api/orders/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setOrders(res.data);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
     }
   };
 
-  const handleView = (order) => {
-    alert(`Viewing order #${order.order_id}`);
-    // You can replace this with modal or navigation to detail page
+  // const removeItem = async (productId, size) => {
+  //   try {
+  //     await axios.delete(`http://localhost:3000/api/orders/remove/${productId}?size=${size}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     fetchOrders();
+  //   } catch (error) {
+  //     console.error("Error removing item:", error);
+  //   }
+  // };
+
+  const updateQuantity = async (productId, quantity, size) => {
+    try {
+      if (quantity < 1) return;
+      await axios.put(
+        "/api/orders/update",
+        { productId, quantity, size },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchOrders();
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+    }
   };
 
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
   return (
-    <div className="orders-page">
-      <div className="orders-content">
-        <h2>Your Orders</h2>
-
-        {loading ? (
-          <p>Loading orders...</p>
-        ) : error ? (
-          <p className="error">{error}</p>
-        ) : orders.length === 0 ? (
-          <p className="no-orders">No orders placed yet.</p>
-        ) : (
-          <ul className="orders-list">
-            {orders.map((order) => (
-              <li key={order.order_id} className="order-item">
-                <p><strong>Order ID:</strong> {order.order_id}</p>
-                <p><strong>Product ID:</strong> {order.product_id}</p>
-                <p><strong>Quantity:</strong> {order.quantity}</p>
-                <p><strong>Size:</strong> {order.size}</p>
-                <p><strong>Total Price:</strong> ${order.total_price}</p>
-                <p><strong>Status:</strong> <span className={`status ${order.status.toLowerCase()}`}>{order.status}</span></p>
-                <p><strong>Ordered At:</strong> {new Date(order.ordered_at).toLocaleDateString()}</p>
-
-                <div className="order-buttons">
-                  <button className="view-btn" onClick={() => handleView(order)}>View</button>
-                  <button className="cancel-btn" onClick={() => handleCancel(order.order_id)}>Cancel</button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+    <div className="orders-container">
+      <h2 className="orders-title">Your Orders</h2>
+      {orders.length === 0 ? (
+        <p>No items in your orders.</p>
+      ) : (
+        <ul>
+          {orders.map((order) => (
+            <li key={order.order_id} style={{ marginBottom: "1rem", borderBottom: "1px solid #ccc", paddingBottom: "1rem" }}>
+              <p><strong>{order.title || order.product_name}</strong> (Size: {order.size})</p>
+              <p>
+                Quantity:{" "}
+                <input
+                  type="number"
+                  value={order.quantity}
+                  min={1}
+                  onChange={(e) =>
+                    updateQuantity(order.product_id, parseInt(e.target.value), order.size)
+                  }
+                />
+              </p>
+              <p>Total: ₹{order.total_price}</p>
+              <p>Status: {order.status}</p>
+              <p>Ordered At: {new Date(order.ordered_at).toLocaleString()}</p>
+              {/* <button onClick={() => removeItem(order.product_id, order.size)}>Remove</button> */}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

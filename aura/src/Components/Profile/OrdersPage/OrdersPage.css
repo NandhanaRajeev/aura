@@ -1,77 +1,44 @@
-.orders-page {
-    padding: 2rem;
-    font-family: Arial, sans-serif;
-  }
-  
-  .orders-content {
-    max-width: 800px;
-    margin: auto;
-  }
-  
-  .orders-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .order-item {
-    border: 1px solid #ccc;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-  }
-  
-  .order-buttons {
-    margin-top: 10px;
-  }
-  
-  .view-btn,
-  .cancel-btn {
-    padding: 6px 12px;
-    margin-right: 8px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .view-btn {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .cancel-btn {
-    background-color: #dc3545;
-    color: white;
-  }
-  
-  .no-orders {
-    font-style: italic;
-    color: #888;
-  }
-  
-  .status {
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-weight: bold;
-  }
-  
-  .status.pending {
-    background-color: #ffeeba;
-    color: #856404;
-  }
-  
-  .status.completed {
-    background-color: #d4edda;
-    color: #155724;
-  }
-  
-  .status.cancelled {
-    background-color: #f8d7da;
-    color: #721c24;
-  }
-  
-  .error {
-    color: red;
-    font-weight: bold;
-  }
-  
+.orders-container {
+  max-width: 800px;
+  margin: 4rem auto;
+  padding: 2rem 2.5rem;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.orders-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 2.5rem;
+}
+
+.orders-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.orders-container li {
+  padding: 1rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.orders-container p {
+  margin: 0.4rem 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.orders-container input[type="number"] {
+  width: 60px;
+  padding: 6px 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f8f8f8;
+  outline: none;
+}

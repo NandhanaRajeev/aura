@@ -39,9 +39,9 @@ const createTable = async () => {
             add_id INT AUTO_INCREMENT PRIMARY KEY,
             user_id INT,
             fullName VARCHAR(255),
-            mobile INT,
+            mobile VARCHAR(10),
             address TEXT,
-            pincode INT,
+            pincode VARCHAR(6),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id)
             
