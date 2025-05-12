@@ -35,19 +35,19 @@ const AdminDashboard = () => {
     <div className="admin-dashboard">
       <h2>Admin Dashboard</h2>
       <div className="stats">
-        <div className="card">
+        <div className="cardadmin">
           <h3>Total Users</h3>
           <p>{usersCount}</p>
         </div>
-        <div className="card">
+        <div className="cardadmin">
           <h3>Total Feedbacks</h3>
           <p>{feedbackCount}</p>
         </div>
-        <div className="card">
+        <div className="cardadmin">
           <h3>Total Products</h3>
           <p>{productsCount}</p>
         </div>
-        <div className="card">
+        <div className="cardadmin">
           <h3>Total Newsletter Subscribers</h3>
           <p>{newsletterCount}</p>
         </div>
