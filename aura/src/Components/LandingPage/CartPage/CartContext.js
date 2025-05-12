@@ -28,6 +28,38 @@ export const CartProvider = ({ children }) => {
         }
     };
 
+    // Transfer cart to orders after payment
+    const transferCartToOrders = async () => {
+        const token = localStorage.getItem("token");
+
+        if (!isLoggedIn || !token || !validateToken(token)) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("userId");
+            setCartItems([]);
+            localStorage.removeItem("cartItems");
+            alert("Your session has expired. Please log in again.");
+            return;
+        }
+
+        try {
+            const response = await axios.post(
+                "http://localhost:3000/api/checkout",
+                {user_id:1},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            console.log("Transferred cart items to orders:", response.data);
+            await clearCart(); // Clear cart after successful transfer
+        } catch (error) {
+            console.error("Error transferring cart to orders:", error.response?.data || error.message);
+            alert("Failed to complete order. Please try again.");
+        }
+    };
+
+
     // Function to fetch cart items from backend, memoized with useCallback
     const fetchCart = useCallback(async () => {
         const token = localStorage.getItem("token");
@@ -401,11 +433,14 @@ export const CartProvider = ({ children }) => {
                 updateQuantity,
                 clearCart,
                 fetchCart,
+                transferCartToOrders,
             }}
         >
             {children}
         </CartContext.Provider>
     );
+
+    
 };
 
 // Custom hook to access CartContext values

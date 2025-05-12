@@ -1,25 +1,44 @@
-/* Flexbox layout for sidebar and main content */
-.orders-page {
-    display: flex;
-    min-height: 100vh;
+.orders-container {
+  max-width: 800px;
+  margin: 4rem auto;
+  padding: 2rem 2.5rem;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Ensure the orders content takes space beside the sidebar */
-.orders-content {
-    flex: 1;
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
+.orders-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 2.5rem;
 }
 
-/* Fix footer placement */
-.footer {
-    width: 100%;
-    margin-top: auto;
-    position: relative;
-    bottom: 0;
+.orders-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.orders-container li {
+  padding: 1rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.orders-container p {
+  margin: 0.4rem 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.orders-container input[type="number"] {
+  width: 60px;
+  padding: 6px 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f8f8f8;
+  outline: none;
 }

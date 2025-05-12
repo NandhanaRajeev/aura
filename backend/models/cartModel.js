@@ -23,3 +23,7 @@ export const updateQuantity = async (userId, productId, newQuantity, size) => {
     );
     return result.affectedRows;
 };
+
+export const clearUserCart = async (userId) => {
+    await db.execute("DELETE FROM cart WHERE user_id = ?", [userId]);
+};

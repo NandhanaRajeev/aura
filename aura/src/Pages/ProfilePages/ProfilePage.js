@@ -12,6 +12,7 @@ import OrdersPage from '../../Components/Profile/OrdersPage/OrdersPage';
 import DeleteAccountPage from '../../Components/Profile/DeleteAccountPage/DeleteAccountPage';
 import HelpCenterPage from '../../Components/Profile/HelpCenterPage/HelpCenterPage';
 import FeedbackForm from '../../Components/Profile/FeedbackForm/FeedbackForm';
+import AddressForm from '../../Components/Profile/AddressForm/AddressForm';
 import './ProfilePage.css'; // Import the CSS
 
 const ProfilePage = () => {
@@ -26,10 +27,11 @@ const ProfilePage = () => {
           <Route path="saved-upi" element={<SavedUPIPage />} />
           <Route path="support" element={<SupportPage />} />
           <Route path="saved-address" element={<SavedaddressPage />} />
-          <Route path="orders" element={<OrdersPage />} />
+          <Route path="orders/:user_id" element={<OrdersPage />} />
           <Route path="delete-account" element={<DeleteAccountPage />} />
           <Route path="help-center" element={<HelpCenterPage />} />
           <Route path="feedback" element={<FeedbackForm />} />
+          <Route path="address-form" element={<AddressForm />} />
         </Routes>
       </div>
     </div>

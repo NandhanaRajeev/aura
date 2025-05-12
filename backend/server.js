@@ -14,6 +14,9 @@ import upiRoutes from "./routes/upiRoutes.js"; // Import UPI routes
 import { authenticateUser } from "./middlewares/authMiddleware.js";
 import wishlistRoutes from "./routes/wishlistRoute.js";
 import newsletterRoute from './routes/newsletterRoute.js';
+
+import ordersRoute from './routes/ordersRoute.js';
+import addressRoute from './routes/addressRoute.js';
 import chatbotRoute from "./routes/chatbotRoute.js";
 import axios from "axios";
 import adminCartRoute from "./routes/adminCartRoute.js";
@@ -148,6 +151,11 @@ app.get("/api/products/latest", async (req, res) => {
 });
 
 
+app.use("/api/feedback", feedbackRoute);
+app.use("/api/orders", authenticateUser, ordersRoute);
+app.use("/api/address", addressRoute);
+
+
 // Fetch unique categories
 app.get("/api/categories", async (req, res) => {
     try {
@@ -276,6 +284,8 @@ app.post("/login", async (req, res) => {
 });
 
 
+
+//PROFILE FORM
 app.post("/ProfileForm", async (req, res) => {
   const { fullName, mobile, email, gender, dob, address } = req.body;
 
@@ -291,6 +301,72 @@ app.post("/ProfileForm", async (req, res) => {
     res.status(500).json({ error: "Profile submission failed" });
   }
 });
+
+
+//ADDRESS FORM
+app.post("/AddressForm", async (req, res) => {
+    const { user_id, fullName, mobile, address, pincode } = req.body;
+  
+    try {
+      const sql = `INSERT INTO address (user_id, fullName, mobile, address, pincode)
+                   VALUES (?, ?, ?, ?, ?)`;
+  
+      await pool.query(sql, [user_id, fullName, mobile, address, pincode]);
+  
+      res.status(200).json({ message: "Address submitted successfully" });
+    } catch (err) {
+      console.error("Error inserting address:", err);
+      res.status(500).json({ error: "Address submission failed" });
+    }
+  });
+
+
+// UPDATE Address by ID
+app.put("/api/address/:id", async (req, res) => {
+  const { id } = req.params;
+  const { fullName, mobile, address, pincode } = req.body;
+
+  try {
+    const sql = `
+      UPDATE address
+      SET fullName = ?, mobile = ?, address = ?, pincode = ?
+      WHERE add_id = ?
+    `;
+
+    const [result] = await pool.query(sql, [fullName, mobile, address, pincode, id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Address not found" });
+    }
+
+    res.status(200).json({ message: "Address updated successfully" });
+  } catch (err) {
+    console.error("Error updating address:", err);
+    res.status(500).json({ error: "Failed to update address" });
+  }
+});
+
+
+// DELETE Address by ID
+app.delete("/api/address/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const sql = `DELETE FROM address WHERE add_id = ?`;
+    const [result] = await pool.query(sql, [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Address not found" });
+    }
+
+    res.status(200).json({ message: "Address deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting address:", err);
+    res.status(500).json({ error: "Failed to delete address" });
+  }
+});
+
+
 
 // API ROUTE - listen to POST /api/feedback
 app.post('/api/feedback', async (req, res) => {
@@ -312,6 +388,7 @@ app.post('/api/feedback', async (req, res) => {
       res.status(500).json({ error: 'Database error' });
     }
   });
+
   // Delete user account
 app.delete("/api/users/delete", authenticateUser, async (req, res) => {
     const userId = req.user.id; // Get user ID from JWT token (set by authenticateUser middleware)
@@ -329,6 +406,83 @@ app.delete("/api/users/delete", authenticateUser, async (req, res) => {
       res.status(500).json({ error: "Internal Server Error" });
     }
   });
+
+  app.get('/api/address/:user_id', async (req, res) => {
+    const { user_id } = req.params;
+    try {
+      const [rows] = await pool.execute("SELECT * FROM address WHERE user_id = ?", [user_id]);
+      res.json(rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Server error" });
+    }
+  });
+  
+  app.post("/api/checkout", async (req, res) => {
+    const { user_id } = req.body;
+    console.log("User ID:", user_id);
+  
+    try {
+      // 1. Get cart items for user
+      const [cartItems] = await pool.execute(
+        "SELECT * FROM cart WHERE user_id = ?",
+        [user_id]
+      );
+  
+      console.log("Cart Items:", cartItems);
+  
+      if (cartItems.length === 0) {
+        return res.status(400).json({ message: "No items in cart" });
+      }
+  
+      // 2. Insert each cart item into orders
+      const insertPromises = cartItems.map((item) => {
+        console.log("Inserting item to orders:", item);
+  
+        const totalPrice = calculateTotal(item); // Make sure this function exists and works
+  
+        return pool.execute(
+          `INSERT INTO orders (user_id, product_id, quantity, size, total_price, status, ordered_at)
+           VALUES (?, ?, ?, ?, ?, ?, NOW())`,
+          [user_id, item.product_id, item.quantity, item.size, totalPrice, "confirmed"]
+        );
+      });
+  
+      await Promise.all(insertPromises);
+  
+      // 3. Clear cart for the user
+      await pool.execute("DELETE FROM cart WHERE user_id = ?", [user_id]);
+  
+      res.status(200).json({ message: "Order placed successfully" });
+  
+    } catch (err) {
+      console.error("❌ Checkout error:", err);
+      res.status(500).json({ message: "Server error during checkout" });
+    }
+  });
+  
+  
+// Backend: GET /api/orders/:userId
+app.get("/api/orders/:user_id", async (req, res) => {
+  console.log("hello")
+  const { user_id } = req.params;
+  console.log(user_id)
+  try {
+    const [orders] = await pool.execute("SELECT * FROM orders WHERE user_id = ?", [user_id]);
+    console.log(orders)
+    res.json(orders);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
+  // Example total price function (replace with your actual logic if needed)
+  function calculateTotal(item) {
+    return item.quantity * 100; // Assuming 100 is price per product
+  }
+  
 
 // const PORT = process.env.PORT || 3001;
 const PORT = 3000;

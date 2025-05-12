@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom';
 import './SidebarProf.css';
 
 const SidebarProf = () => {
+  const user_id=localStorage.getItem('userId');
+
   return (
     <div className="flex-container">
       <div className="sidebar">
@@ -11,10 +13,10 @@ const SidebarProf = () => {
         <hr />
         <div className="section-title">ORDERS</div>
         <ul>
-          <li><NavLink to="/profile/orders" className={({ isActive }) => isActive ? 'active' : ''}>Orders</NavLink></li>  
+          <li><NavLink to={`/profile/orders/${user_id}`}  className={({ isActive }) => isActive ? 'active' : ''}>Orders</NavLink></li>  
         </ul>
 
-        <hr />
+      
         {/* <div className="section-title">CREDITS</div>
         <ul>
           <li><NavLink to="/profile/coupons" className={({ isActive }) => isActive ? 'active' : ''}>Coupons</NavLink></li>  
