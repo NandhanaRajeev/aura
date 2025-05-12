@@ -46,7 +46,7 @@ router.post("/", async (req, res) => {
     res.json({ reply });
 
   } catch (error) {
-    console.error("Gemini API Error:", error?.response?.data || error.message);
+    console.error("Gemini API Error:", error.response.data || error.message);
     res.status(500).json({ error: "Failed to fetch response from Gemini." });
   }
 });
