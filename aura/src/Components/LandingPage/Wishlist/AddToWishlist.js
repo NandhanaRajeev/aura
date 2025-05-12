@@ -3,13 +3,11 @@ import { BsTrash } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { WishlistContext } from "./WishlistContext";
 import { CartContext } from "../CartPage/CartContext";
-import { LoginContext } from "../../LoginContext";
 import "./AddToWishlist.css";
 
 const AddToWishlist = () => {
-    const { wishlistItems, removeFromWishlist, addToWishlist, error, success } = useContext(WishlistContext);
+    const { wishlistItems, removeFromWishlist, error, success } = useContext(WishlistContext);
     const { addToCart } = useContext(CartContext);
-    const { isLoggedIn } = useContext(LoginContext);
     const [isLoading, setIsLoading] = useState(null);
 
     const handleRemove = async (productId) => {

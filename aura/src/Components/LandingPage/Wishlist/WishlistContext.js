@@ -1,6 +1,6 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect, useContext, useCallback } from "react";
 import axios from "axios";
-import { LoginContext } from "../../LoginContext";
+import { LoginContext } from "../../LoginContext"; // Check for circular dependencies
 import { jwtDecode } from "jwt-decode";
 import SERVER_URL from "../../../config";
 
@@ -10,7 +10,7 @@ export const WishlistProvider = ({ children }) => {
     const { isLoggedIn } = useContext(LoginContext);
     const [wishlistItems, setWishlistItems] = useState([]);
     const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null); // Added for success feedback
+    const [success, setSuccess] = useState(null);
 
     console.log("WishlistContext SERVER_URL:", SERVER_URL);
 
@@ -29,7 +29,7 @@ export const WishlistProvider = ({ children }) => {
         }
     };
 
-    const fetchWishlist = async () => {
+    const fetchWishlist = useCallback(async () => {
         const token = localStorage.getItem("token");
         
         if (!isLoggedIn || !token || !validateToken(token)) {
@@ -70,7 +70,7 @@ export const WishlistProvider = ({ children }) => {
             });
             setError("Failed to load wishlist. Please try again.");
         }
-    };
+    }, [isLoggedIn]);
 
     const addToWishlist = async (newItem) => {
         const token = localStorage.getItem("token");
@@ -174,7 +174,7 @@ export const WishlistProvider = ({ children }) => {
             setError(null);
             setSuccess(null);
         }
-    }, [isLoggedIn]);
+    }, [isLoggedIn, fetchWishlist]);
 
     return (
         <WishlistContext.Provider value={{ wishlistItems, addToWishlist, removeFromWishlist, error, success }}>
@@ -184,4 +184,3 @@ export const WishlistProvider = ({ children }) => {
 };
 
 export const useWishlist = () => useContext(WishlistContext);
-export default WishlistContext;
