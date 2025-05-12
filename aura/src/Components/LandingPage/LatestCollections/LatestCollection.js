@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./LatestCollection.css";
 import { Link } from "react-router-dom";
+import SERVER_URL from "../../../config";
 
 const LatestCollection = () => {
   const [products, setProducts] = useState([]);
@@ -8,7 +9,7 @@ const LatestCollection = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/products/latest");
+        const response = await fetch(`${SERVER_URL}/api/products/latest`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

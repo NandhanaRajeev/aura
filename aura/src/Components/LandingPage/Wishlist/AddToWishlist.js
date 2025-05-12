@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { BsTrash } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { WishlistContext } from "./WishlistContext";
@@ -7,7 +7,7 @@ import { LoginContext } from "../../LoginContext";
 import "./AddToWishlist.css";
 
 const AddToWishlist = () => {
-    const { wishlistItems, removeFromWishlist, addToWishlist } = useContext(WishlistContext);
+    const { wishlistItems, removeFromWishlist, addToWishlist, error, success } = useContext(WishlistContext);
     const { addToCart } = useContext(CartContext);
     const { isLoggedIn } = useContext(LoginContext);
     const [isLoading, setIsLoading] = useState(null);
@@ -17,7 +17,10 @@ const AddToWishlist = () => {
 
         setIsLoading(productId);
         try {
-            await removeFromWishlist(productId);  // Calls remove from context, which updates the wishlist
+            const success = await removeFromWishlist(productId);
+            if (success) {
+                alert("Item removed from wishlist!");
+            }
         } catch (error) {
             console.error("Error removing from wishlist:", error);
             alert("Failed to remove.");
@@ -34,7 +37,7 @@ const AddToWishlist = () => {
         }
 
         const cartItem = {
-            id: item.product_id,   // Make sure this matches what your cart system expects
+            id: item.product_id,
             title: item.title,
             image: item.image,
             price: item.price,
@@ -44,9 +47,8 @@ const AddToWishlist = () => {
         };
 
         setIsLoading(item.product_id);
-
         try {
-            await addToCart(cartItem);  // Add item to the cart via context
+            await addToCart(cartItem);
             alert("Item added to cart!");
         } catch (error) {
             console.error("Error adding to cart:", error);
@@ -59,6 +61,8 @@ const AddToWishlist = () => {
     return (
         <div className="wishlist-container">
             <h2 className="wishlist-title">✨ Your Wishlist</h2>
+            {error && <p className="error" style={{ color: "red", textAlign: "center" }}>{error}</p>}
+            {success && <p className="success" style={{ color: "green", textAlign: "center" }}>{success}</p>}
             {wishlistItems.length > 0 ? (
                 wishlistItems.map((item) => {
                     return (
