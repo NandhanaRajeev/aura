@@ -98,6 +98,19 @@ const AddToWishlist = () => {
         }
     };
 
+    const handleAddToWishlist = async (item) => {
+        setIsLoading(item.product_id);
+        try {
+            await addToWishlist(item);
+            alert("Item added to wishlist!");
+        } catch (error) {
+            console.error("Error adding to wishlist:", error);
+            alert("Failed to add to wishlist.");
+        } finally {
+            setIsLoading(null);
+        }
+    };
+
     return (
         <div className="wishlist-container">
             <h2 className="wishlist-title">✨ Your Wishlist</h2>

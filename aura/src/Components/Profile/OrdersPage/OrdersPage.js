@@ -21,18 +21,38 @@ const OrdersPage = ({ user_id }) => {
     }
   };
 
-  // const removeItem = async (productId, size) => {
-  //   try {
-  //     await axios.delete(`${SERVER_URL}/api/orders/remove/${productId}?size=${size}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     fetchOrders();
-  //   } catch (error) {
-  //     console.error("Error removing item:", error);
-  //   }
-  // };
+  const clearCart = async () => {
+    try {
+      await axios.delete(`${SERVER_URL}/api/cart/clear/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (error) {
+      console.error("Error clearing cart:", error);
+    }
+  };
+
+  const placeOrder = async () => {
+    try {
+      // Your order placement logic goes here
+      await axios.post(
+        `${SERVER_URL}/api/orders/place`,
+        { userId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // Clear the cart after the order is placed
+      await clearCart();
+      // Fetch the updated orders after placing the order and clearing the cart
+      fetchOrders();  // This triggers the re-fetch and page update
+    } catch (error) {
+      console.error("Error placing order:", error);
+    }
+  };
 
   const updateQuantity = async (productId, quantity, size) => {
     try {
@@ -46,7 +66,7 @@ const OrdersPage = ({ user_id }) => {
           },
         }
       );
-      fetchOrders();
+      fetchOrders();  // Refresh the orders list after updating quantity
     } catch (error) {
       console.error("Error updating quantity:", error);
     }
@@ -85,6 +105,7 @@ const OrdersPage = ({ user_id }) => {
           ))}
         </ul>
       )}
+      <button onClick={placeOrder}>Place Order</button>
     </div>
   );
 };
