@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
       }
     );
 
-    const reply = response.data.candidates.[0].content.parts.[0].text;
+    const reply = response.data.candidates[0].content.parts[0].text;
     if (!reply) {
       console.error("No reply received from Gemini:", response.data);
       return res.status(500).json({ error: "No valid reply from Gemini" });
