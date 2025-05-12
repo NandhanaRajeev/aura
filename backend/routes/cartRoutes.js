@@ -38,7 +38,7 @@ router.get("/", async (req, res) => {
 
 // Add item to cart
 router.post("/add", async (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1];
+    const token = req.headers.authorization.split(" ")[1];
     if (!token) {
         return res.status(401).json({ error: "No token provided" });
     }
@@ -74,7 +74,7 @@ router.post("/add", async (req, res) => {
 
 // Update cart item quantity
 router.put("/update", async (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1];
+    const token = req.headers.authorization.split(" ")[1];
     if (!token) {
         return res.status(401).json({ error: "No token provided" });
     }
@@ -98,7 +98,7 @@ router.put("/update", async (req, res) => {
 
 // Remove item from cart
 router.delete("/remove/:userId/:productId", async (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1];
+    const token = req.headers.authorization.split(" ")[1];
     if (!token) {
         return res.status(401).json({ error: "No token provided" });
     }
