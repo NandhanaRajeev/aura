@@ -1,8 +1,7 @@
 import "./Brands.css";
 import { useEffect, useState } from "react";
 import Input from '../../../../Components/FilterPages/Input';
-import SERVER_URL from "../../../config"; // ✅ Import server URL
-
+import SERVER_URL from "../../../../config";
 function Brands({ handleChange }) {
   const [brands, setBrands] = useState([]);
 

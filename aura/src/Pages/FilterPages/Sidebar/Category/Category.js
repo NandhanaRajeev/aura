@@ -1,7 +1,6 @@
 import "./Category.css";
 import { useEffect, useState } from "react";
 import Input from '../../../../Components/FilterPages/Input';
-import SERVER_URL from "../../../config";// ✅ Import server URL
 
 function Category({ handleChange }) {
   const [categories, setCategories] = useState([]);
@@ -9,7 +8,7 @@ function Category({ handleChange }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch(`${SERVER_URL}/api/categories`);
+        const response = await fetch("http://localhost:3000/api/categories");
         const data = await response.json();
         console.log("Fetched Categories in Sidebar:", data); // Debugging line
         setCategories(data.map(category => category.trim())); // Ensure no extra spaces
