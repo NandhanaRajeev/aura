@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 function LandingPage() {
     return (
         <div className="admin-landing-container">
-            <h1>Welcome to the Admin Dashboard</h1>
-            <p>Select an option to manage the system.</p>
+            {/* <h1>Welcome to the Admin Dashboard</h1>
+            <p>Select an option to manage the system.</p> */}
             <div className="admin-links">
                 <Link to="/admin/users" className="btn btn-primary">Manage Users</Link>
                 <Link to="/admin/stats" className="btn btn-primary">View Stats</Link>
