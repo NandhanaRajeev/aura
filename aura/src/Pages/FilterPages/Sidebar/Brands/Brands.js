@@ -1,16 +1,14 @@
 import "./Brands.css";
 import { useEffect, useState } from "react";
 import Input from '../../../../Components/FilterPages/Input';
-
-
-
+import SERVER_URL from "../../../../config";
 function Brands({ handleChange }) {
   const [brands, setBrands] = useState([]);
 
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/brands");
+        const response = await fetch(`${SERVER_URL}/api/brands`);
         const data = await response.json();
         console.log("Fetched Brands:", data); // Debugging line
 
@@ -37,10 +35,13 @@ function Brands({ handleChange }) {
 
         {/* Dynamically render brands */}
         {brands.map((company, index) => (
-          <Input key={index} 
-          handleChange={handleChange} 
-          value={company} title={company} 
-          name="brand" />
+          <Input 
+            key={index} 
+            handleChange={handleChange} 
+            value={company} 
+            title={company} 
+            name="brand" 
+          />
         ))}
       </div>
     </div>

@@ -14,13 +14,15 @@ const FilterPage = () => {
   const [query, setQuery] = useState("");
   const [products, setProducts] = useState([]);
 
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL; // Access the environment variable
+
   useEffect(() => {
     fetchProducts();
   }, []);
 
   const fetchProducts = async (category = "", brand = "", color = "", price = "", searchQuery = "") => {
     try {
-      let url = `http://localhost:3000/api/products/filter?`;
+      let url = `${SERVER_URL}/api/products/filter?`; // Use SERVER_URL from .env file
       if (category) url += `category=${encodeURIComponent(category)}&`;
       if (brand) url += `company=${encodeURIComponent(brand)}&`;
       if (color) url += `color=${encodeURIComponent(color)}&`;

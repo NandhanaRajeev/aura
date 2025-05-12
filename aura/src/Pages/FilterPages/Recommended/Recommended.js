@@ -1,5 +1,6 @@
 import Button from '../../../Components/FilterPages/Button';
 import { useEffect, useState } from "react";
+import SERVER_URL from "../../../config";// ✅ Import server URL
 import "./Recommended.css";
 
 const Recommended = ({ fetchProducts }) => {
@@ -8,7 +9,7 @@ const Recommended = ({ fetchProducts }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/categories"); 
+        const response = await fetch(`${SERVER_URL}/api/categories`);
         const data = await response.json();
         console.log("Fetched Categories:", data); // Debugging line
         setCategories(data.map(category => category.trim())); // Ensure no extra spaces
