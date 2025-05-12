@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './AuraStories.css';
+import SERVER_URL from '../../../config';
 
 const AuraStories = () => {
   const [feedbackList, setFeedbackList] = useState([]);
@@ -10,7 +11,7 @@ const AuraStories = () => {
   useEffect(() => {
     const fetchFeedback = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/feedback');
+        const res = await axios.get(`${SERVER_URL}/api/feedback`);
         setFeedbackList(res.data);
         setLoading(false);
       } catch (err) {

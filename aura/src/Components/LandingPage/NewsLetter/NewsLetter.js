@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './NewsLetter.css';
+import SERVER_URL from '../../../config';
 
 const NewsLetter = () => {
   const [email, setEmail] = useState('');
@@ -9,33 +10,33 @@ const NewsLetter = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Simple email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setError('Please enter a valid email address');
       return;
     }
-  
+
     if (!userId) {
       setError('User ID is required');
       return;
     }
-  
+
     setIsLoading(true);
     setError(null); // Reset error before sending request
-  
+
     try {
-      const response = await fetch('http://localhost:3000/api/subscribe', {
+      const response = await fetch(`${SERVER_URL}/api/subscribe`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, userId }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         alert(data.message);
         setEmail(''); // Reset email input field
@@ -49,7 +50,6 @@ const NewsLetter = () => {
       setIsLoading(false);
     }
   };
-  
 
   return (
     <div className='newsletter'>
