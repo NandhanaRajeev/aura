@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Validation from './SignupValidation';
 import axios from 'axios';
 import "../../App.css"; // Ensure the CSS is applied
+import SERVER_URL from '../../config';
 
 function Signup() {
     const [values, setValues] = useState({
@@ -31,7 +32,7 @@ function Signup() {
         // Proceed only if there are no errors
         if (Object.keys(validationErrors).length === 0) {
             try {
-                const res = await axios.post('http://localhost:3000/signup', values);
+                const res = await axios.post(SERVER_URL+'/signup', values);
                 
                 if (res.status === 200) {
                     console.log('Signup successful:', res.data);

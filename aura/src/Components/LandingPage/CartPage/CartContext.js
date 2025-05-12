@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useContext, useCallback } fr
 import axios from "axios";
 import { LoginContext } from "../../LoginContext";
 import { jwtDecode } from "jwt-decode";
+import SERVER_URL from "../../../config";
 
 // Create CartContext to store cart data globally
 export const CartContext = createContext();
@@ -43,8 +44,8 @@ export const CartProvider = ({ children }) => {
 
         try {
             const response = await axios.post(
-                "http://localhost:3000/api/checkout",
-                {user_id:1},
+                `${SERVER_URL}/api/checkout`,
+                { user_id: 1 },
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -58,7 +59,6 @@ export const CartProvider = ({ children }) => {
             alert("Failed to complete order. Please try again.");
         }
     };
-
 
     // Function to fetch cart items from backend, memoized with useCallback
     const fetchCart = useCallback(async () => {
@@ -79,7 +79,7 @@ export const CartProvider = ({ children }) => {
         }
 
         try {
-            const response = await axios.get("http://localhost:3000/api/cart/", {
+            const response = await axios.get(`${SERVER_URL}/api/cart/`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -140,7 +140,7 @@ export const CartProvider = ({ children }) => {
                     };
                     console.log("Merging cart item with backend, payload:", payload);
                     await axios.post(
-                        "http://localhost:3000/api/cart/add",
+                        `${SERVER_URL}/api/cart/add`,
                         payload,
                         {
                             headers: {
@@ -219,7 +219,7 @@ export const CartProvider = ({ children }) => {
                     };
                     console.log("Updating quantity in backend, payload:", payload);
                     const response = await axios.put(
-                        "http://localhost:3000/api/cart/update",
+                        `${SERVER_URL}/api/cart/update`,
                         payload,
                         {
                             headers: {
@@ -267,7 +267,7 @@ export const CartProvider = ({ children }) => {
                     };
                     console.log("Adding item to backend, payload:", payload);
                     const response = await axios.post(
-                        "http://localhost:3000/api/cart/add",
+                        `${SERVER_URL}/api/cart/add`,
                         payload,
                         {
                             headers: {
@@ -315,7 +315,7 @@ export const CartProvider = ({ children }) => {
 
         if (isLoggedIn && token && userId) {
             try {
-                const response = await axios.delete(`http://localhost:3000/api/cart/remove/${userId}/${productId}`, {
+                const response = await axios.delete(`${SERVER_URL}/api/cart/remove/${userId}/${productId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -371,7 +371,7 @@ export const CartProvider = ({ children }) => {
                     };
                     console.log("Updating quantity in backend, payload:", payload);
                     const response = await axios.put(
-                        "http://localhost:3000/api/cart/update",
+                        `${SERVER_URL}/api/cart/update`,
                         payload,
                         {
                             headers: {
@@ -404,7 +404,7 @@ export const CartProvider = ({ children }) => {
 
         if (isLoggedIn && token) {
             try {
-                await axios.delete("http://localhost:3000/api/cart/clear", {
+                await axios.delete(`${SERVER_URL}/api/cart/clear`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -439,8 +439,6 @@ export const CartProvider = ({ children }) => {
             {children}
         </CartContext.Provider>
     );
-
-    
 };
 
 // Custom hook to access CartContext values

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CategoriesMain.css";
+import SERVER_URL from "../../../config";
 
 import img1 from "../../Assets/categories1.png";
 import img2 from "../../Assets/categories2.png";
@@ -21,7 +22,7 @@ const CategoriesMain = () => {
   useEffect(() => {
     const fetchDiscountedBrands = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/products/discounted");
+        const response = await fetch(`${SERVER_URL}/api/products/discounted`);
         const data = await response.json();
         console.log("Fetched discounted brands:", data);
         setDiscountedBrands(data);
@@ -45,7 +46,11 @@ const CategoriesMain = () => {
   return (
     <>
       <div className="brands-container">
-        <h2><center><strong>BIGGEST DEALS ON TOP BRANDS</strong></center></h2>
+        <h2>
+          <center>
+            <strong>BIGGEST DEALS ON TOP BRANDS</strong>
+          </center>
+        </h2>
         <div className="brands-grid">
           {discountedBrands.map((brand, index) => {
             const validProductId = brand.id || brand.title?.replace(/\s+/g, "-").toLowerCase();
@@ -69,7 +74,11 @@ const CategoriesMain = () => {
       </div>
 
       <div className="categories-container">
-        <h2><center><strong>CATEGORIES</strong></center></h2>
+        <h2>
+          <center>
+            <strong>CATEGORIES</strong>
+          </center>
+        </h2>
         <div className="categories-grid">
           {categories.map((category, index) => (
             <div

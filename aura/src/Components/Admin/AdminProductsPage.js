@@ -1,5 +1,7 @@
+// src/components/Admin/AdminProductsPage.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import SERVER_URL from "../../config";
 
 const AdminProductsPage = () => {
   const [products, setProducts] = useState([]);
@@ -18,7 +20,7 @@ const AdminProductsPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/admin-products", {
+        const res = await axios.get(`${SERVER_URL}/api/admin-products`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         setProducts(res.data);
@@ -34,7 +36,7 @@ const AdminProductsPage = () => {
   const deleteProduct = async (productId) => {
     setRemoving(productId);
     try {
-      await axios.delete(`http://localhost:3000/api/admin-products/${productId}`, {
+      await axios.delete(`${SERVER_URL}/api/admin-products/${productId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setProducts(products.filter((p) => p.id !== productId));
@@ -48,7 +50,7 @@ const AdminProductsPage = () => {
   const handleAddProduct = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:3000/api/admin-products", newProduct, {
+      const res = await axios.post(`${SERVER_URL}/api/admin-products`, newProduct, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setProducts([...products, { ...newProduct, id: res.data.id || Date.now() }]);
@@ -67,7 +69,7 @@ const AdminProductsPage = () => {
   const handleEditProduct = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:3000/api/admin-products/${editProduct.id}`, editProduct, {
+      await axios.put(`${SERVER_URL}/api/admin-products/${editProduct.id}`, editProduct, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setProducts(products.map(p => p.id === editProduct.id ? editProduct : p));
@@ -79,27 +81,21 @@ const AdminProductsPage = () => {
     }
   };
 
-  // Helper functions for parsing and formatting prices
   const parsePrice = (price) => {
-    if (typeof price === 'string') {
-      return price.replace(/[^\d.-]/g, ''); // Remove non-numeric characters except "."
-    }
-    return price;
+    return typeof price === 'string' ? price.replace(/[^\d.]/g, '') : price;
   };
 
   const formatPrice = (price) => {
-    const parsedPrice = parseFloat(parsePrice(price));
-    return isNaN(parsedPrice) ? '' : `$${parsedPrice.toFixed(2)}`; // Format with "$" and two decimal places
+    const parsed = parseFloat(parsePrice(price));
+    return isNaN(parsed) ? '' : `$${parsed.toFixed(2)}`;
   };
 
-  // Handle change for both price and star fields
   const handleEditChange = (e, key) => {
     const value = e.target.value;
-
-    setEditProduct((prevProduct) => ({
-      ...prevProduct,
-      [key]: key === "star" || key === "prev_price" || key === "new_price"
-        ? parsePrice(value)  // Clean the value for numeric fields (remove "$")
+    setEditProduct((prev) => ({
+      ...prev,
+      [key]: ["star", "prev_price", "new_price"].includes(key)
+        ? parsePrice(value)
         : value
     }));
   };
@@ -110,9 +106,7 @@ const AdminProductsPage = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h1>Admin Product Management</h1>
-      <button style={addButtonStyle} onClick={() => setShowAddModal(true)}>
-        + Add Product
-      </button>
+      <button style={addButtonStyle} onClick={() => setShowAddModal(true)}>+ Add Product</button>
 
       <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px" }}>
         <thead>
@@ -127,36 +121,27 @@ const AdminProductsPage = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
-            <tr key={product.id}>
-              <td style={tdStyle}>{product.id}</td>
-              <td style={tdStyle}>{product.title}</td>
-              <td style={tdStyle}>{formatPrice(product.prev_price)}</td>
-              <td style={tdStyle}>{formatPrice(product.new_price)}</td>
-              <td style={tdStyle}>{product.category}</td>
+          {products.map((p) => (
+            <tr key={p.id}>
+              <td style={tdStyle}>{p.id}</td>
+              <td style={tdStyle}>{p.title}</td>
+              <td style={tdStyle}>{formatPrice(p.prev_price)}</td>
+              <td style={tdStyle}>{formatPrice(p.new_price)}</td>
+              <td style={tdStyle}>{p.category}</td>
               <td style={tdStyle}>
-                {product.img ? (
-                  <img
-                    src={product.img}
-                    alt={product.title}
-                    style={{ width: "50px", height: "50px", objectFit: "cover" }}
-                  />
-                ) : "No Image"}
+                {p.img ? <img src={p.img} alt={p.title} style={{ width: 50, height: 50 }} /> : "No image"}
               </td>
               <td style={tdStyle}>
                 <button
                   style={deleteButtonStyle}
-                  onClick={() => window.confirm("Are you sure you want to delete this product?") && deleteProduct(product.id)}
-                  disabled={removing === product.id}
+                  onClick={() => window.confirm("Are you sure?") && deleteProduct(p.id)}
+                  disabled={removing === p.id}
                 >
-                  {removing === product.id ? "Deleting..." : "Delete"}
+                  {removing === p.id ? "Deleting..." : "Delete"}
                 </button>
                 <button
                   style={buttonStyle}
-                  onClick={() => {
-                    setEditProduct({ ...product }); // clone to make editable
-                    setShowEditModal(true);
-                  }}
+                  onClick={() => { setEditProduct({ ...p }); setShowEditModal(true); }}
                 >
                   Edit
                 </button>
@@ -166,18 +151,18 @@ const AdminProductsPage = () => {
         </tbody>
       </table>
 
-      {/* Add Product Modal */}
+      {/* Add Modal */}
       {showAddModal && (
         <div style={modalOverlay}>
           <div style={modalBox}>
-            <h2>Add New Product</h2>
-            <form onSubmit={handleAddProduct} style={{ display: "grid", gap: "10px" }}>
+            <h2>Add Product</h2>
+            <form onSubmit={handleAddProduct} style={{ display: "grid", gap: 10 }}>
               {Object.keys(newProduct).map((key) => (
                 <input
                   key={key}
-                  type={["star", "prev_price", "new_price"].includes(key) ? "text" : "text"} // Keep as text to allow "$"
+                  type="text"
                   name={key}
-                  placeholder={key.replace("_", " ").toUpperCase()}
+                  placeholder={key.toUpperCase()}
                   value={newProduct[key]}
                   onChange={(e) => setNewProduct({ ...newProduct, [key]: e.target.value })}
                   required
@@ -192,19 +177,19 @@ const AdminProductsPage = () => {
         </div>
       )}
 
-      {/* Edit Product Modal */}
+      {/* Edit Modal */}
       {showEditModal && editProduct && (
         <div style={modalOverlay}>
           <div style={modalBox}>
             <h2>Edit Product</h2>
-            <form onSubmit={handleEditProduct} style={{ display: "grid", gap: "10px" }}>
+            <form onSubmit={handleEditProduct} style={{ display: "grid", gap: 10 }}>
               {Object.keys(editProduct).filter(k => k !== "id").map((key) => (
                 <input
                   key={key}
-                  type={["star", "prev_price", "new_price"].includes(key) ? "text" : "text"} // Keep as text to allow "$"
+                  type="text"
                   name={key}
-                  placeholder={key.replace("_", " ").toUpperCase()}
-                  value={key === "prev_price" || key === "new_price" || key === "star" ? formatPrice(editProduct[key]) : editProduct[key] ?? ""}
+                  placeholder={key.toUpperCase()}
+                  value={["star", "prev_price", "new_price"].includes(key) ? formatPrice(editProduct[key]) : editProduct[key]}
                   onChange={(e) => handleEditChange(e, key)}
                   required
                 />
@@ -221,14 +206,19 @@ const AdminProductsPage = () => {
   );
 };
 
-// Styles
-const thStyle = { border: "1px solid #ddd", padding: "8px", backgroundColor: "#f9f9f9", textAlign: "left" };
-const tdStyle = { border: "1px solid #ddd", padding: "8px" };
-const buttonStyle = { marginRight: "5px", padding: "5px 10px", backgroundColor: "#9C7B79", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" };
-const deleteButtonStyle = { padding: "5px 12px", backgroundColor: "#e74c3c", color: "#fff", border: "none", borderRadius: "3px", cursor: "pointer", marginRight: "8px" };
-const addButtonStyle = { padding: "10px 15px", backgroundColor: "#9C7B79", color: "white", border: "none", borderRadius: "5px", cursor: "pointer", fontWeight: "bold" };
-const cancelButtonStyle = { padding: "10px 15px", backgroundColor: "#aaa", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" };
-const modalOverlay = { position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", backgroundColor: "rgba(0, 0, 0, 0.5)", display: "flex", justifyContent: "center", alignItems: "center" };
-const modalBox = { background: "white", padding: "30px", borderRadius: "10px", width: "900px", maxHeight: "80vh", overflowY: "auto", boxShadow: "0 5px 15px rgba(0,0,0,0.3)" };
+// CSS styles
+const thStyle = { border: "1px solid #ccc", padding: "10px", background: "#f4f4f4" };
+const tdStyle = { border: "1px solid #ccc", padding: "10px" };
+const buttonStyle = { marginRight: "5px", padding: "5px 10px", background: "#9C7B79", color: "#fff", border: "none", borderRadius: "4px" };
+const deleteButtonStyle = { ...buttonStyle, background: "#e74c3c" };
+const addButtonStyle = { ...buttonStyle, background: "#2ecc71" };
+const cancelButtonStyle = { ...buttonStyle, background: "#7f8c8d" };
+const modalOverlay = {
+  position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+  backgroundColor: "rgba(0, 0, 0, 0.5)", display: "flex", justifyContent: "center", alignItems: "center"
+};
+const modalBox = {
+  backgroundColor: "#fff", padding: "20px", borderRadius: "8px", width: "400px"
+};
 
 export default AdminProductsPage;
