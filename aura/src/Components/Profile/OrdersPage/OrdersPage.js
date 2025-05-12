@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import './OrdersPage.css';
+import SERVER_URL from "../../../config";
 
-
-const OrdersPage = ({user_id}) => {
+const OrdersPage = ({ user_id }) => {
   const [orders, setOrders] = useState([]);
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
+
   const fetchOrders = async () => {
     try {
-      const res = await axios.get(`http://localhost:3000/api/orders/${userId}`, {
+      const res = await axios.get(`${SERVER_URL}/api/orders/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -22,7 +23,7 @@ const OrdersPage = ({user_id}) => {
 
   // const removeItem = async (productId, size) => {
   //   try {
-  //     await axios.delete(`http://localhost:3000/api/orders/remove/${productId}?size=${size}`, {
+  //     await axios.delete(`${SERVER_URL}/api/orders/remove/${productId}?size=${size}`, {
   //       headers: {
   //         Authorization: `Bearer ${token}`,
   //       },
@@ -37,7 +38,7 @@ const OrdersPage = ({user_id}) => {
     try {
       if (quantity < 1) return;
       await axios.put(
-        "/api/orders/update",
+        `${SERVER_URL}/api/orders/update`,
         { productId, quantity, size },
         {
           headers: {

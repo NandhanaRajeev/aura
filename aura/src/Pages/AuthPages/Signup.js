@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Validation from './SignupValidation';
 import axios from 'axios';
 import "../../App.css"; // Ensure the CSS is applied
+import SERVER_URL from '../../config';
 import SERVER_URL from "../../config";
 
 function Signup() {

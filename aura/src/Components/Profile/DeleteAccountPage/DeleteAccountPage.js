@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // For redirection
+import { useNavigate } from "react-router-dom";
 import "./DeleteAccountPage.css";
+import SERVER_URL from "../../../config";
 
 const DeleteAccountPage = () => {
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState("");
   const [confirmation, setConfirmation] = useState(false);
-  const navigate = useNavigate(); // Hook for navigation
-
-  const API = process.env.REACT_APP_API_BASE_URL || "http://localhost:3000/api";
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -21,7 +20,7 @@ const DeleteAccountPage = () => {
       }
 
       try {
-        const { data } = await axios.get(`${API}/users`, {
+        const { data } = await axios.get(`${SERVER_URL}/api/users`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -31,8 +30,6 @@ const DeleteAccountPage = () => {
         console.error("Error fetching user data:", error);
         if (error.response) {
           console.error("Response error data:", error.response.data);
-          console.error("Response error status:", error.response.status);
-          console.error("Response error headers:", error.response.headers);
           setMessage("Error fetching user data. Please try again.");
           if (error.response.status === 500) {
             setMessage("Internal Server Error. Please try again later.");
@@ -43,9 +40,8 @@ const DeleteAccountPage = () => {
     };
 
     fetchUserData();
-  }, [API, navigate]);
+  }, [navigate]);
 
-  // Handle account deletion
   const handleDelete = async () => {
     const token = localStorage.getItem("token");
 
@@ -56,7 +52,7 @@ const DeleteAccountPage = () => {
     }
 
     try {
-      const response = await axios.delete(`${API}/users/delete`, {
+      const response = await axios.delete(`${SERVER_URL}/api/users/delete`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

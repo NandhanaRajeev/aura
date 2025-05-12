@@ -1,7 +1,7 @@
 import "./Colors.css";
 import Input from '../../../../Components/FilterPages/Input';
-
 import { useEffect, useState } from "react";
+import SERVER_URL from '../../../../config'; // ✅ Import server URL
 
 const Colors = ({ handleChange }) => {
   const [colors, setColors] = useState([]);
@@ -9,7 +9,7 @@ const Colors = ({ handleChange }) => {
   useEffect(() => {
     const fetchColors = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/colors");
+        const response = await fetch(`${SERVER_URL}/api/colors`);
         const data = await response.json();
         
         console.log("🎨 Fetched Colors from API:", data); // ✅ Debugging log

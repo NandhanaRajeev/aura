@@ -3,6 +3,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import "./SavedaddressPage.css";
+import SERVER_URL from "../../../config";
 
 const SavedaddressPage = () => {
   const [address, setAddress] = useState([]);
@@ -17,7 +18,7 @@ const SavedaddressPage = () => {
     if (!token) return;
 
     try {
-      const response = await axios.get(`http://localhost:3000/api/address/${userId}`, {
+      const response = await axios.get(`${SERVER_URL}/api/address/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -39,25 +40,23 @@ const SavedaddressPage = () => {
     navigate("/profile/address-form");
   };
 
-  //edit button
   const handleEdit = (item) => {
     navigate("/profile/address-form", { state: { address: item } });
   };
 
-  //delete button
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this address?");
     if (!confirmDelete) return;
-  
+
     try {
       const token = localStorage.getItem("token");
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
-  
-      await axios.delete(`http://localhost:3000/api/address/${id}`, config);
+
+      await axios.delete(`${SERVER_URL}/api/address/${id}`, config);
       alert("Address deleted successfully!");
-  
+
       // Update the state to remove the deleted address
       setAddress((prevAddress) => prevAddress.filter((item) => item.add_id !== id));
     } catch (error) {
@@ -65,8 +64,6 @@ const SavedaddressPage = () => {
       alert("Failed to delete address");
     }
   };
-  
-  
 
   return (
     <div className="saved-address-page">

@@ -3,7 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import './PaymentGateway.css';
+<<<<<<< HEAD
 import SERVER_URL from "../../../config";
+=======
+import SERVER_URL from '../../config';
+>>>>>>> 5434863faaa8b07e14228132fef68369f0bb1174
 
 const PaymentGateway = () => {
   const navigate = useNavigate();
@@ -47,8 +51,13 @@ const PaymentGateway = () => {
         }
 
         console.log('Fetching UPI IDs for prefill for user ID:', decodedToken.id);
+<<<<<<< HEAD
         const response = await axios.get(${SERVER_URL}/api/upi/get, {
           headers: { Authorization: Bearer ${token} },
+=======
+        const response = await axios.get(`${SERVER_URL}/api/upi/get`, {
+          headers: { Authorization: `Bearer ${token}` },
+>>>>>>> 5434863faaa8b07e14228132fef68369f0bb1174
         });
 
         console.log('API Response for prefill:', response);
@@ -130,9 +139,15 @@ const PaymentGateway = () => {
 
     if (isLoggedIn && token) {
       try {
+<<<<<<< HEAD
         await axios.delete(${SERVER_URL}/api/cart/clear, {
           headers: {
             Authorization: Bearer ${token},
+=======
+        await axios.delete(`${SERVER_URL}/api/cart/clear`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+>>>>>>> 5434863faaa8b07e14228132fef68369f0bb1174
           },
         });
         console.log("Cart cleared in backend");
@@ -167,7 +182,11 @@ const PaymentGateway = () => {
 
     try {
       const response = await axios.post(
+<<<<<<< HEAD
         ${SERVER_URL}/api/checkout,
+=======
+        `${SERVER_URL}/api/checkout`,
+>>>>>>> 5434863faaa8b07e14228132fef68369f0bb1174
         { user_id: user_id },
         {
           headers: {
@@ -217,8 +236,13 @@ const PaymentGateway = () => {
         console.log('Fetching UPI IDs for user ID (from token):', decodedToken.id);
         console.log('Token being sent:', token);
 
+<<<<<<< HEAD
         const response = await axios.get(${SERVER_URL}/api/upi/get, {
           headers: { Authorization: Bearer ${token} },
+=======
+        const response = await axios.get(`${SERVER_URL}/api/upi/get`, {
+          headers: { Authorization: `Bearer ${token}` },
+>>>>>>> 5434863faaa8b07e14228132fef68369f0bb1174
         });
 
         console.log('API Response:', response);
@@ -339,7 +363,11 @@ const PaymentGateway = () => {
           }
 
           await axios.post(
+<<<<<<< HEAD
             ${SERVER_URL}/api/upi/save,
+=======
+            `${SERVER_URL}/api/upi/save`,
+>>>>>>> 5434863faaa8b07e14228132fef68369f0bb1174
             { upiId, rememberUpi },
             { headers: { Authorization: Bearer ${token} } }
           );
@@ -358,7 +386,11 @@ const PaymentGateway = () => {
       // Delay navigation slightly to ensure alerts show first
       setTimeout(() => {
         transferCartToOrders();
+<<<<<<< HEAD
         navigate(/profile/orders/${user_id});
+=======
+        navigate(`/profile/orders/${user_id}`);
+>>>>>>> 5434863faaa8b07e14228132fef68369f0bb1174
       }, 100); // Adjust delay if needed
     }
   };

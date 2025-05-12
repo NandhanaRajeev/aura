@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import "./AdminDashboard.css"; // Ensure styling is correct for table
+import "./AdminDashboard.css";
+import SERVER_URL from "../../config"; // Adjust the path based on your file structure
 
 const AdminDashboard = () => {
   const [usersCount, setUsersCount] = useState(0);
@@ -9,26 +10,25 @@ const AdminDashboard = () => {
   const [latestProducts, setLatestProducts] = useState([]);
 
   useEffect(() => {
-    // Fetching the counts and latest products
-    fetch("http://localhost:3000/api/admin-users/count")
+    fetch(`${SERVER_URL}/api/admin-users/count`)
       .then((res) => res.json())
       .then((data) => setUsersCount(data.count));
 
-    fetch("http://localhost:3000/api/admin-products/count")
+    fetch(`${SERVER_URL}/api/admin-products/count`)
       .then((res) => res.json())
       .then((data) => setProductsCount(data.count));
 
-    fetch("http://localhost:3000/api/admin-feedback/count")
+    fetch(`${SERVER_URL}/api/admin-feedback/count`)
       .then((res) => res.json())
       .then((data) => setFeedbackCount(data.count));
 
-    fetch("http://localhost:3000/api/newsletter/count") // New API call for newsletter subscribers count
+    fetch(`${SERVER_URL}/api/newsletter/count`)
       .then((res) => res.json())
       .then((data) => setNewsletterCount(data.count));
 
-    fetch("http://localhost:3000/api/products/latest")
+    fetch(`${SERVER_URL}/api/products/latest`)
       .then((res) => res.json())
-      .then((data) => setLatestProducts(data.slice(0, 5))); // Get the latest 5 products
+      .then((data) => setLatestProducts(data.slice(0, 5)));
   }, []);
 
   return (
@@ -53,7 +53,6 @@ const AdminDashboard = () => {
         </div>
       </div>
 
- {/* Display Latest Products in a Table */}
       <div className="latest-products">
         <h3>Latest Products</h3>
         <table>
