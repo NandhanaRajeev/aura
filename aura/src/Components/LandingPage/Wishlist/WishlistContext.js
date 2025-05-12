@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useContext, useCallback } from "react";
 import axios from "axios";
-import { LoginContext } from "../../LoginContext"; // Check for circular dependencies
+import { LoginContext } from "../../LoginContext";
 import { jwtDecode } from "jwt-decode";
 import SERVER_URL from "../../../config";
 
@@ -97,6 +97,19 @@ export const WishlistProvider = ({ children }) => {
             try {
                 setError(null);
                 setSuccess(null);
+                // Optimistic update
+                const optimisticItem = {
+                    product_id: newItem.id,
+                    title: newItem.title || "No title",
+                    image: newItem.image || "default-image.jpg",
+                    price: newItem.price || 0,
+                    prev_price: newItem.prev_price || 0,
+                    star: newItem.star || 0,
+                    reviews: newItem.reviews || 0,
+                };
+                setWishlistItems((prevItems) => [...prevItems, optimisticItem]);
+                console.log("Optimistic update applied:", optimisticItem);
+
                 const payload = { product_id: newItem.id };
                 console.log("Adding to wishlist:", {
                     url: `${SERVER_URL}/api/wishlist/add`,
@@ -116,6 +129,8 @@ export const WishlistProvider = ({ children }) => {
                     response: error.response?.data,
                     status: error.response?.status,
                 });
+                // Roll back optimistic update
+                setWishlistItems((prevItems) => prevItems.filter(item => item.product_id !== newItem.id));
                 setError(
                     error.response?.status === 400
                         ? "Invalid product ID."
