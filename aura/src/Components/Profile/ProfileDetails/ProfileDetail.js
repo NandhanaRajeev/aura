@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import "./ProfileDetail.css";
+import SERVER_URL from "../../config"; // ✅ Import server URL
 
 const ProfileDetail = () => {
   const [user, setUser] = useState(null);
@@ -28,7 +29,7 @@ const ProfileDetail = () => {
 
     const { id } = jwtDecode(token);
     axios
-      .get(`http://localhost:3000/api/users/${id}`, {
+      .get(`${SERVER_URL}/api/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {

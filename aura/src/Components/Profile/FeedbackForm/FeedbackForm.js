@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './FeedbackForm.css'; 
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import SERVER_URL from '../../config'; // ✅ Import SERVER_URL
 
 const FeedbackForm = () => {
   const [feedbackData, setFeedbackData] = useState({
@@ -48,7 +49,7 @@ const FeedbackForm = () => {
     if (!validateFields()) return;
 
     try {
-      const response = await axios.post('http://localhost:3000/api/feedback', feedbackData);
+      const response = await axios.post(`${SERVER_URL}/api/feedback`, feedbackData); // ✅ Updated URL
       console.log('Feedback submitted:', response.data);
       alert('Feedback submitted successfully!');
       navigate('/');
@@ -62,13 +63,6 @@ const FeedbackForm = () => {
     <div className="feedback-page">
       <div className="feedback-content">
         <div className="feedback-card">
-          {/* ✅ Show greeting if user exists */}
-          {/* {user && user.name && (
-            <h3 style={{ marginBottom: '20px' }}>
-              Hi, {user.name}! Give your feedback
-            </h3>
-          )} */}
-
           <h2>Feedback</h2>
           <form onSubmit={handleSubmit}>
             <label htmlFor="name">Name</label>

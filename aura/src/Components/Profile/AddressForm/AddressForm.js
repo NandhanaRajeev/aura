@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "./AddressForm.css";
+import SERVER_URL from '../../config';
 
 const AddressForm = () => {
   const { state } = useLocation();
@@ -77,22 +78,22 @@ const AddressForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateFields()) return;
-
+  
     try {
       const token = localStorage.getItem("token");
       if (!token) {
         alert("User not logged in!");
         return;
       }
-
+  
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
-
+  
       if (isEditMode) {
         // Edit Mode: Update address
         await axios.put(
-          `http://localhost:3000/api/address/${addressId}`,
+          `${SERVER_URL}/api/address/${addressId}`,
           {
             fullName: formData.fullName,
             mobile: formData.mobile,
@@ -105,7 +106,7 @@ const AddressForm = () => {
       } else {
         // Add Mode: Add new address
         await axios.post(
-          `http://localhost:3000/api/address`,
+          `${SERVER_URL}/api/address`,
           {
             fullName: formData.fullName,
             mobile: formData.mobile,
@@ -116,13 +117,14 @@ const AddressForm = () => {
         );
         alert("Address added successfully!");
       }
-
+  
       navigate("/profile/saved-address");
     } catch (error) {
       console.error("Submit error:", error);
       alert("Submission failed!");
     }
   };
+  
 
   return (
     <div className="address-page">
