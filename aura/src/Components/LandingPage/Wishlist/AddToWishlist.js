@@ -6,7 +6,7 @@ import { CartContext } from "../CartPage/CartContext";
 import "./AddToWishlist.css";
 
 const AddToWishlist = () => {
-    const { wishlistItems, removeFromWishlist, error, success } = useContext(WishlistContext);
+    const { wishlistItems, addToWishlist, removeFromWishlist, error, success } = useContext(WishlistContext);
     const { addToCart } = useContext(CartContext);
     const [isLoading, setIsLoading] = useState(null);
 
@@ -56,40 +56,51 @@ const AddToWishlist = () => {
         }
     };
 
+    const handleAddToWishlist = async (item) => {
+        setIsLoading(item.product_id);
+        try {
+            await addToWishlist(item);
+            alert("Item added to wishlist!");
+        } catch (error) {
+            console.error("Error adding to wishlist:", error);
+            alert("Failed to add to wishlist.");
+        } finally {
+            setIsLoading(null);
+        }
+    };
+
     return (
         <div className="wishlist-container">
             <h2 className="wishlist-title">✨ Your Wishlist</h2>
             {error && <p className="error" style={{ color: "red", textAlign: "center" }}>{error}</p>}
             {success && <p className="success" style={{ color: "green", textAlign: "center" }}>{success}</p>}
             {wishlistItems.length > 0 ? (
-                wishlistItems.map((item) => {
-                    return (
-                        <div className="wishlist-item" key={item.product_id}>
-                            <div className="wishlist-item-image">
-                                <img src={item.image} alt={item.title} />
-                            </div>
-                            <div className="item-details">
-                                <h4 className="item-title">{item.title}</h4>
-                                <p className="item-price">Price: ₹{item.price}</p>
-                                <button
-                                    className="add-to-cart-btn"
-                                    onClick={() => handleAddToCart(item)}
-                                    disabled={isLoading === item.product_id}
-                                >
-                                    Add to Cart
-                                </button>
-                                <button
-                                    className="delete-btn"
-                                    onClick={() => handleRemove(item.product_id)}
-                                    disabled={isLoading === item.product_id}
-                                    title="Remove from wishlist"
-                                >
-                                    <BsTrash className="delete-icon" />
-                                </button>
-                            </div>
+                wishlistItems.map((item) => (
+                    <div className="wishlist-item" key={item.product_id}>
+                        <div className="wishlist-item-image">
+                            <img src={item.image} alt={item.title} />
                         </div>
-                    );
-                })
+                        <div className="item-details">
+                            <h4 className="item-title">{item.title}</h4>
+                            <p className="item-price">Price: ₹{item.price}</p>
+                            <button
+                                className="add-to-cart-btn"
+                                onClick={() => handleAddToCart(item)}
+                                disabled={isLoading === item.product_id}
+                            >
+                                Add to Cart
+                            </button>
+                            <button
+                                className="delete-btn"
+                                onClick={() => handleRemove(item.product_id)}
+                                disabled={isLoading === item.product_id}
+                                title="Remove from wishlist"
+                            >
+                                <BsTrash className="delete-icon" />
+                            </button>
+                        </div>
+                    </div>
+                ))
             ) : (
                 <div className="empty-wishlist-message">
                     <h3>😔 Your wishlist is empty!</h3>
