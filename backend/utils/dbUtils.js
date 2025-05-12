@@ -36,7 +36,7 @@ const createTable = async () => {
         `);
         console.log("✅ 'users' table created successfully!");
         await pool.query(`
-            ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE;
+            ALTER TABLE users ADD COLUMN is_admin BOOLEAN DEFAULT FALSE;
         `);
         console.log("✅ 'is_admin' column added successfully to 'users' table!");
                 
