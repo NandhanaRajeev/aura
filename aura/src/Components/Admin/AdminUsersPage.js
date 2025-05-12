@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import SERVER_URL from '../../config'; // Import SERVER_URL
 
 const AdminUsersPage = () => {
     const [users, setUsers] = useState([]);
@@ -12,7 +13,7 @@ const AdminUsersPage = () => {
     useEffect(() => {
         const fetchUsersData = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/api/admin-users", {
+                const response = await axios.get(`${SERVER_URL}/api/admin-users`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
@@ -29,28 +30,27 @@ const AdminUsersPage = () => {
         fetchUsersData();
     }, []);
 
-const handleDelete = async (userId) => {
-    console.log(`Attempting to delete user with ID: ${userId}`);  // Add this line
-    try {
-        const confirmDelete = window.confirm("Are you sure you want to delete this user?");
-        if (confirmDelete) {
-            const token = localStorage.getItem("token");
-            console.log("Using token:", token);  // Log the token to verify it's being sent
-            await axios.delete(`http://localhost:3000/api/admin-users/${userId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            setUsers(users.filter(user => user.id !== userId));  // Update the users list after deletion
-            console.log("Updated users after deletion:", users);  // Log the updated users list
-            alert("User deleted successfully.");
+    const handleDelete = async (userId) => {
+        console.log(`Attempting to delete user with ID: ${userId}`);  // Add this line
+        try {
+            const confirmDelete = window.confirm("Are you sure you want to delete this user?");
+            if (confirmDelete) {
+                const token = localStorage.getItem("token");
+                console.log("Using token:", token);  // Log the token to verify it's being sent
+                await axios.delete(`${SERVER_URL}/api/admin-users/${userId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                setUsers(users.filter(user => user.id !== userId));  // Update the users list after deletion
+                console.log("Updated users after deletion:", users);  // Log the updated users list
+                alert("User deleted successfully.");
+            }
+        } catch (err) {
+            console.error("Error deleting user:", err);
+            alert("Error deleting user");
         }
-    } catch (err) {
-        console.error("Error deleting user:", err);
-        alert("Error deleting user");
-    }
-};
-
+    };
 
     const handleEdit = (userId) => {
         const userToEdit = users.find(user => user.id === userId);
@@ -61,7 +61,7 @@ const handleDelete = async (userId) => {
     const handleUpdateUser = async () => {
         try {
             const { id, name, email, phone, gender, dob, address } = editUser;
-            await axios.put(`http://localhost:3000/api/admin-users/${id}`, { name, email, phone, gender, dob, address }, {
+            await axios.put(`${SERVER_URL}/api/admin-users/${id}`, { name, email, phone, gender, dob, address }, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
@@ -78,7 +78,7 @@ const handleDelete = async (userId) => {
     const handleAddUser = async () => {
         try {
             const { name, email, phone, gender, dob, address } = newUser;
-            const response = await axios.post("http://localhost:3000/api/admin-users", { name, email, phone, gender, dob, address }, {
+            const response = await axios.post(`${SERVER_URL}/api/admin-users`, { name, email, phone, gender, dob, address }, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
@@ -138,7 +138,6 @@ const handleDelete = async (userId) => {
                                 <td style={tdStyle}>{user.dob}</td>
                                 <td style={tdStyle}>{user.address}</td>
                                 <td style={tdStyle}>
-                                    
                                     <button style={deleteButtonStyle} onClick={() => handleDelete(user.id)}>Delete</button>
                                     <button style={buttonStyle} onClick={() => handleEdit(user.id)}>Edit</button>
                                 </td>
@@ -243,10 +242,10 @@ const deleteButtonStyle = {
 
 const modalStyle = {
     position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    top: "0",
+    left: "0",
+    right: "0",
+    bottom: "0",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     display: "flex",
     justifyContent: "center",
@@ -258,6 +257,7 @@ const modalContentStyle = {
     padding: "20px",
     borderRadius: "4px",
     width: "400px",
+    boxSizing: "border-box",
 };
 
 const inputStyle = {
@@ -274,7 +274,7 @@ const textareaStyle = {
     marginBottom: "10px",
     border: "1px solid #ddd",
     borderRadius: "4px",
-    height: "100px",
+    minHeight: "80px",
 };
 
 export default AdminUsersPage;

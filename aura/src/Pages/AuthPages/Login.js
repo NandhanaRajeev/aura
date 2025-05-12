@@ -5,6 +5,7 @@ import Validation from "./LoginValidation";
 import "../../App.css";
 import { LoginContext } from "../../Components/LoginContext";
 import { jwtDecode } from "jwt-decode"; // Correct import for jwtDecode
+import SERVER_URL from '../../config';
 
 function Login() {
     const [values, setValues] = useState({ email: "", password: "" });
@@ -23,7 +24,7 @@ function Login() {
 
         if (Object.keys(validationErrors).length === 0) {
             try {
-                const res = await axios.post("http://localhost:3000/login", values);
+                const res = await axios.post(SERVER_URL+'/login', values);
 
                 // Check if login was successful
                 if (res.data.success) {
