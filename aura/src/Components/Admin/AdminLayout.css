@@ -1,0 +1,13 @@
+.admin-body {
+  display: flex;
+  min-height: 100vh;
+}
+
+.admin-sidebar {
+  width: 250px;
+}
+
+.admin-content {
+  flex-grow: 1;
+  padding: 20px;
+}

@@ -14,13 +14,22 @@ import upiRoutes from "./routes/upiRoutes.js"; // Import UPI routes
 import { authenticateUser } from "./middlewares/authMiddleware.js";
 import wishlistRoutes from "./routes/wishlistRoute.js";
 import newsletterRoute from './routes/newsletterRoute.js';
+import chatbotRoute from "./routes/chatbotRoute.js";
+import axios from "axios";
+import adminCartRoute from "./routes/adminCartRoute.js";
+import adminUsersRoutes from './routes/adminUsers.js';  // Import the new users route
+import adminFeedbackRoutes from './routes/adminFeedbackRoute.js';
+import adminProductsRoute from './routes/adminProductsRoute.js';
+import adminWishlistRoute from './routes/adminWishlistRoute.js';
 
 
 dotenv.config();
-
+ 
 const app = express();
 app.use(cors()); // Allow frontend to talk to backend
 app.use(express.json()); // Allow JSON body
+
+
 
 app.use("/api/products", productRoutes);
 app.use('/api/newsletter', newsletterRoute);
@@ -29,9 +38,49 @@ app.use("/api/cart", cartRoutes);
 app.use('/api/feedback', feedbackRoute);
 app.use("/api/upi", upiRoutes); // Add the UPI routes here
 app.use("/api/wishlist", wishlistRoutes); // This links to the wishlist routes
+// app.use("/api/chatbot", chatbotRoute);
 
 
 
+// Admin Side
+//  Mount the route
+app.use("/api/admin-cart", adminCartRoute);
+app.use('/api/admin-users', adminUsersRoutes); 
+app.use("/api/admin-feedback", adminFeedbackRoutes);
+app.use("/api/admin-products",adminProductsRoute);
+app.use("/api/admin-wishlist",adminWishlistRoute);
+
+// Chatbot
+app.post('/api/chat', async (req, res) => {
+  try {
+      const userMessage = req.body.message;
+      if (!userMessage || userMessage.trim().length === 0) {
+          return res.status(400).json({ error: "Message cannot be empty" });
+      }
+
+      const response = await axios.post(
+          'https://api.deepseek.com/chat/completions',
+          {
+              model: 'deepseek-chat',
+              messages: [{ role: 'user', content: userMessage }],
+              stream: false,
+          },
+          {
+              headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${process.env.CHATBOT_API_KEY}`,
+              },
+          }
+      );
+
+      const botReply = response.data.choices[0].message.content;
+      res.json({ reply: botReply });
+
+  } catch (error) {
+      console.error(error.response?.data || error.message);
+      res.status(500).send("Failed to get response from chatbot API");
+  }
+});
 // Newsletter subscription route
 app.post("/api/subscribe", async (req, res) => {
   const { email, userId } = req.body;
@@ -196,7 +245,6 @@ app.post("/signup", async (req, res) => {
     }
 });
 
-// Login Route
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
@@ -209,6 +257,7 @@ app.post("/login", async (req, res) => {
         }
 
         const user = results[0];
+        console.log("User from DB:", user);
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
@@ -216,15 +265,16 @@ app.post("/login", async (req, res) => {
         }
 
         // Generate JWT token
-        const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        const token = jwt.sign({ id: user.id, email: user.email, is_admin: user.is_admin }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-        res.status(200).json({ success: true, message: "Login successful", token });
+        res.status(200).json({ success: true, message: "Login successful", token, is_admin: user.is_admin });
 
     } catch (err) {
         console.error("Login Error:", err);
         res.status(500).json({ error: "Login failed" });
     }
 });
+
 
 app.post("/ProfileForm", async (req, res) => {
   const { fullName, mobile, email, gender, dob, address } = req.body;

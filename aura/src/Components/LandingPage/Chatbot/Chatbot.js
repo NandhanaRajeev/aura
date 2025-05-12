@@ -1,20 +1,37 @@
 import React, { useState } from 'react';
 import './Chatbot.css';
- // Make sure to create a corresponding CSS file if you need custom styles
 
 const ChatbotPage = () => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
 
-    const handleSendMessage = () => {
+    const handleSendMessage = async () => {
         if (input.trim()) {
-            setMessages([...messages, { text: input, user: true }]);
-            // You can integrate with an actual chatbot API here
-            setMessages((prevMessages) => [
-                ...prevMessages,
-                { text: "This is a response from the bot", user: false },
-            ]);
-            setInput('');
+            // User message
+            const userMessage = { text: input, user: true };
+            setMessages((prevMessages) => [...prevMessages, userMessage]);
+
+            try {
+                // Sending the message to the backend (not directly to Gemini)
+                const response = await fetch('http://localhost:3001/api/gemini', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: input }), // Send input as the prompt
+                });
+
+                // Handle response from Gemini API
+                const data = await response.json();
+                const botReply = { text: data.candidates[0].content.parts[0].text, user: false }; // Adjust depending on Gemini's response structure
+                setMessages((prevMessages) => [...prevMessages, botReply]);
+            } catch (error) {
+                // Error handling if the request fails
+                setMessages((prevMessages) => [
+                    ...prevMessages,
+                    { text: "Failed to get a response from the bot.", user: false }
+                ]);
+            }
+
+            setInput(''); // Clear the input field
         }
     };
 

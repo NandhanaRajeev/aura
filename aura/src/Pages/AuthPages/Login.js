@@ -4,7 +4,7 @@ import axios from "axios";
 import Validation from "./LoginValidation";
 import "../../App.css";
 import { LoginContext } from "../../Components/LoginContext";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode"; // Correct import for jwtDecode
 
 function Login() {
     const [values, setValues] = useState({ email: "", password: "" });
@@ -29,12 +29,22 @@ function Login() {
                 if (res.data.success) {
                     const token = res.data.token; // Assuming the token is returned from backend
                     const decoded = jwtDecode(token);
-                    localStorage.setItem("token", token); // Store the token in localStorage
-                    localStorage.setItem("userId", decoded.id); // Store the user ID in localStorage
-                    localStorage.setItem("userEmail", values.email); // Store the email in localStorage
-                    localStorage.setItem("loggedIn", "true"); // Persist login state
+                    localStorage.setItem("token", token);
+                    localStorage.setItem("userId", decoded.id);
+                    localStorage.setItem("userEmail", values.email);
+                    localStorage.setItem("loggedIn", "true");
+                    
+                    // Store is_admin in localStorage
+                    localStorage.setItem("isAdmin", decoded.is_admin); 
                     login(); // Update global login state using context
-                    navigate("/"); // Navigate to the homepage or profile
+                                 
+                    // Redirect based on admin status
+                    if (decoded.is_admin === 1) {
+                        navigate("/admin"); // Redirect to admin page
+                    } else {
+                        navigate("/"); // Redirect to homepage or profile
+                    }
+                    
                 } else {
                     setErrors({ general: res.data.message });
                 }

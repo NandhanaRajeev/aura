@@ -3,6 +3,15 @@ import { pool } from '../config/db.js';
 
 const router = express.Router();
 
+router.get('/total-subscribers', async (req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT COUNT(*) AS total FROM newsletter_subscribers');
+        res.json({ totalSubscribers: rows[0].total });
+    } catch (error) {
+        console.error('Error fetching total subscribers:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
 router.post('/subscribe', async (req, res) => {
   const { email, userId } = req.body;
 

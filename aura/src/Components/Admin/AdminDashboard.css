@@ -1,0 +1,76 @@
+.admin-dashboard {
+  padding: 20px;
+}
+
+.stats {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: #f4f4f4;
+  padding: 20px;
+  border-radius: 10px;
+  flex: 1;
+  text-align: center;
+}
+
+.latest-products ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+.admin-dashboard {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: #f8f8f8;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 20%;
+  text-align: center;
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
+
+.latest-products {
+  margin-top: 30px;
+}
+
+.latest-products table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.latest-products th, .latest-products td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.latest-products th {
+  background-color: #f4f4f4;
+}
+
+.latest-products tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.latest-products tr:hover {
+  background-color: #f1f1f1;
+}
+
+.latest-products img {
+  border-radius: 4px;
+}

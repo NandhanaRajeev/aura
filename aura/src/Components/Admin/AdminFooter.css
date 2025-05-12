@@ -1,0 +1,16 @@
+/* src/Components/Admin/AdminFooter.css */
+.admin-footer {
+  position: fixed; /* Fixed position to stick to the bottom */
+  bottom: 0;       /* Align it to the bottom of the screen */
+  left: 0;         /* Align to the left edge */
+  width: 100%;     /* Make it span the full width of the screen */
+  background-color: #9C7B79;  /* Dark background color */
+  color: white;    /* White text color */
+  text-align: center; /* Center the text */
+  padding: 10px 0; /* Add some padding for spacing */
+  font-size: 14px; /* Adjust font size */
+}
+
+.admin-footer p {
+  margin: 5px 0; /* Margin between the lines */
+}

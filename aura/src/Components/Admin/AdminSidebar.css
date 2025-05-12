@@ -1,0 +1,62 @@
+.admin-flex-container {
+  display: flex;
+}
+
+.admin-sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+}
+
+.admin-sidebar h2 {
+  margin-bottom: 20px;
+  font-size: 24px; /* Increased font size */
+}
+
+.admin-section-title {
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 18px; /* Increased font size */
+}
+
+.admin-sidebar ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.admin-sidebar li {
+  margin-bottom: 10px;
+}
+
+.admin-sidebar a {
+  text-decoration: none;
+  color: #333;
+  font-size: 20px; /* Increased font size for links */
+  display: block;
+  padding: 10px 0;
+}
+
+.admin-sidebar a.active {
+  color: #1976d2;
+  font-weight: bold;
+}
+
+.admin-panel-link {
+  text-decoration: none;
+  color: black;
+}
+
+.admin-panel-link h2 {
+  margin: 0;
+  font-weight: bold;
+  color: black;
+  font-size: 25px; /* Increased font size */
+}
+
+.admin-panel-link h2:hover {
+  color: black; /* Keep it black on hover */
+  cursor: pointer;
+}

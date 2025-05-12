@@ -1,63 +1,60 @@
 .chatbot-page {
-    padding: 20px;
+    max-width: 600px;
+    margin: 40px auto;
+    font-family: Arial, sans-serif;
     text-align: center;
 }
 
 .chat-window {
-    max-width: 600px;
-    margin: 0 auto;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 10px;
-    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #f9f9f9;
 }
 
 .messages {
-    margin-bottom: 20px;
-    max-height: 400px;
-    overflow-y: scroll;
-}
-
-.user-message, .bot-message {
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
+    padding: 20px;
+    overflow-y: auto;
+    flex-grow: 1;
+    text-align: left;
 }
 
 .user-message {
-    background-color: #d1f7d1;
+    background-color: #d1e7dd;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    align-self: flex-end;
     text-align: right;
 }
 
 .bot-message {
-    background-color: #f1f1f1;
+    background-color: #f8d7da;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    align-self: flex-start;
     text-align: left;
 }
 
 .input-section {
     display: flex;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
+    border-top: 1px solid #ccc;
+    padding: 10px;
 }
 
-input {
-    width: 70%;
-    padding: 8px;
+.input-section input {
+    flex: 1;
+    padding: 10px;
     font-size: 16px;
-    border-radius: 5px;
 }
 
-button {
-    padding: 10px 15px;
+.input-section button {
+    padding: 10px 20px;
     font-size: 16px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
+    margin-left: 10px;
     cursor: pointer;
-}
-
-button:hover {
-    background-color: #45a049;
 }
