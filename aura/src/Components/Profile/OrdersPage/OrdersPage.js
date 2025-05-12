@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import './OrdersPage.css';
-import SERVER_URL from '../../config'; // ✅ Import SERVER_URL
+import SERVER_URL from "../../../config";
 
 const OrdersPage = ({ user_id }) => {
   const [orders, setOrders] = useState([]);

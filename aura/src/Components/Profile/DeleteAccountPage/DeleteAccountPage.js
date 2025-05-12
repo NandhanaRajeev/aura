@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./DeleteAccountPage.css";
-import SERVER_URL from "../../config"; // ✅ Importing SERVER_URL
+import SERVER_URL from "../../../config";
 
 const DeleteAccountPage = () => {
   const [user, setUser] = useState(null);

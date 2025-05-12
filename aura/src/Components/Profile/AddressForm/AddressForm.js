@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "./AddressForm.css";
-import SERVER_URL from '../../config';
+import SERVER_URL from "../../../config";
 
 const AddressForm = () => {
   const { state } = useLocation();

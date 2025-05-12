@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './FeedbackForm.css'; 
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import SERVER_URL from '../../config'; // ✅ Import SERVER_URL
+import SERVER_URL from "../../../config";
 
 const FeedbackForm = () => {
   const [feedbackData, setFeedbackData] = useState({

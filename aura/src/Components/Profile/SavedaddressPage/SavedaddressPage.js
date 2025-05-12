@@ -3,7 +3,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import "./SavedaddressPage.css";
-import SERVER_URL from "../../config"; // ✅ Import from config
+import SERVER_URL from "../../../config";
 
 const SavedaddressPage = () => {
   const [address, setAddress] = useState([]);

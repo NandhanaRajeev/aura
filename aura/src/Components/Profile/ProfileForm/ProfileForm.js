@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "./ProfileForm.css";
-import SERVER_URL from "../../config"; // ✅ Import server URL
+import SERVER_URL from "../../../config";
 
 const ProfileForm = () => {
   const { state } = useLocation();

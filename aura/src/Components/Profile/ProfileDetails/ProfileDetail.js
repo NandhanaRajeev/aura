@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import "./ProfileDetail.css";
-import SERVER_URL from "../../config"; // ✅ Import server URL
+import SERVER_URL from "../../../config";
 
 const ProfileDetail = () => {
   const [user, setUser] = useState(null);
