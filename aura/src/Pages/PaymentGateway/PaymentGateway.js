@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-
+import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import './PaymentGateway.css';
+import SERVER_URL from "../../../config";
 
 const PaymentGateway = () => {
-  const navigate = useNavigate(); // Define navigate here
+  const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('upi');
   const [cardNumber, setCardNumber] = useState('');
   const [cardName, setCardName] = useState('');
@@ -24,8 +24,8 @@ const PaymentGateway = () => {
   const [cartItems, setCartItems] = useState([]);
   const token = localStorage.getItem('token');
 
-  // const isLoggedIn = token && validateToken(token);
-  const user_id=localStorage.getItem('userId');
+  const user_id = localStorage.getItem('userId');
+
   // Fetch and store all saved UPI IDs on mount or when UPI option is selected
   useEffect(() => {
     const fetchUserUpi = async () => {
@@ -47,8 +47,8 @@ const PaymentGateway = () => {
         }
 
         console.log('Fetching UPI IDs for prefill for user ID:', decodedToken.id);
-        const response = await axios.get(`http://localhost:3000/api/upi/get`, {
-          headers: { Authorization: `Bearer ${token}` },
+        const response = await axios.get(${SERVER_URL}/api/upi/get, {
+          headers: { Authorization: Bearer ${token} },
         });
 
         console.log('API Response for prefill:', response);
@@ -76,7 +76,7 @@ const PaymentGateway = () => {
         const upiIds = upiData
           .filter((upi) => {
             const isValid = upi.upiId && upi.rememberUpi;
-            console.log(`UPI Entry in prefill: ${JSON.stringify(upi)}, Valid: ${isValid}`);
+            console.log(UPI Entry in prefill: ${JSON.stringify(upi)}, Valid: ${isValid});
             return isValid;
           })
           .map((upi) => upi.upiId);
@@ -104,6 +104,7 @@ const PaymentGateway = () => {
       fetchUserUpi();
     }
   }, [selectedOption]);
+
   const validateToken = (token) => {
     if (!token) return false;
     try {
@@ -119,40 +120,41 @@ const PaymentGateway = () => {
       return false;
     }
   };
+
   // Clear the cart
-    const clearCart = async () => {
-        const token = localStorage.getItem("token");
-        const isLoggedIn = token && validateToken(token);
+  const clearCart = async () => {
+    const token = localStorage.getItem("token");
+    const isLoggedIn = token && validateToken(token);
 
-        setCartItems([]);
+    setCartItems([]);
 
-        if (isLoggedIn && token) {
-            try {
-                await axios.delete("http://localhost:3000/api/cart/clear", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                console.log("Cart cleared in backend");
-            } catch (error) {
-                console.error("Error clearing cart from backend:", error.response?.data || error.message);
-                if (error.response?.status === 403) {
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("userId");
-                    setCartItems([]);
-                    localStorage.removeItem("cartItems");
-                    alert("Your session has expired. Please log in again.");
-                }
-            }
+    if (isLoggedIn && token) {
+      try {
+        await axios.delete(${SERVER_URL}/api/cart/clear, {
+          headers: {
+            Authorization: Bearer ${token},
+          },
+        });
+        console.log("Cart cleared in backend");
+      } catch (error) {
+        console.error("Error clearing cart from backend:", error.response?.data || error.message);
+        if (error.response?.status === 403) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("userId");
+          setCartItems([]);
+          localStorage.removeItem("cartItems");
+          alert("Your session has expired. Please log in again.");
         }
-        localStorage.removeItem("cartItems");
-    };
+      }
+    }
+    localStorage.removeItem("cartItems");
+  };
+
   // Transfer cart to orders after payment
   const transferCartToOrders = async () => {
     const token = localStorage.getItem("token");
     const user_id = localStorage.getItem("userId");
     const isLoggedIn = token && validateToken(token);
-
 
     if (!isLoggedIn || !token || !validateToken(token)) {
       localStorage.removeItem("token");
@@ -165,11 +167,11 @@ const PaymentGateway = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/checkout",
+        ${SERVER_URL}/api/checkout,
         { user_id: user_id },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: Bearer ${token},
           },
         }
       );
@@ -180,7 +182,6 @@ const PaymentGateway = () => {
       alert("Failed to complete order. Please try again.");
     }
   };
-
 
   const handleUpiSelect = (selectedUpiId) => {
     setUpiId(selectedUpiId);
@@ -216,8 +217,8 @@ const PaymentGateway = () => {
         console.log('Fetching UPI IDs for user ID (from token):', decodedToken.id);
         console.log('Token being sent:', token);
 
-        const response = await axios.get(`http://localhost:3000/api/upi/get`, {
-          headers: { Authorization: `Bearer ${token}` },
+        const response = await axios.get(${SERVER_URL}/api/upi/get, {
+          headers: { Authorization: Bearer ${token} },
         });
 
         console.log('API Response:', response);
@@ -244,7 +245,7 @@ const PaymentGateway = () => {
         const upiIds = upiData
           .filter((upi) => {
             const isValid = upi.upiId && upi.rememberUpi;
-            console.log(`UPI Entry: ${JSON.stringify(upi)}, Valid: ${isValid}`);
+            console.log(UPI Entry: ${JSON.stringify(upi)}, Valid: ${isValid});
             return isValid;
           })
           .map((upi) => upi.upiId);
@@ -338,9 +339,9 @@ const PaymentGateway = () => {
           }
 
           await axios.post(
-            'http://localhost:3000/api/upi/save',
+            ${SERVER_URL}/api/upi/save,
             { upiId, rememberUpi },
-            { headers: { Authorization: `Bearer ${token}` } }
+            { headers: { Authorization: Bearer ${token} } }
           );
           setMessage('UPI ID saved successfully!');
         } catch (error) {
@@ -351,13 +352,13 @@ const PaymentGateway = () => {
       }
 
       // Proceed with payment (mock for now)
-      alert(`Payment method: ${selectedOption} submitted successfully!`);
-      alert(`Order placed successfully!`);
+      alert(Payment method: ${selectedOption} submitted successfully!);
+      alert(Order placed successfully!);
 
       // Delay navigation slightly to ensure alerts show first
       setTimeout(() => {
-        transferCartToOrders()
-        navigate(`/profile/orders/${user_id}`);
+        transferCartToOrders();
+        navigate(/profile/orders/${user_id});
       }, 100); // Adjust delay if needed
     }
   };
@@ -405,7 +406,9 @@ const PaymentGateway = () => {
               placeholder="Card Number"
               maxLength={16}
               value={cardNumber}
-              onChange={(e) => {
+              onChange={(
+
+e) => {
                 const val = e.target.value.replace(/\D/g, '');
                 setCardNumber(val);
                 if (val && !/^\d*$/.test(val)) {
