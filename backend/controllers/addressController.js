@@ -2,7 +2,7 @@ import { pool } from "../config/db.js";
 
 export const submitaddress = async (req, res) => {
   const { fullName, mobile, address, pincode } = req.body;
-  const user_id = req.user?.id; // ✅ get from decoded token
+  const user_id = req.user.id; // ✅ get from decoded token
 
   if (!user_id || !fullName || !mobile || !address || !pincode) {
     return res.status(400).json({ error: "All fields are required" });
