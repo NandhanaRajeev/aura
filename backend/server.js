@@ -80,7 +80,7 @@ app.post('/api/chat', async (req, res) => {
       res.json({ reply: botReply });
 
   } catch (error) {
-      console.error(error.response?.data || error.message);
+      console.error(error.response.data || error.message);
       res.status(500).send("Failed to get response from chatbot API");
   }
 });
