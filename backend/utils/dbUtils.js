@@ -35,11 +35,13 @@ const createTable = async () => {
         
         `);
         console.log("✅ 'users' table created successfully!");
-        await pool.query(`
-            ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE;
-        `);
+        try {
+            await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE;`);
+        } catch (e) {
+            await pool.query('ALTER TABLE users ADD COLUMN is_admin BOOLEAN DEFAULT FALSE;');
+        }
         console.log("✅ 'is_admin' column added successfully to 'users' table!");
-                
+
 
         await pool.query(`
             CREATE TABLE IF NOT EXISTS address (
@@ -96,7 +98,7 @@ const createTable = async () => {
         `);
         console.log("✅ 'Wishlist' table created successfully!");
 
-        
+
         await pool.query(`
             CREATE TABLE IF NOT EXISTS newsletter_subscribers (
           id INT AUTO_INCREMENT PRIMARY KEY,
@@ -107,7 +109,7 @@ const createTable = async () => {
         );
   
           `);
-          console.log("✅ 'Newsletter' table created successfully!");
+        console.log("✅ 'Newsletter' table created successfully!");
 
         await pool.query(`
           CREATE TABLE IF NOT EXISTS upi (
@@ -137,7 +139,7 @@ const createTable = async () => {
             );`
         );
         console.log("✅ 'orders' table created successfully!");
-        
+
 
 
     } catch (error) {
@@ -188,4 +190,4 @@ const insertProducts = async () => {
     }
 };
 
-export { createTable, insertProducts };
+export { createTable, insertProducts };
