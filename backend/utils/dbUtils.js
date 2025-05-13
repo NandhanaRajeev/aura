@@ -22,18 +22,24 @@ const createTable = async () => {
 
         await pool.query(`
             CREATE TABLE IF NOT EXISTS users (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255),
-            email VARCHAR(255) NOT NULL UNIQUE,
-            password VARCHAR(255) NOT NULL,
-            phone VARCHAR(20),
-            gender VARCHAR(10),
-            dob DATE,
-            address TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(255),
+                email VARCHAR(255) NOT NULL UNIQUE,
+                password VARCHAR(255) NOT NULL,
+                phone VARCHAR(20),
+                gender VARCHAR(10),
+                dob DATE,
+                address TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );      
+        
         `);
         console.log("✅ 'users' table created successfully!");
+        await pool.query(`
+            ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE;
+        `);
+        console.log("✅ 'is_admin' column added successfully to 'users' table!");
+                
 
         await pool.query(`
             CREATE TABLE IF NOT EXISTS address (
@@ -182,4 +188,4 @@ const insertProducts = async () => {
     }
 };
 
-export { createTable, insertProducts };
+export { createTable, insertProducts };

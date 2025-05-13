@@ -172,6 +172,8 @@ const addToWishlist = async (newItem) => {
             {children}
         </WishlistContext.Provider>
     );
+
+    
 };
 
 export const useWishlist = () => useContext(WishlistContext);
