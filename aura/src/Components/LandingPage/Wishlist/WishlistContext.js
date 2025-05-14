@@ -38,7 +38,7 @@ export const WishlistProvider = ({ children }) => {
             });
 
             const formattedWishlist = Array.isArray(response.data)
-                ? response.data.map(item => ({
+                ? response.data.map((item) => ({
                       product_id: item.id,
                       title: item.title || "No title",
                       image: item.img || "default-image.jpg",
@@ -55,71 +55,71 @@ export const WishlistProvider = ({ children }) => {
         }
     }, [isLoggedIn]);
 
+    const addToWishlist = async (newItem) => {
+        const token = localStorage.getItem("token");
 
-const addToWishlist = async (newItem) => {
-    const token = localStorage.getItem("token");
-
-    if (!isLoggedIn || !token || !validateToken(token)) {
-        localStorage.removeItem("token");
-        setWishlistItems([]);
-        setError("Session expired. Please log in again.");
-        return false;
-    }
-
-    if (!newItem || !newItem.id) {
-        setError("Cannot add item to wishlist. Invalid item data.");
-        return false;
-    }
-
-    const exists = wishlistItems.some(item => item.product_id === newItem.id);
-    if (exists) {
-        setError("Item is already in your wishlist.");
-        return false;
-    }
-
-    try {
-        setError(null);
-        setSuccess(null);
-
-        // Optimistically update the wishlist state
-        const updatedWishlist = [...wishlistItems, {
-            product_id: newItem.id,
-            title: newItem.title || "No title",
-            image: newItem.img || "default-image.jpg",
-            price: newItem.new_price || 0,
-            prev_price: newItem.prev_price || 0,
-            star: newItem.star || 0,
-            reviews: newItem.reviews || 0,
-        }];
-        setWishlistItems(updatedWishlist);
-
-        const payload = { product_id: newItem.id };
-
-        // Log the payload being sent to the backend
-        console.log("Sending payload to backend:", payload);
-
-        await axios.post(`${SERVER_URL}/api/wishlist/add`, payload, {
-    headers: { Authorization: `Bearer ${token}` },
-});
-
-
-        setSuccess("Item added to wishlist!");
-        return true;
-    } catch (error) {
-        if (error.response?.status === 400) {
-            setError("Invalid product ID.");
-        } else if (error.response?.status === 409) {
-            setError("Item already in wishlist.");
-        } else {
-            setError("Failed to add item to wishlist.");
+        if (!isLoggedIn || !token || !validateToken(token)) {
+            localStorage.removeItem("token");
+            setWishlistItems([]);
+            setError("Session expired. Please log in again.");
+            return false;
         }
 
-        // Rollback the optimistic state update in case of failure
-        setWishlistItems(prev => prev.filter(item => item.product_id !== newItem.id));
-        return false;
-    }
-};
+        if (!newItem || !newItem.id) {
+            setError("Cannot add item to wishlist. Invalid item data.");
+            return false;
+        }
 
+        const exists = wishlistItems.some((item) => item.product_id === newItem.id);
+        if (exists) {
+            setError("Item is already in your wishlist.");
+            return false;
+        }
+
+        try {
+            setError(null);
+            setSuccess(null);
+
+            // Optimistically update the wishlist state
+            const updatedWishlist = [
+                ...wishlistItems,
+                {
+                    product_id: newItem.id,
+                    title: newItem.title || "No title",
+                    image: newItem.img || "default-image.jpg",
+                    price: newItem.new_price || 0,
+                    prev_price: newItem.prev_price || 0,
+                    star: newItem.star || 0,
+                    reviews: newItem.reviews || 0,
+                },
+            ];
+            setWishlistItems(updatedWishlist);
+
+            const payload = { product_id: newItem.id };
+
+            // Log the payload being sent to the backend
+            console.log("Sending payload to backend:", payload);
+
+            await axios.post(`${SERVER_URL}/api/wishlist/add`, payload, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            setSuccess("Item added to wishlist!");
+            return true;
+        } catch (error) {
+            if (error.response?.status === 400) {
+                setError("Invalid product ID.");
+            } else if (error.response?.status === 409) {
+                setError("Item already in wishlist.");
+            } else {
+                setError("Failed to add item to wishlist.");
+            }
+
+            // Rollback the optimistic state update in case of failure
+            setWishlistItems((prev) => prev.filter((item) => item.product_id !== newItem.id));
+            return false;
+        }
+    };
 
     const removeFromWishlist = async (productId) => {
         const token = localStorage.getItem("token");
@@ -139,7 +139,7 @@ const addToWishlist = async (newItem) => {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
-            setWishlistItems(prev => prev.filter(item => item.product_id !== productId));
+            setWishlistItems((prev) => prev.filter((item) => item.product_id !== productId));
             setSuccess("Item removed from wishlist!");
             return true;
         } catch (error) {
@@ -163,8 +163,8 @@ const addToWishlist = async (newItem) => {
             value={{
                 wishlistItems,
                 addToWishlist,
-                removeFromWishlist, // This is now properly exported
-                fetchWishlist, // Optional external trigger
+                removeFromWishlist,
+                fetchWishlist,
                 error,
                 success,
             }}
