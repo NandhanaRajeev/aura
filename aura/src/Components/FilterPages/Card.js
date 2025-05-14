@@ -103,9 +103,9 @@ const Card = ({ id, img, title, star, reviews, prevPrice, newPrice, company }) =
                         <del>{prevPrice}</del> {newPrice}
                     </div>
                     <div className="icon-container">
-                        <div className="wishlist">
+                        {/* <div className="wishlist">
                             <BsFillHeartFill className="wishlist-icon" />
-                        </div>
+                        </div> */}
                         <div
                             className={`bag ${isAddToCartDisabled ? "disabled" : ""}`}
                             onClick={isAddToCartDisabled ? null : handleAddToCart}
